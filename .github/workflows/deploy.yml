@@ -1,0 +1,118 @@
+name: CI/CD - Build & Deploy via Self-Hosted Runner
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: '部署目标'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - debian
+          - ubuntu
+
+jobs:
+  build:
+    name: Build (Java + Vue)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: mg-page/package-lock.json
+
+      - name: Build Backend  (Maven)
+        run: |
+          cd bs-server/all
+          mvn clean package -P linux -DskipTests -Dmaven.javadoc.skip=true -B -e
+
+      - name: Build Frontend (Vue.js)
+        run: |
+          cd mg-page
+          npm ci
+          npm run build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: |
+            mg-page/dist/
+            bs-server/all/target/
+          retention-days: 7
+          compression-level: 1
+
+  deploy-debian:
+    name: Deploy to Debian WSL
+    needs: build
+    runs-on:
+      - self-hosted
+      - debian
+
+    steps:
+      - name: Install Docker if needed
+        run: bash docker/install-docker.sh
+        continue-on-error: true
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: build-artifacts/
+
+      - name: Deploy (Docker)
+        run: bash docker/deploy.sh
+        env:
+          DB_HOST: ${{ secrets.EXTERNAL_DB_HOST }}
+          DB_PORT: ${{ secrets.EXTERNAL_DB_PORT }}
+          DB_NAME: ${{ secrets.EXTERNAL_DB_NAME }}
+          DB_USER: ${{ secrets.EXTERNAL_DB_USER }}
+          DB_PASSWORD: ${{ secrets.EXTERNAL_DB_PASSWORD }}
+
+  deploy-ubuntu:
+    name: Deploy to Ubuntu-1 WSL
+    needs: build
+    runs-on:
+      - self-hosted
+      - ubuntu
+
+    steps:
+      - name: Install Docker if needed
+        run: bash docker/install-docker.sh
+        continue-on-error: true
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: build-artifacts/
+
+      - name: Deploy (Docker)
+        run: bash docker/deploy.sh
+        env:
+          DB_HOST: ${{ secrets.EXTERNAL_DB_HOST }}
+          DB_PORT: ${{ secrets.EXTERNAL_DB_PORT }}
+          DB_NAME: ${{ secrets.EXTERNAL_DB_NAME }}
+          DB_USER: ${{ secrets.EXTERNAL_DB_USER }}
+          DB_PASSWORD: ${{ secrets.EXTERNAL_DB_PASSWORD }}

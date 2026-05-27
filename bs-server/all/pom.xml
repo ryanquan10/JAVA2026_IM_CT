@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tio-site-all</artifactId>
+	<name>${project.artifactId}</name>
+
+	<parent>
+		<groupId>org.t-io</groupId>
+		<artifactId>tio-site-parent</artifactId>
+		<version>1.0.0-tio-sitexxx</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.t-io</groupId>
+			<artifactId>tio-site-ext-http-view</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.t-io</groupId>
+			<artifactId>tio-site-ext-im-server</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- windows平台 -->
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>opencv</artifactId>
+			<classifier>${javacpp.platform.windows-x86_64}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>ffmpeg</artifactId>
+			<classifier>${javacpp.platform.windows-x86_64}</classifier>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- linux平台 -->
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>opencv</artifactId>
+			<classifier>${javacpp.platform.linux-x86_64}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>ffmpeg</artifactId>
+			<classifier>${javacpp.platform.linux-x86_64}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.14.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sejda.imageio</groupId>
+			<artifactId>webp-imageio</artifactId>
+			<version>0.1.6</version>
+		</dependency>
+		
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<addMavenDescriptor>false</addMavenDescriptor><!-- 生成的jar中，不要包含pom.xml和pom.properties这两个文件 -->
+					</archive>
+
+					<finalName>${project.artifactId}</finalName>
+
+					<excludes>
+						<exclude>/page/</exclude>
+						<exclude>/config/</exclude>
+						<exclude>/*.properties</exclude>
+						<exclude>/*.xml</exclude>
+						<exclude>/*.json</exclude>
+						<exclude>/*.pfx</exclude>
+						<exclude>/*.cer</exclude>
+						<exclude>/*.jf</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- The configuration of maven-assembly-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!--名字任意 -->
+						<phase>package</phase>  <!-- 绑定到package生命周期阶段上 -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>script/pkg.xml</descriptor>
+							</descriptors>
+							<outputDirectory>${project.build.directory}/</outputDirectory>
+							<finalName>${project.artifactId}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<profiles>
+		<profile>
+			<!-- windows环境 -->
+			<id>windows</id>
+			<dependencies>
+				<!-- 导入不同的依赖 -->
+				<dependency>
+					<groupId>org.bytedeco.javacpp-presets</groupId>
+					<artifactId>opencv</artifactId>
+					<classifier>${javacpp.platform.windows-x86_64}</classifier>
+				</dependency>
+				<dependency>
+					<groupId>org.bytedeco.javacpp-presets</groupId>
+					<artifactId>ffmpeg</artifactId>
+					<classifier>${javacpp.platform.windows-x86_64}</classifier>
+				</dependency>
+			</dependencies>
+
+		</profile>
+
+		<profile>
+			<!-- linux环境 -->
+			<id>linux</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.bytedeco.javacpp-presets</groupId>
+					<artifactId>opencv</artifactId>
+					<classifier>${javacpp.platform.linux-x86_64}</classifier>
+				</dependency>
+				<dependency>
+					<groupId>org.bytedeco.javacpp-presets</groupId>
+					<artifactId>ffmpeg</artifactId>
+					<classifier>${javacpp.platform.linux-x86_64}</classifier>
+				</dependency>
+			</dependencies>
+			<activation>
+				<!-- 默认激活的环境 -->
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
+</project>

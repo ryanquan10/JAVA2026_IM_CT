@@ -1,0 +1,2 @@
+文字复制到剪贴板:
+https://clipboardjs.com/

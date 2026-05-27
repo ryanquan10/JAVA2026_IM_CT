@@ -1,0 +1,14 @@
+{
+	"debug": true,
+	"console": {
+		"log": true,
+		"info": true,
+		"error": true
+	},
+	"dev":true,
+	"compress": {
+		"js": false,
+		"css": false,
+		"html": false
+	}
+}

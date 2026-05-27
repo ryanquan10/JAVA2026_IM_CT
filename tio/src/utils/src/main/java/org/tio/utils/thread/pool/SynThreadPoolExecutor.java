@@ -1,0 +1,144 @@
+/*
+ * smztvecxgij本软件由黄庆辉采购自杭州钛特云科技有限公司，黄庆辉需严格遵守合同，不得以任何形式转卖源代码，不得利用本软件从事违法犯罪活动ekcvbobakg
+ */
+package org.tio.utils.thread.pool;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+/**
+ *
+ * @author tanyaowu 2017年4月26日 下午2:18:30
+ */
+public class SynThreadPoolExecutor extends ThreadPoolExecutor {
+
+    /** The name. */
+    private String name = null;
+
+    /**
+     *
+     * @param corePoolSize
+     * @param maximumPoolSize
+     * @param keepAliveTime   单位: 秒
+     * @param runnableQueue
+     * @param threadFactory
+     * @param name
+     * @author tanyaowu
+     */
+    public SynThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+	    BlockingQueue<Runnable> runnableQueue, ThreadFactory threadFactory, String name) {
+	super(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, runnableQueue, threadFactory);
+	this.name = name;
+    }
+
+    /**
+     * 
+     * @param corePoolSize
+     * @param maximumPoolSize
+     * @param keepAliveTime
+     * @param runnableQueue
+     * @param threadFactory
+     * @param name
+     * @param rejectedExecutionHandler
+     */
+    public SynThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+	    BlockingQueue<Runnable> runnableQueue, ThreadFactory threadFactory, String name,
+	    RejectedExecutionHandler rejectedExecutionHandler) {
+	super(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, runnableQueue, threadFactory,
+		rejectedExecutionHandler);
+	this.name = name;
+    }
+
+    /**
+     *
+     * @param runnable
+     * @return
+     * @author tanyaowu
+     */
+    private boolean checkBeforeExecute(Runnable runnable) {
+	if (runnable instanceof AbstractSynRunnable) {
+	    AbstractSynRunnable synRunnable = (AbstractSynRunnable) runnable;
+	    if (synRunnable.executed) {
+		return false;
+	    }
+
+	    boolean tryLock = synRunnable.runningLock.tryLock();
+	    if (tryLock) {
+		try {
+		    if (synRunnable.executed) {
+			return false;
+		    }
+		    synRunnable.executed = true;
+		    return true;
+		} finally {
+		    synRunnable.runningLock.unlock();
+		}
+	    } else {
+		return false;
+	    }
+	} else {
+	    return true;
+	}
+    }
+
+    @Override
+    public void execute(Runnable runnable) {
+	if (runnable instanceof AbstractSynRunnable) {
+	    AbstractSynRunnable synRunnable = (AbstractSynRunnable) runnable;
+	    if (synRunnable.executed) {
+		return;
+	    }
+
+	    boolean tryLock = synRunnable.runningLock.tryLock();
+	    if (tryLock) {
+		try {
+		    if (synRunnable.executed) {
+			return;
+		    }
+		    synRunnable.executed = true;
+		    super.execute(runnable);
+		} finally {
+		    synRunnable.runningLock.unlock();
+		}
+	    } else {
+		return;
+	    }
+	} else {
+	    super.execute(runnable);
+	}
+
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    public String getName() {
+	return name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    @Override
+    public <R> Future<R> submit(Runnable runnable, R result) {
+	if (checkBeforeExecute(runnable)) {
+	    Future<R> ret = super.submit(runnable, result);
+	    return ret;
+	} else {
+	    return null;
+	}
+    }
+
+}

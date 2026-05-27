@@ -1,0 +1,5 @@
+订单
+http://china.tradeinchecker.com/apis/8/man/basics_typical_route.php
+
+查询
+http://china.tradeinchecker.com/apis/8/man/methods_prices.php

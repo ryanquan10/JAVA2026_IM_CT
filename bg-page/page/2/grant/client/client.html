@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>钛特云产品授权</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?1" />
+  <script src="./res/jquery.js"></script>
+  <script src="./res/vue-min.js"></script>
+
+  <link href="./res/bootstrap/css/bootstrap.css" rel="stylesheet" />
+  <link href="./res/bootstrap/css/bootstrap-ov.css" rel="stylesheet" />
+  <script src="./res/bootstrap/js/bootstrap.js"></script>
+
+  <link rel="stylesheet" href="./res/reset.css?1" />
+  <link rel="stylesheet" href="./client.css?1" />
+</head>
+
+<body>
+  <div class="grant_title">钛特云产品授权</div>
+  <div class="content_wrap">
+    <header>
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active" href="#online_grant">在线授权</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#offline_grant">离线授权</a>
+        </li>
+      </ul>
+    </header>
+    <main>
+      <div class="tab_content_item" id="online_grant">
+        <div>
+          <button type="button" class="btn btn-primary btn-lg" onclick="remotelic()">
+            一键授权
+          </button>
+        </div>
+      </div>
+      <div class="tab_content_item" id="offline_grant">
+        <div>
+          <ul>
+            <li>
+              <div class="grant_tip">第一步：获取机器码</div>
+              <div>
+                <a href="javascript:void(0);" onclick="getCoder()">点击获取机器码文件</a>，并将该文件传到可以访问外网的 <span
+                  class="badge bg-info text-dark">电脑A</span>上
+              </div>
+            </li>
+            <li>
+              <div class="grant_tip">第二步：用<span class="badge bg-info text-dark">电脑A</span>打开下面的网站</div>
+              <div>
+                https://www.tiocloud.com/2/grant/grant.html
+              </div>
+            </li>
+            <li>
+              <div class="grant_tip">第三步：通过机器码获取授权文件</div>
+              <div>
+                <form action="" name='form1' id='form1'>
+                <div class="input-group3 layout_center" style="width: 500px; position: relative;">
+                  <input name="realFile" type="file" id="thisfile" style="display: none" /> 
+                  <input type="text" id="showname" class="form-control" style="display: inline-block;" placeholder="" readonly>
+                  <span class="filebtn" under_input onclick="makeThisfile()">选择授权文件</span>
+                  <span class="filebtn" style="right: -80px" onclick="installlic()">安装授权</span>
+                  <span class="filebtn" style="right: -160px" onclick="checklic()">授权验证</span>
+                </div>
+              </form>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <div class="tab_content_wrap"></div>
+  </div>
+  <div class="grant_footer">
+    <img src="./img/warning.png" alt="" srcset="" />
+    <span>外网环境下，可一键授权，内网环境下，请使用离线授权</span>
+  </div>
+
+  <script src="./client.js"></script>
+</body>
+
+</html>

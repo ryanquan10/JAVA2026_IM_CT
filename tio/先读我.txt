@@ -1,0 +1,4 @@
+1. 如果有src就执行install-from-src.bat，执行完成后，libs目录会有最新的jar，然后把libs和install-jars-to-maven.bat发给你的团队成员，让你的团队成员执行第2步
+
+2. 如果只有libs就执行install-jars-to-maven.bat
+

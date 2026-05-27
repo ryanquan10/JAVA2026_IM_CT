@@ -1,0 +1,43 @@
+--设置密码和权限
+SET PASSWORD = PASSWORD('123');
+grant all privileges on *.* to 'root'@'%' identified by '123' with GRANT OPTION;
+flush privileges;
+
+--查看版本
+select version();
+
+
+--支持4字节的字符
+[client]
+default-character-set = utf8mb4
+[mysql]
+default-character-set = utf8mb4
+[mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+
+--5.7初次启动
+先将my.default.ini改名为my.ini放到bin目录
+命令行执行: mysqld --initialize --user=mysql --console --explicit_defaults_for_timestamp
+先执行以上命令, 生成库. 注意有个临时密码, 要记下来.
+然后启动服务. 
+然后再命令行:
+mysql -uroot -p
+输入密码,
+再输入: 
+set password = password('3455')
+
+
+-- 创建数据库
+drop database if exists tio_site_conf;
+create database tio_site_conf default character set utf8mb4 collate utf8mb4_unicode_ci;
+
+drop database if exists tio_site_main;
+create database tio_site_main default character set utf8mb4 collate utf8mb4_unicode_ci;
+
+drop database if exists tio_site_stat;
+create database tio_site_stat default character set utf8mb4 collate utf8mb4_unicode_ci;
+
+drop database if exists tio_site_mg;
+create database tio_site_mg default character set utf8mb4 collate utf8mb4_unicode_ci;

@@ -1,0 +1,84 @@
+{
+  "_from": "drag-modal-vue",
+  "_id": "drag-modal-vue@1.2.4",
+  "_inBundle": false,
+  "_integrity": "sha512-flCPRU9wsrDPdY9Eda0I24znrswWwJP4QL8An5wiTGXzrKM9NtVgkoJvmn40wF9Hc9Z88dnCX6crautFckhGsg==",
+  "_location": "/drag-modal-vue",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "drag-modal-vue",
+    "name": "drag-modal-vue",
+    "escapedName": "drag-modal-vue",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/drag-modal-vue/-/drag-modal-vue-1.2.4.tgz",
+  "_shasum": "fd8d46eb6732142704b0703d4598661bb05c2ac6",
+  "_spec": "drag-modal-vue",
+  "_where": "D:\\myfile-LI\\tio-汇林改\\bs-page\\page\\tioim-small-src",
+  "author": {
+    "name": "sorryljt"
+  },
+  "browserslist": [
+    "defaults",
+    "not ie <= 8",
+    "last 2 versions",
+    "> 1%",
+    "iOS >= 7",
+    "Android >= 4.0"
+  ],
+  "bundleDependencies": false,
+  "dependencies": {
+    "@babel/polyfill": "^7.11.5",
+    "core-js": "2",
+    "vue": "^2.6.12"
+  },
+  "deprecated": false,
+  "description": "a drag layer in Vue",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "autoprefixer": "9.8.6",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^4.3.0",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-vue": "^7.0.1",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.1",
+    "mini-css-extract-plugin": "^0.12.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "postcss-loader": "^4.0.3",
+    "url-loader": "^4.1.0",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "keywords": [
+    "vue可拖拽的弹层",
+    "drag-modal-vue",
+    "可拖拽弹层"
+  ],
+  "license": "MIT",
+  "main": "./lib/main.js",
+  "name": "drag-modal-vue",
+  "scripts": {
+    "build": "webpack"
+  },
+  "sideEffects": [
+    "*.less",
+    "*.css"
+  ],
+  "version": "1.2.4"
+}

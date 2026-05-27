@@ -1,0 +1,271 @@
+.comment-box{
+  width: 100%;
+  min-height: 258px;
+  border-radius: 4px;
+  background: #fff;
+  margin: 12px 0;
+  padding: 20px;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+.comment-left {
+  width: 901px;
+  position: relative;
+}
+.comment-left .comment-icons {
+  height: 35px;
+  border-bottom: none;
+  width: 100%;
+  position: absolute;
+  top: 1px;
+  left: 0;
+  line-height: 35px;
+  border: solid 1px #F4F5F6;
+  box-shadow: none !important;
+}
+.comment-icons #bindEmoji {
+  width: 21px;
+  height: 21px;
+  margin-left: 10px;
+}
+.emoji_container {
+  border: 1px lightgray solid;
+  position: absolute;
+}
+.emoji_container ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+#comment-textarea {
+  width: 100%;
+  min-height: 131px;
+  border: solid #F4F5F6 1px;
+  padding: 8px;
+  position: relative;
+  margin-top: 35px;
+}
+#comment-textarea:empty::before {
+  content: attr(placeholder);
+  color: #999;
+}
+[contenteditable]:focus{outline: none;}
+/* 未登录 */
+.notLogin{
+  width: 910px;
+  height: 162px;
+  border: 1px solid #F4F5F6;
+  border-radius: 2px;
+  display: none;
+  text-align: center;
+}
+.notLogin-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.goLoginBtn{
+  width: 72px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 1px solid #3B8AFF;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #3B8AFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.goLoginBtn:hover{
+  color: #3B8AFF;
+  background: #E2EEFF;
+  border: none;
+}
+.notLogin span{
+  font-size: 16px;
+  color: #999;
+}
+.comment-btns{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 53px;
+  margin-top: 16px;
+}
+.comment-btns span{
+  width: 72px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: #C2C2C2 solid 1px;
+  color: #666666;
+  font-size: 14px;
+  border-radius: 4px;
+}
+.comment-btns .resetBtn:hover{
+  border: none;
+  background: #EDEFF3;
+}
+.comment-btns .publishBtn{
+  width: 86px;
+  background: linear-gradient(105deg, #F5F5F5 0%, #EDEFF3 100%);
+  box-shadow: 0px 3px 6px rgba(173, 193, 219, 0.63);
+  border:none;
+}
+.comment-btns .publishBtnAvailable{
+  background: linear-gradient(105deg, #44BAF8 0%, #3596FC 100%);
+  box-shadow: 0px 3px 6px rgba(173, 193, 219, 0.63);
+  color: #fff;
+}
+
+
+
+.emoji_container{
+  border:1px lightgray solid;
+  width:475px;
+  height:274px;
+  overflow-y: auto;
+  display:none;
+  padding: 5px;
+  z-index:99;
+  bottom: 35px;
+ }
+    
+ .emoji_wrap{
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+ }
+
+ .emoji_wrap li{
+  width: 34px;
+  height: 34px;
+  float: left;
+  margin-top: -1px;
+  margin-left: -1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
+ .emoji_wrap  li a {
+  display: flex;
+  line-height: 54px;
+  text-align: center;
+  cursor: pointer;
+
+ }
+ .emoji_wrap  li a img {
+  vertical-align: middle;
+  max-width: 24px;
+  max-height: 24px;
+  position: relative;
+ }
+.emoji_item{
+  max-width: 24px;
+  max-height: 24px;
+}
+.children_reply{
+  background:#F8F8F8;
+  margin-left: -10px;
+  border-radius: 2px;
+}
+.children_reply_i0{
+  margin-left: 0
+}
+.children_reply .comment-avatar{
+  width: 24px;
+  height: 24px;
+}
+.conformDelete{
+  width: 290px;
+  height: 163px;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  text-align: center;
+  position: fixed;
+  margin:auto;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  background: #fff;
+  z-index: 200;
+  display: none;
+}
+.conformDelete p{
+  margin: 46px 0 37px;
+}
+.conformDelete button{
+  background: linear-gradient(to right,#44BAF8,#3596FC);
+  width: 90px;
+  height: 30px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 6px #C2D4F3;
+  color: #fff;
+}
+.conformButton :first-child{
+  background: linear-gradient(121deg, #F5F5F5 0%, #EDEFF3 100%);
+  font-size: 14px;
+  color: #666666;
+}
+.conformButton{
+  display: flex;
+  justify-content: space-around;
+}
+.conform-mask{
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom:0;
+  z-index: 100;
+  background: rgba(55, 60, 68, .27);
+  display: none;
+}
+.case-non-existent{
+  text-align: center;
+}
+.case-non-existent img{
+  width: 500px;
+  height: 414px;
+}
+.case-non-existent span{
+  color: #93B3F9;
+  font-size: 30px;
+}
+
+.ql-editor pre{
+  position: relative;
+}
+.copyBtn{
+  width: 82px;
+  height: 30px;  
+  border-radius: 4px;
+  font-size: 12px;
+  color: #798CA7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0px 3px 6px rgba(184, 201, 219, 0.6);
+}
+
+.copyBtn .icon-copy{
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  box-shadow: none !important;
+}
+#editor-container .picturesImg{
+  cursor: inherit;
+}

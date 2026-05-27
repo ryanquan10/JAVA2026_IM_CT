@@ -1,0 +1,176 @@
+Table: area
+---------+-------------+------+-----+---------+---------
+ Field   | Type        | Null | Key | Default | Remarks 
+---------+-------------+------+-----+---------+---------
+ id      | INT(10)     | NO   | PRI |         |         
+ name    | VARCHAR(64) | NO   |     |         | 名字      
+ code    | VARCHAR(32) | NO   |     |         | 编码      
+ pcode   | VARCHAR(32) | YES  |     |         | 父级编码    
+ status  | SMALLINT(5) | YES  |     | 1       | 状态：1：启用；2：禁言
+ post    | INT(10)     | YES  |     |         | 邮政编码    
+ orderby | INT(10)     | NO   |     |         | 排序号     
+---------+-------------+------+-----+---------+---------
+
+Table: auto_avatar
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ chatindex  | VARCHAR(5)    | YES  |     |                     | 字符      
+ path       | VARCHAR(128)  | NO   |     |                     | 本服务器上有路径
+ init_url   | VARCHAR(180)  | YES  |     |                     | 原始的网址地址 
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: auto_avatar_plate
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ r          | INT(10)       | YES  |     |                     | 本服务器上有路径
+ g          | INT(10)       | YES  |     |                     | 原始的网址地址 
+ b          | INT(10)       | YES  |     |                     | 备注      
+ remark     | VARCHAR(50)   | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: avatar
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ type       | VARCHAR(16)   | YES  |     |                     | 头像性别：1：男；2：女：3：中性
+ path       | VARCHAR(128)  | NO   |     |                     | 本服务器上有路径
+ init_url   | VARCHAR(180)  | YES  |     |                     | 原始的网址地址 
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: bank_conf
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ bankcode   | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ bankname   | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankicon   | VARCHAR(10)   | YES  |     |                     | 银行icon  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+------------+---------------+------+-----+---------------------+---------
+
+Table: conf
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ title      | VARCHAR(64)   | YES  |     |                     | 配置标题    
+ name       | VARCHAR(64)   | NO   | PRI |                     | 参数名称    
+ value      | VARCHAR(4096) | YES  |     |                     | 参数值     
+ remark     | VARCHAR(128)  | YES  |     |                     | 配置备注    
+ unit       | VARCHAR(20)   | YES  |     |                     | 单位      
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：系统；2：业务
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 该条记录更新时间
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: conf_dev
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ title      | VARCHAR(64)   | YES  |     |                     | 配置标题    
+ name       | VARCHAR(64)   | NO   | PRI |                     | 键       
+ value      | VARCHAR(4096) | YES  |     |                     | 值       
+ unit       | VARCHAR(20)   | YES  |     |                     | 单位      
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：系统；2：业务
+ remark     | VARCHAR(4096) | YES  |     |                     | 备注      
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该条记录更新时间
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: dict
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ name       | VARCHAR(128)  | NO   |     |                     | 名字      
+ code       | VARCHAR(128)  | NO   |     |                     | 编码      
+ pcode      | VARCHAR(128)  | YES  |     | -1                  | 上级id    
+ depth      | INT(10)       | YES  |     | 1                   | 深度      
+ status     | SMALLINT(5)   | NO   |     | 1                   | 状态：1：有效；2：失效
+ attribute  | VARCHAR(255)  | YES  |     |                     | 属性      
+ remark     | VARCHAR(512)  | YES  |     |                     | 备注      
+ orderby    | INT(10)       | YES  |     | 99                  | 排序号     
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+ charindex  | VARCHAR(125)  | YES  |     |                     | 字母排序    
+------------+---------------+------+-----+---------------------+---------
+
+Table: email_server
+------------+--------------+------+-----+---------------------+---------
+ Field      | Type         | Null | Key | Default             | Remarks 
+------------+--------------+------+-----+---------------------+---------
+ email      | VARCHAR(64)  | NO   | PRI |                     | 邮箱，譬如tio@mail.t-io.org
+ server     | VARCHAR(64)  | YES  |     |                     | 服务器，譬如smtp.ym.163.com
+ pwd        | VARCHAR(255) | YES  |     |                     | 加密后的密码  
+ status     | SMALLINT(5)  | YES  |     | 1                   | 状态，1：有效，2：无效
+ remark     | VARCHAR(255) | YES  |     |                     | 备注      
+ createtime | DATETIME(19) | NO   |     | current_timestamp() | 创建时间    
+------------+--------------+------+-----+---------------------+---------
+
+Table: httpcache
+-------------------+---------------+------+-----+---------+---------
+ Field             | Type          | Null | Key | Default | Remarks 
+-------------------+---------------+------+-----+---------+---------
+ id                | INT(10)       | NO   | PRI |         |         
+ status            | SMALLINT(5)   | NO   |     | 1       | 是否启动，1：启用，2：不启用
+ path              | VARCHAR(64)   | NO   |     |         | 请求路径，形如:user/init
+ params            | VARCHAR(1024) | YES  |     |         | 需要标识的请求参数名，形如: name,id
+ cookies           | VARCHAR(64)   | YES  |     |         | 需要标识的cookie名，形如name1,name2,name3
+ uid               | SMALLINT(5)   | YES  |     |         | 1：表示需要带上当前userid作为缓存的key ，null：表示不需要区分用户
+
+像关注列表，此值就需要配上1，而像博客列表，就不需要配成1
+ login             | SMALLINT(5)   | YES  |     |         | 1：区分登录，其它值：不区分登录。当uid为1时，此值不管配什么都是1
+ metaclass         | VARCHAR(255)  | YES  |     |         | 实现了HttpCacheMeta的类名
+ expireafterwrite  | BIGINT(19)    | YES  |     |         | 缓存过期时间，单位：秒 (从上次创建时计时)
+ expireafteraccess | BIGINT(19)    | YES  |     |         | 缓存过期时间，单位：秒(从上次被访问时计时，相当于会话)
+ remark            | VARCHAR(255)  | YES  |     |         | 备注      
+-------------------+---------------+------+-----+---------+---------
+
+Table: ip_black_list
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ ip         | VARCHAR(24)   | NO   |     |                     |         
+ status     | SMALLINT(5)   | YES  |     | 1                   | 1：有效，其它值：无效
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: ip_white_list
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ ip         | VARCHAR(24)   | NO   |     |                     |         
+ status     | SMALLINT(5)   | YES  |     | 1                   | 1：有效，其它值：无效
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: zh_cn_index_list
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ zhchar     | VARCHAR(10)   | NO   |     |                     | 中文字符    
+ chatindex  | VARCHAR(10)   | NO   |     |                     | 字母索引    
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+

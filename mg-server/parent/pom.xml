@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tio-mg-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+	<url>http://maven.apache.org</url>
+	<version>1.0.0-tio-mg</version>
+
+	<description>tio-mg's parent</description>
+
+	<parent>
+		<groupId>org.t-io</groupId>
+		<artifactId>tio-zoo-parent</artifactId>
+		<version>3.8.3.v20220902-RELEASE</version>
+	</parent>
+
+	<properties>
+		<tio-mg.version>1.0.0-tio-mg</tio-mg.version>
+	</properties>
+
+	<modules>
+		<module>../service</module>
+		<module>../http-server-api</module>
+		<module>../http-server-view</module>
+		<module>../im/common</module>
+		<module>../im/server</module>
+		<!-- <module>../all</module> -->
+	</modules>
+
+	<developers>
+		<developer>
+			<id>tanyaowu</id>
+			<name>tanyaowu</name>
+			<email>tywo45@163.com</email>
+			<url>https://gitee.com/tywo45/t-io</url>
+		</developer>
+	</developers>
+
+	<repositories>
+
+
+	</repositories>
+	<pluginRepositories>
+
+	</pluginRepositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- tio-mg start -->
+			<dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-service</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-site-service-common</artifactId>
+				<version>1.0.0-tio-sitexxx</version>
+			</dependency>
+			<dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-http-server-api</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency>
+			<!-- <dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-http-api-common</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency> -->
+			<!-- <dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-http-server-api-starter</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency> -->
+			<!-- <dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-http-api-client</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency> -->
+
+			<dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-im-common</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-im-server</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency>
+			<!-- <dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-im-server-starter</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency> -->
+			<dependency>
+				<groupId>org.t-io</groupId>
+				<artifactId>tio-mg-im-client</artifactId>
+				<version>${tio-mg.version}</version>
+			</dependency>
+			<!-- tio-mg end -->
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- 插件配置 -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<!-- 生成的jar中，不要包含pom.xml和pom.properties这两个文件 -->
+						<addMavenDescriptor>true</addMavenDescriptor>
+					</archive>
+
+					<!-- 过滤掉不希望包含在jar中的文件 -->
+					<excludes>
+						<exclude>**/*.properties</exclude>
+						<exclude>**/*.conf</exclude>
+						<exclude>**/*.xml</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

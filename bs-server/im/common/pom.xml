@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tio-site-im-common</artifactId>
+	<name>${project.artifactId}</name>
+
+	<parent>
+		<groupId>org.t-io</groupId>
+		<artifactId>tio-site-parent</artifactId>
+		<version>1.0.0-tio-sitexxx</version>
+		<relativePath>../../parent/pom.xml</relativePath>
+	</parent>
+
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.t-io</groupId>
+			<artifactId>tio-site-ext-service</artifactId>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.t-io</groupId>
+			<artifactId>tio-websocket-server</artifactId>
+<!--			<version>3.8.5.v20230901-RELEASE</version>-->
+		</dependency>
+
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- 
+			<plugin>
+				<groupId>com.github.wvengen</groupId>
+				<artifactId>proguard-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>proguard</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<proguardVersion>${proguard.version}</proguardVersion>
+					<obfuscate>true</obfuscate>
+					<injar>${project.build.finalName}.jar</injar>
+					<outjar>${project.build.finalName}-small.jar</outjar>
+					<outputDirectory>${project.build.directory}</outputDirectory>
+					<proguardInclude>${basedir}/proguard.conf</proguardInclude>
+					<libs>
+						<lib>${java.home}/lib/rt.jar</lib>
+						<lib>${java.home}/lib/jsse.jar</lib>
+					</libs>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.sf.proguard</groupId>
+						<artifactId>proguard-base</artifactId>
+						<version>${proguard.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+
+</project>

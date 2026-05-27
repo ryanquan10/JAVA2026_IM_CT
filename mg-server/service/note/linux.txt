@@ -1,0 +1,87 @@
+1、解压
+unzip data.zip
+
+2、压缩
+zip -r data.zip data
+
+3、开放端口
+	linux:
+		/sbin/iptables -I INPUT -p tcp --dport 9527 -j ACCEPT
+		/etc/rc.d/init.d/iptables save
+		service iptables restart
+	windows 2008:
+		netsh firewall add portopening TCP 9322 MyWebPort
+
+4、允许指定ip可以访问本机的所有端口(相当于对指定ip关闭了防火墙)
+iptables -A INPUT -s 10.0.0.34 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+
+iptables -A INPUT -s 122.225.67.71 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+
+iptables -A INPUT -s 101.68.210.71 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+
+iptables -A INPUT -s 223.95.183.142 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+
+
+5、查找进程的pid
+ps -ef | grep java
+
+6、查看网络端口占用情况
+netstat -tpna
+
+7、查看80端口所有的连接数
+netstat -nat|grep -i "80"|wc -l
+
+8、关闭防火墙
+service iptables stop
+
+
+
+
+
+
+
+/sbin/iptables -I INPUT -p tcp --dport 9527 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+/sbin/iptables -I INPUT -p tcp --dport 9321 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+/sbin/iptables -I INPUT -p tcp --dport 9322 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+/sbin/iptables -I INPUT -p tcp --dport 9292 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+/sbin/iptables -I INPUT -p tcp --dport 843 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+/sbin/iptables -I INPUT -p tcp --dport 8888 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+/etc/rc.d/init.d/iptables save
+service iptables restart
+
+
+
+
+
+
+APP 外网  9321 9527 843 80 8019
+APP 内网  9322 8019
+
+FMS 外网 9527 9292 8019
+FMS 内网 9322 8019
+
+RES 外网 80 内网有FTP服务器
+DB 内网 3306
+REDIS 内网  6379
+Activemq 内网 61616 8161

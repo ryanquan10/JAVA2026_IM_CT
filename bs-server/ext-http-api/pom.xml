@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tio-site-ext-http-api</artifactId>
+	<name>${project.artifactId}</name>
+
+	<parent>
+		<groupId>org.t-io</groupId>
+		<artifactId>tio-site-parent</artifactId>
+		<version>1.0.0-tio-sitexxx</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.t-io</groupId>
+			<artifactId>tio-site-http-server-api</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		
+	</build>
+
+</project>

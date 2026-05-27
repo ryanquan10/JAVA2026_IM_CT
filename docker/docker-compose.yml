@@ -1,0 +1,49 @@
+# ============================================================
+# docker-compose.yml - CT_IM_JAVA 部署配置
+# 适用于: WSL Debian / WSL Ubuntu-1
+# 数据库: 外部数据库（通过环境变量配置）
+# ============================================================
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: ct-im-java
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # ========== 数据库配置（外部数据库） ==========
+      - DB_HOST=${DB_HOST:-}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_NAME=${DB_NAME:-}
+      - DB_USER=${DB_USER:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+
+      # ========== 应用配置 ==========
+      - APP_ENV=${APP_ENV:-production}
+      - JAVA_OPTS=${JAVA_OPTS:-}
+      - SERVER_PORT=8080
+
+    volumes:
+      # 配置目录（外部管理，保留敏感信息）
+      - ./config:/app/config:ro
+      # 日志目录
+      - ../logs:/app/logs
+      # SSL 证书
+      - ../ssl:/app/ssl:ro
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

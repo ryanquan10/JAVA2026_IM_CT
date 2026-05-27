@@ -1,0 +1,279 @@
+Table: mg_auth
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ pid        | INT(10)       | YES  |     |                     | 父节点     
+ deep       | SMALLINT(5)   | YES  |     | 1                   | 深度      
+ name       | VARCHAR(255)  | NO   |     |                     | 权限名称    
+ routekey   | VARCHAR(255)  | NO   |     |                     | 访问路径key 
+ authurl    | VARCHAR(255)  | YES  |     |                     | 权限url：页面url/操作url
+ aindex     | SMALLINT(5)   | NO   |     | 99                  | 权限排序字段  
+ type       | SMALLINT(5)   | YES  |     | 1                   | 权限类型：1：菜单；2：页面；3：操作
+ icon       | VARCHAR(255)  | YES  |     |                     | 图标字段    
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：有效；2：不可用
+ logflag    | SMALLINT(5)   | YES  |     | 2                   | 日记记录标识：1：是；2：否
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_favorite_path
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ routkey    | VARCHAR(255)  | YES  |     |                     | 路径      
+ aid        | INT(10)       | YES  |     |                     | 权限id    
+ mguid      | INT(10)       | YES  |     |                     | 用户uid   
+ findex     | SMALLINT(5)   | YES  |     | 999                 | 排序id    
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_invoice
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | INT(10)       | NO   | PRI |                     |         
+ rcode         | VARCHAR(60)   | YES  |     |                     | 报销单号    
+ mguid         | INT(10)       | YES  |     |                     | 用户id    
+ no            | VARCHAR(50)   | YES  |     |                     | 发票号码    
+ fileurl       | VARCHAR(255)  | YES  |     |                     | 文件路径    
+ name          | VARCHAR(255)  | YES  |     |                     | 货物或应税劳务、服务名称
+ amount        | DOUBLE(10,2)  | YES  |     | 0.00                | 发票金额    
+ time          | DATETIME(19)  | YES  |     |                     | 开票日期    
+ status        | SMALLINT(5)   | YES  |     | 2                   | 标记状态：1：是；：否
+ developstatus | SMALLINT(5)   | YES  |     | 1                   | 研发费用：1：是；2：否
+ developcode   | VARCHAR(50)   | YES  |     |                     | 研发项目code
+ costtype      | VARCHAR(20)   | YES  |     | 办公费                 | 费用类别：办公费
+ type          | SMALLINT(5)   | YES  |     | 2                   | 发票类型：1：报销；2：抵税
+ paytype       | SMALLINT(5)   | YES  |     | 1                   | 付款对象：1：个人；2：公司
+ downcount     | SMALLINT(5)   | YES  |     | 0                   | 下载次数    
+ uploadtime    | DATETIME(19)  | YES  |     |                     | 上传日期    
+ operuid       | INT(10)       | YES  |     |                     | 后台用户id  
+ remark        | VARCHAR(50)   | YES  |     |                     | 备注      
+ createtime    | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime    | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+---------------+---------------+------+-----+---------------------+---------
+
+Table: mg_invoice_reimbursement
+--------------+---------------+------+-----+---------------------+---------
+ Field        | Type          | Null | Key | Default             | Remarks 
+--------------+---------------+------+-----+---------------------+---------
+ id           | INT(10)       | NO   | PRI |                     |         
+ mguid        | INT(10)       | YES  |     |                     | 报销人     
+ code         | VARCHAR(60)   | YES  |     |                     | 用户id    
+ amount       | DOUBLE(10,2)  | YES  |     | 0.00                | 金额      
+ num          | SMALLINT(5)   | YES  |     | 0                   | 单据数量    
+ uploadstatus | SMALLINT(5)   | YES  |     | 2                   | 状态：1：已下载；2：初始化
+ fileurl      | VARCHAR(255)  | YES  |     |                     | zipurl  
+ status       | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常：3：删除
+ operuid      | INT(10)       | YES  |     |                     | 后台用户id  
+ remark       | VARCHAR(128)  | YES  |     |                     |         
+ reimtime     | DATETIME(19)  | YES  |     |                     | 报销时间    
+ createtime   | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime   | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+--------------+---------------+------+-----+---------------------+---------
+
+Table: mg_ip_info
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ id       | INT(10)      | NO   | PRI |         |         
+ ip       | VARCHAR(35)  | NO   |     |         |         
+ country  | VARCHAR(64)  | YES  |     |         | 国家      
+ area     | VARCHAR(64)  | YES  |     |         | 区域      
+ province | VARCHAR(64)  | YES  |     |         | 省       
+ city     | VARCHAR(64)  | YES  |     |         | 市       
+ operator | VARCHAR(64)  | YES  |     |         | 运营商     
+ time     | DATETIME(19) | NO   |     |         |         
+----------+--------------+------+-----+---------+---------
+
+Table: mg_oper_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ aid        | INT(10)       | YES  |     |                     | 权限id    
+ modename   | VARCHAR(255)  | YES  |     |                     | 模块名称    
+ opermguid  | INT(10)       | YES  |     |                     | 操作者     
+ opertype   | SMALLINT(5)   | YES  |     |                     | 操作类型：1：菜单权限；2：操作权限；3：系统记录
+ operurl    | VARCHAR(255)  | YES  |     |                     | 操作url   
+ operparam  | VARCHAR(1000) | YES  |     |                     | 操作参数    
+ operip     | VARCHAR(60)   | YES  |     |                     | 操作ip    
+ deviceinfo | VARCHAR(255)  | YES  |     |                     | 设备信息    
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_recent_path
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ routkey    | VARCHAR(255)  | YES  |     |                     | 路径      
+ aid        | INT(10)       | YES  |     |                     | 权限id    
+ mguid      | INT(10)       | YES  |     |                     | 用户uid   
+ opercount  | INT(10)       | YES  |     | 0                   | 操作次数    
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_reimburse_code
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ index      | INT(10)       | YES  |     |                     | 序号      
+ code       | VARCHAR(60)   | YES  |     |                     | 生成code  
+ status     | SMALLINT(5)   | YES  |     | 2                   | 使用状态：1：是；2：否
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_role
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ name       | VARCHAR(255)  | NO   |     |                     | 角色名称    
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常：2：不可用
+ rindex     | SMALLINT(5)   | YES  |     | 99                  | 排序字段    
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_role_auth
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ rid        | INT(10)       | NO   |     |                     |         
+ aid        | INT(10)       | NO   |     |                     |         
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常 
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_user
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ loginname  | VARCHAR(64)   | YES  |     |                     |         
+ pwd        | VARCHAR(64)   | YES  |     |                     |         
+ nick       | VARCHAR(64)   | YES  |     |                     | 昵称      
+ phone      | VARCHAR(255)  | YES  |     |                     |         
+ avatar     | VARCHAR(512)  | YES  |     |                     | 头像url   
+ avatarbig  | VARCHAR(512)  | YES  |     |                     | 头像说明    
+ status     | SMALLINT(5)   | YES  |     | 1                   | 用户状态, 1：正常，2：未激活；3：违规，4：封停，5：注销
+ ipid       | INT(10)       | YES  |     |                     | ipid    
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_user_base
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | INT(10)       | NO   | PRI |                     | ID      
+ mguid       | INT(10)       | YES  |     |                     | 用户id    
+ realname    | VARCHAR(60)   | YES  |     |                     | 姓名      
+ deptname    | VARCHAR(60)   | YES  |     |                     | 部门名称    
+ email       | VARCHAR(32)   | YES  |     |                     | 绑定邮箱    
+ phone       | VARCHAR(32)   | YES  |     |                     | 绑定手机    
+ validphone  | SMALLINT(5)   | YES  |     | 2                   | 手机是否激活：1：已激活；2：未激活
+ validemail  | SMALLINT(5)   | YES  |     | 2                   | 邮箱是否已激活：1：已激活；2：未激活
+ sign        | VARCHAR(64)   | YES  |     |                     | 个性签名    
+ sex         | SMALLINT(5)   | YES  |     | 1                   | 性别：1：男；2：女
+ birthday    | BIGINT(19)    | YES  |     |                     | 生日      
+ area        | VARCHAR(64)   | YES  |     |                     | 地区：待定存储 
+ industry    | VARCHAR(64)   | YES  |     |                     | 行业      
+ position    | VARCHAR(64)   | YES  |     |                     | 职位      
+ hobby       | VARCHAR(64)   | YES  |     |                     | 爱好      
+ income      | VARCHAR(64)   | YES  |     |                     | 收入      
+ createtime  | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime  | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+ msgpushtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 最新消息推送时间戳
+-------------+---------------+------+-----+---------------------+---------
+
+Table: mg_user_login_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ dayperiod  | VARCHAR(20)   | YES  |     |                     | 天周期     
+ timeperiod | VARCHAR(20)   | YES  |     |                     | 时间周期    
+ hourperiod | VARCHAR(20)   | YES  |     |                     | 时间周期    
+ mguid      | INT(10)       | NO   |     |                     | userid  
+ ip         | VARCHAR(32)   | NO   |     |                     | 登录的ip   
+ ipid       | INT(10)       | YES  |     |                     | 对应ip_info表的id
+ imei       | VARCHAR(64)   | YES  |     |                     | 移动设备号   
+ time       | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+ sessionid  | VARCHAR(48)   | NO   |     |                     | sessionid其实就是token
+ devicetype | SMALLINT(5)   | NO   |     |                     | 登录设置：1PC，2手机
+ deviceinfo | VARCHAR(128)  | YES  |     |                     | 如果是手机，则带上手机公司相关信息 ，譬如华为P9
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_user_role
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ mguid      | INT(10)       | YES  |     |                     | 后台用户id  
+ rid        | INT(10)       | YES  |     |                     | 角色id    
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常：2：不可用
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: mg_user_token
+------------+-------------+------+-----+---------+---------
+ Field      | Type        | Null | Key | Default | Remarks 
+------------+-------------+------+-----+---------+---------
+ mguid      | INT(10)     | NO   | PRI |         | userid  
+ devicetype | SMALLINT(5) | NO   | PRI |         | 1：pc， 2：安卓，3：IOS
+ token      | VARCHAR(48) | NO   |     |         |         
+------------+-------------+------+-----+---------+---------
+
+Table: mguser_login_stat
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ mguid      | INT(10)       | YES  |     |                     | 用户id    
+ dayperiod  | VARCHAR(20)   | YES  |     |                     | 天周期     
+ usercount  | INT(10)       | YES  |     | 1                   | 人数统计：默认1，用户统计
+ totalcount | INT(10)       | YES  |     | 0                   | 总登录次数   
+ hour0      | INT(10)       | YES  |     | 0                   | 小时0     
+ hour1      | INT(10)       | YES  |     | 0                   | 小时1     
+ hour2      | INT(10)       | YES  |     | 0                   | 小时2     
+ hour3      | INT(10)       | YES  |     | 0                   | 小时3     
+ hour4      | INT(10)       | YES  |     | 0                   | 小时4     
+ hour5      | INT(10)       | YES  |     | 0                   | 小时5     
+ hour6      | INT(10)       | YES  |     | 0                   | 小时6     
+ hour7      | INT(10)       | YES  |     | 0                   | 小时7     
+ hour8      | INT(10)       | YES  |     | 0                   | 小时8     
+ hour9      | INT(10)       | YES  |     | 0                   | 小时9     
+ hour10     | INT(10)       | YES  |     | 0                   | 小时10    
+ hour11     | INT(10)       | YES  |     | 0                   | 小时11    
+ hour12     | INT(10)       | YES  |     | 0                   | 小时12    
+ hour13     | INT(10)       | YES  |     | 0                   | 小时13    
+ hour14     | INT(10)       | YES  |     | 0                   | 小时14    
+ hour15     | INT(10)       | YES  |     | 0                   | 小时15    
+ hour16     | INT(10)       | YES  |     | 0                   | 小时16    
+ hour17     | INT(10)       | YES  |     | 0                   | 小时17    
+ hour18     | INT(10)       | YES  |     | 0                   | 小时18    
+ hour19     | INT(10)       | YES  |     | 0                   | 小时19    
+ hour20     | INT(10)       | YES  |     | 0                   | 小时20    
+ hour21     | INT(10)       | YES  |     | 0                   | 小时21    
+ hour22     | INT(10)       | YES  |     | 0                   | 小时22    
+ hour23     | INT(10)       | YES  |     | 0                   | 小时23    
+ remark     | VARCHAR(255)  | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+

@@ -1,0 +1,58 @@
+<#include "/2/header.html">
+<link rel="stylesheet" href="/2/grant/grant.css?${js_version}" />
+<script src="/res/bootstrap/js/bootstrap.js"></script>
+
+<div class="grant_body">
+    
+    <div class="grant_content">
+            <div class="grant_view_record">
+                <a href="">查看生成记录</a>
+            </div>
+        
+            <form action="" method="post" id='form1' name='form1' class="grant_form">
+                <div class="row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">机器码</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">APPID</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" placeholder="APPID" aria-label="default input example" id = "appid">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">APPKey</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" placeholder="APPKey" aria-label="default input example"  id = "appkey">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="button" onclick="initlic()">生成并下载授权文件</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="button">下载授权文件</button>
+                        </div>
+                    </div>
+                </div> -->
+
+            </form>
+    </div>
+</div>
+<#include "/2/footer.html">
+<script type="text/javascript" src="/2/grant/grant.js?${js_version}"></script>
+</body>
+</html>

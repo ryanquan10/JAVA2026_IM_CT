@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tio-jfinal-activerecord</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+	<url>http://www.jfinal.com</url>
+	<description>jfinal ActiveRecordPlugin</description>
+	
+	<parent>
+		<groupId>org.t-io</groupId>
+		<artifactId>tio-site-parent</artifactId>
+		<version>1.0.0-tio-sitexxx</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+	</properties>
+	
+	<issueManagement>
+		<system>Git Issue</system>
+		<url>https://gitee.com/jfinal/activerecord/issues</url>
+	</issueManagement>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>jfinal</id>
+			<name>James</name>
+			<email>jfinal@126.com</email>
+			<url>http://jfinal.com/user/1</url>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git@gitee.com:jfinal/activerecord.git</connection>
+		<developerConnection>scm:git:git@gitee.com:jfinal/activerecord.git</developerConnection>
+		<url>git@gitee.com:jfinal/activerecord.git</url>
+	</scm>
+
+
+	<repositories>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.3.8.RELEASE</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- 仅用于 ActiveRecordDemo 演示代码 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+	
+		<!-- 将 .jf 模板文件打到 jar 包中去 -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<!-- **/* 写法，可以将各级子目录下的资源文件被打包 -->
+					<include>**/*.jf</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- 解决 java8  发布到 maven 异常 -->
+					<additionalJOption>-Xdoclint:none</additionalJOption>
+					<encoding>UTF-8</encoding>
+					<outputDirectory>${basedir}</outputDirectory>
+					<reportOutputDirectory>${basedir}</reportOutputDirectory>
+				</configuration>
+			</plugin>
+
+			<!-- 安装源码到本地仓库 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+
+			
+		</plugins>
+	</build>
+</project>

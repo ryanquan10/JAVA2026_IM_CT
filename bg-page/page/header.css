@@ -1,0 +1,179 @@
+<#include "/res/iconfont/iconfont.css" >
+<#include "/common.css" >
+.tio-site-header {
+  width: 100%;
+}
+
+.vip_to_avatar_header_curruser {
+  position: absolute !important;
+  right: 0px;
+  bottom: 5px;
+}
+
+/*搜索输入框*/
+.tio-header-searchbox  {
+  border-left: none;
+  outline: none;
+  border: 1px solid #aaa;
+  background-color: rgba(100, 100, 100, 0.05);
+  color: #eee!important;
+  width: 90%;
+  height: 30px;
+  line-height: 30px;
+  margin: 9px 0px 0px 0px;
+  padding: 0px 5px;
+}
+
+.tio-header-left{
+  display: flex;
+  height:50px;
+}
+.tio-left-nav{
+  display: flex;
+  align-items: center;
+  padding:0 10px;
+}
+.header-nav-item{
+  margin:0 5px;
+  position: relative;
+}
+.header-nav-item:hover,.header-nav-active{
+  background: rgba(0, 0, 0, 0.2);
+}
+.header-nav-item>a{
+  display: flex;
+  align-items: center;
+  padding:0 16px;
+  color:#fff;
+  line-height: 50px;
+}
+.header-nav-item:hover .header-nav-child{
+  display: block;
+}
+.layui-badge-dot.ml6{
+  margin-left:6px;
+}
+.header-nav-more{
+  content: '';
+  width: 0;
+  height: 0;
+  border:6px solid transparent;
+  border-top:6px solid rgba(255, 255, 255, 0.7);
+  margin-top: 8px;
+  margin-left: 5px;
+}
+.header-nav-child{
+  position: absolute;
+  top: 48px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,.12);
+  border: 1px solid #d2d2d2;
+  left: 0;
+  min-width: 100%;
+  line-height: 36px;
+  padding: 5px 0px;
+  z-index: 100;
+  border-radius: 2px;
+  white-space: nowrap;
+  text-align: center;
+  display: none;
+  border-top:3px solid #5FB878;
+  -webkit-animation:0.4s fadeIn;
+  animation:0.4s fadeIn;
+}
+.header-nav-child a{
+  display: flex;
+  align-items: center;
+  padding:0 14px;
+}
+.nav-child-center a{
+  justify-content: center;
+}
+.header-nav-child a:hover{
+  background: #f2f2f2;
+}
+.header-nav-child a .iconfont,.header-nav-child a .layui-icon{
+  margin-right:3px;
+}
+.t-io-login-nav{
+  display:none; 
+}
+.tio-header-right{
+  display: inline-block;
+}
+.tiosite_user_nick{
+  margin-left:5px;
+}
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.header-nav-child::before,.header-nav-child::after{
+  content: "";
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-bottom: 7px solid #5FB878;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: -14px;
+  position: absolute;
+  z-index: 20;
+}
+.header-nav-child a{
+  color:#333;
+}
+
+.tio-site-header-fixed {
+  position: fixed;
+  z-index: 99999;
+  top :0px;
+  left: 0px;
+}
+
+/*头部固定时，需要用body的padding-top来占位*/
+.tio_body_zw {
+  padding-top: 50px;
+}
+/* 覆盖部分layui布局css */
+.layui-container{
+  min-width: 1360px;
+}
+@media screen and (max-width: 1360px){
+  .layui-container {
+    width: 1360px;
+  }
+}
+html,body{min-width: 1360px;}
+.txparter  i.layui-layer-TipsB{
+  border-right-color: #7885F9;
+}
+.txparter .layui-layer-content{
+  background-color: #7885F9;
+  padding: 0px;
+}
+.tx-parter-tips{
+  display: block; line-height: 30px; padding: 10px; text-align: center; font-size: 14px; background-image: linear-gradient(to right,#7885F9,#386DE9); 
+  color:#fff!important;
+}
+.header-nav-border{
+  border-bottom:1px solid #ddd;
+}
+

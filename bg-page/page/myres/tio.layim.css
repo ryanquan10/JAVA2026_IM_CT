@@ -1,0 +1,407 @@
+.layim-chat-main {
+    background-color: #fefefe;
+}
+
+.layim-chat-text{
+    position: relative; 
+    line-height: 22px; 
+    margin-top: 25px; 
+    padding: 8px 15px; 
+    background-color: #efefef;
+     border-radius: 3px; 
+     color: #333; 
+     word-break: break-all;
+}
+.layim-chat-text:after{
+    content: '';
+    position: absolute;
+    left: -10px; 
+    top: 13px; 
+    width: 0;  
+    height: 0; 
+    border-style: dashed; 
+    border-color:transparent; 
+    overflow:hidden; 
+    border-width: 10px; 
+    border-top-style: solid;
+    border-top-color: #efefef; 
+}
+.layim-chat-text{max-width: 462px\0;}
+.layim-chat-text a{color: #2c90ff;}
+
+
+.layim-chat-mine .layim-chat-text{margin-left: 0; text-align: left; background-color: #b7f6b8; color: #232323;}
+.layim-chat-mine .layim-chat-text:after{left: auto; right: -10px; border-top-color: #b7f6b8;}
+.layim-chat-mine .layim-chat-text a{color: #2c90ff;}
+
+/*系统代发的消息*/
+.layim-chat-system-two .layim-chat-text{background-color: #95ec69; color: #000;}
+.layim-chat-system-two .layim-chat-text:after{border-top-color: #95ec69;}
+.layim-chat-system-two .layim-chat-text a {color: #2c90ff;}
+
+
+.layim-chat-user img{border-radius: 2px;}
+
+/*私聊的发送按钮*/
+.layim-chat-send .layim-send-btn {
+    border-radius:3px 3px 3px 3px;
+}
+/*layim*/
+
+.layim-chat-text {
+    padding: 6px 12px;
+  }
+  
+  .layim-chat-main ul li {
+    min-height: 10px;
+    margin-bottom: 14px;
+    padding-left: 45px;
+  }
+  
+  .layim-chat-main ul .layim-chat-mine {
+    padding-right: 44px;
+  }
+  
+.layim-chat-user img {
+    width: 35px;
+    height: 35px;
+    margin-left: -12px;
+  }
+  .layim-chat-mine .layim-chat-user img {
+    /* width: 30px;
+    height: 30px; */
+    margin-left: 0px;
+    margin-right: -12px;
+  }
+  
+  .layim-chat-user cite {
+    left: 40px;
+  }
+  .layim-chat-mine .layim-chat-user cite {
+    right: 40px;
+  }
+
+
+
+/*系统消息里的昵称*/
+.layim-chat-system span .nick {
+    color:#FF5722;
+    padding:0px 3px;
+}
+
+
+/*在线列表*/
+#siteim_online_wrap {
+    position: absolute;
+    top: 0px;
+    left: -451px;
+    width: 450px;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    padding: 6px 0px;
+    overflow-y: auto;
+    height: 100%;
+    z-index: 999;
+}
+#siteim_online_list_ul {
+    height: 100%;
+}
+#siteim_online_list_ul .online_userinfo_row {
+    display: grid;
+    grid-gap: 2px;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 369px;
+    max-width: 369px;
+    padding-right : 0px;
+}
+
+
+.vip_to_avatar_for_online {
+    position: absolute;
+    left: 32px;
+    bottom: 7px;
+}
+
+.vip_to_avatar_for_chat {
+    position: absolute;
+    left: 8.4px;
+    top: 20.5px;
+}
+.vip_to_avatar_for_chat_mine {
+    position: absolute;
+    right: -11.3px;
+    top: 20.7px;
+}
+.vip_to_avatar_for_p2p_tip {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.vip_to_avatar_for_p2p_list {
+    position: absolute;
+    left: 32px;
+    bottom: 6px;
+}
+
+
+/**
+ * 超链接卡片 start
+ */
+.tio-link-card .layim-chat-text{ background-color: #efefef; color: #232323;}
+.tio-link-card .layim-chat-text:after{border-top-color: #efefef;}
+.tio-link-card .layim-chat-text a{color: #222;}
+.tio-link-card .layim-chat-text a:hover{color: #222;}
+.card_link_wrap {
+    width: 200px;
+}
+.card_link_wrap a {
+
+    color: #222;
+}
+.card_link_wrap a:hover {
+    color: #222;
+}
+/**
+ * 超链接卡片 end
+ */
+
+.card_link_title {
+    position: relative;
+    height: 38px;
+    line-height: 38px;
+    border-bottom: 1px solid #dcdcdc;
+    color: #222;
+    border-radius: 2px 2px 0 0;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    
+    
+}
+.card_link_main {
+    padding: 5px 5px;
+    height: 120px;
+    line-height: 20px;
+    font-size: 12px;
+    color: #444;
+    /* background-color: #fff; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card_link_footer {
+    font-size: 11px;
+    margin-top: 10px;
+    border-top: 1px solid #dcdcdc;
+    padding: 8px 5px 0px 5px;
+}
+
+.card_link_footer .badge{
+    /* color: #ecc4f5; */
+    /* background-color: #eee; */
+}
+
+
+
+
+
+
+/**
+ * 图片卡片 start
+ */
+ /* .tio-img-card .layim-chat-text{ background-color: #fff; width: 100%; color: #232323;}
+ .tio-img-card .layim-chat-text:after{border-top-color: #fff;} */
+ /* .tio-img-card .layim-chat-text a{color: #222;}
+ .tio-img-card .layim-chat-text a:hover{color: #222;} */
+ .card_img_wrap {
+     /* width: 220px; */
+ }
+ .card_img_wrap a {
+     color: #222;
+ }
+ .card_img_wrap a:hover {
+     color: #222;
+ }
+ /**
+  * 图片卡片 end
+  */
+
+
+  .card_img_wrap {
+    /* padding: 10px; */
+    /* background: #fff1ce; */
+    /* width: 300px;
+    height: 300px; */
+    display: grid;
+    grid-gap: 2px;
+    /* grid-template-columns: repeat(3, 1fr); */
+    /* grid-template-rows: repeat(3, 1fr); */
+    grid-auto-flow: row;
+  }
+  
+  .card_img_wrap .box {
+    /* background-color: #ccc; */
+    color: #000;
+    
+    /* border-radius: 5px; */
+    /* padding: 20px; */
+  }
+
+  .card_img_wrap .box img {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+  }
+
+
+
+
+
+
+
+
+    /**
+ * 视频卡片 start
+ */
+/* .tio-video-card .layim-chat-text{ background-color: #fff;color: #232323;}
+.tio-video-card .layim-chat-text:after{border-top-color: #fff;} */
+/* .tio-video-card .layim-chat-text a{color: #999;} */
+/* .tio-video-card .layim-chat-text :hover{color: #aaa;} */
+.card_video_wrap {
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+
+    background-image: url("/im/site/img/video-cover.jpeg");
+    background-repeat:no-repeat; 
+    background-size:100% 100%;
+    /* opacity:0.7; */
+
+    border-radius: 10px;
+
+    transition: all 0.6s;
+}
+
+
+.card_video_wrap:hover {
+    /* background-color: #aaa; */
+    transform: scale(1.04);
+    /* opacity:0.9; */
+}
+.card_video_wrap .formatedseconds{
+    position: absolute;
+    bottom: 35px;
+    left: 5px;
+    color: #fff;
+    font-size: 12px;
+
+    background-color: #000;
+    padding: 1px 5px;
+    border-radius: 10px;
+    height: 24px;
+    line-height: 24px;
+}
+.card_video_wrap .formatedseconds:hover{
+    /* color: #000; */
+}
+.card_video_wrap .filename {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    color: #fff;
+    font-size: 12px;
+    max-width:   calc(100% - 10px);
+    text-align: left;
+    background-color: #000;
+    padding: 1px 5px;
+    border-radius: 10px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.card_video_wrap i {
+    font-size: 56px;
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    color: #eee;
+    position: absolute;
+    top: 62px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-weight: bold;
+
+    transition: all 0.6s;
+    
+    /* opacity: 0; */
+    /* left: 50%; */
+    /* width: 980px; */
+}
+.card_video_wrap i:hover {
+    color: #fff;
+    /* font-size: 60px;
+    font-weight: bold; */
+    transform: scale(1.04);
+    top: 77px;
+}
+/**
+ * 视频卡片 end
+ */
+
+
+/* @media screen and (min-width: 1500px) {
+    .layui-container {
+        width: 1440px; 
+    }
+}
+
+
+
+
+
+@media screen and (min-width: 900px) {
+    .layui-container {
+        width: 880px; 
+    }
+}
+@media screen and (min-width: 1000px) {
+    .layui-container {
+        width: 980px; 
+    }
+}
+@media screen and (min-width: 1100px) {
+    .layui-container {
+        width: 1080px; 
+    }
+}
+@media screen and (min-width: 1200px) {
+    .layui-container {
+        width: 1180px; 
+    }
+}
+@media screen and (min-width: 1300px) {
+    .layui-container {
+        width: 1280px; 
+    }
+}
+@media screen and (min-width: 1400px) {
+    .layui-container {
+        width: 1340px; 
+    }
+}
+ */
+/* @media screen and (min-width: 1500px) {
+    .layui-container {
+        width: 1480px; 
+    }
+} */
+
+/* @media screen and (min-width: 1700px) {
+    .layui-container {
+        width: 1680px; 
+    }
+} */

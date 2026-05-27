@@ -1,0 +1,565 @@
+
+package org.tio.sitexxx.service.pay.impl.pay5u;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tio.http.common.HttpRequest;
+import org.tio.sitexxx.service.model.main.WxUserRechargeItem;
+import org.tio.sitexxx.service.model.main.WxUserSendRedItem;
+import org.tio.sitexxx.service.model.main.WxUserWithholdCount;
+import org.tio.sitexxx.service.model.main.WxUserWithholdItem;
+import org.tio.sitexxx.service.pay.base.BaseCallbackPay;
+import org.tio.sitexxx.service.pay.base.BasePayResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.Excep5UResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.RechargeCallback5UResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.RechargeQuery5UResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.RedpacketCallback5UResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.RedpacketQuery5UResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.WithholdCallback5UResp;
+import org.tio.sitexxx.service.pay.impl.pay5u.resp.WithholdQuery5UResp;
+import org.tio.sitexxx.service.pay.service.WalletQueueApi;
+import org.tio.sitexxx.service.service.conf.BankConfService;
+import org.tio.sitexxx.service.vo.Const;
+import org.tio.sitexxx.service.vo.PayConst;
+import org.tio.utils.json.Json;
+
+import com.alibaba.fastjson15.JSONObject;
+import com.upay.sdk.exception.HmacVerifyException;
+import com.upay.sdk.exception.RequestException;
+import com.upay.sdk.exception.ResponseException;
+import com.upay.sdk.exception.UnknownException;
+import com.upay.sdk.executer.ResultListenerAdpater;
+import com.upay.sdk.onlinepay.executer.OnlinePayOrderExecuter;
+import com.upay.sdk.webox.builder.RechargeQueryBuilder;
+import com.upay.sdk.webox.builder.RedPacketQueryBuilder;
+import com.upay.sdk.webox.builder.WithholdingQueryBuilder;
+import com.upay.sdk.webox.executer.RechargeExecuter;
+import com.upay.sdk.webox.executer.RedPacketExecuter;
+import com.upay.sdk.webox.executer.WithholdingExecuter;
+
+/**
+ * 回调
+ * @author lixinji
+ */
+public class Pay5uCallBackApi implements BaseCallbackPay<BasePayResp> {
+
+	private static Logger log = LoggerFactory.getLogger(Pay5uCallBackApi.class);
+
+	private static final String	ENCRYPT_KEY	= "encryptKey";
+	private static final String	MERCHANT_ID	= "merchantId";
+
+	/**
+	 * 充值回调 
+	 * 此方法只有记录不存在时，才进行fail输出
+	 * 订单错误也是正常数据
+	 */
+	@Override
+	public BasePayResp recharge(HttpRequest request, Integer uid) {
+		BasePayResp basePayResp = new BasePayResp();
+		try {
+			OnlinePayOrderExecuter executer = new OnlinePayOrderExecuter();
+			JSONObject json = JSONObject.parseObject(new String(request.getBody(), "utf-8"));
+			String encryptKey = request.getHeader(ENCRYPT_KEY.toLowerCase());
+			String merchantId = request.getHeader(MERCHANT_ID.toLowerCase());
+			json.put(ENCRYPT_KEY, encryptKey);
+			json.put(MERCHANT_ID, merchantId);
+
+			executer.bothCipherCallback(json, new ResultListenerAdpater() {
+
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					RechargeCallback5UResp resp = Json.toBean(msg, RechargeCallback5UResp.class);
+					WxUserRechargeItem item = WxUserRechargeItem.dao.findFirst("select * from wx_user_recharge_item where serialnumber = ?", resp.getSerialNumber());
+					if (item == null) {
+						basePayResp.setOk(false);
+						log.error("支付回调接口中，发现订单不存在：{}", Json.toJson(resp));
+						basePayResp.setMsg("订单不存在");
+					} else {
+						WalletQueueApi.joinWalletQueue(resp.toAllMap(), uid);
+						basePayResp.setOk(true);
+					}
+					basePayResp.setResp(resp.toMap());
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		} catch (UnsupportedEncodingException e) {
+			log.error("解析流失败,{}", e.getMessage());
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * 提现回调
+	 */
+	@Override
+	public BasePayResp withhold(HttpRequest request, Integer uid) {
+		BasePayResp basePayResp = new BasePayResp();
+		try {
+			WxUserWithholdCount count = Pay5uApi.initWithCount(uid, "");
+			if (count == null) {
+				basePayResp.setOk(false);
+				log.error("系统初始化提现次数异常为空");
+				basePayResp.setMsg("系统异常");
+				return basePayResp;
+			}
+			boolean withholdupdate = Pay5uApi.updateWithholdCount(count.getId());
+			if (!withholdupdate) {
+				basePayResp.setOk(false);
+				log.error("系统系统次数更新异常,{}");
+				basePayResp.setMsg("系统次数更新异常");
+				return basePayResp;
+			}
+			OnlinePayOrderExecuter executer = new OnlinePayOrderExecuter();
+			JSONObject json = JSONObject.parseObject(new String(request.getBody(), "utf-8"));
+			String encryptKey = request.getHeader(ENCRYPT_KEY.toLowerCase());
+			String merchantId = request.getHeader(MERCHANT_ID.toLowerCase());
+			json.put(ENCRYPT_KEY, encryptKey);
+			json.put(MERCHANT_ID, merchantId);
+
+			executer.bothCipherCallback(json, new ResultListenerAdpater() {
+
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					WithholdCallback5UResp resp = Json.toBean(msg, WithholdCallback5UResp.class);
+					WxUserWithholdItem item = WxUserWithholdItem.dao.findFirst("select * from wx_user_withhold_item where serialnumber = ?", resp.getSerialNumber());
+					if (item == null) {
+						basePayResp.setOk(false);
+						log.error("提现回调接口中，发现订单不存在：{}", Json.toJson(resp));
+						basePayResp.setMsg("订单不存在");
+					} else {
+						WalletQueueApi.joinWalletQueue(resp.toAllMap(), uid);
+						basePayResp.setOk(true);
+					}
+					basePayResp.setResp(resp.toMap());
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		} catch (UnsupportedEncodingException e) {
+			log.error("解析流失败,{}", e.getMessage());
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * 发红包回调
+	 */
+	@Override
+	public BasePayResp sendRedpacket(HttpRequest request, Integer uid) {
+		BasePayResp basePayResp = new BasePayResp();
+		try {
+			OnlinePayOrderExecuter executer = new OnlinePayOrderExecuter();
+			JSONObject json = JSONObject.parseObject(new String(request.getBody(), "utf-8"));
+			String encryptKey = request.getHeader(ENCRYPT_KEY.toLowerCase());
+			String merchantId = request.getHeader(MERCHANT_ID.toLowerCase());
+			json.put(ENCRYPT_KEY, encryptKey);
+			json.put(MERCHANT_ID, merchantId);
+
+			executer.bothCipherCallback(json, new ResultListenerAdpater() {
+
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					RedpacketCallback5UResp resp = Json.toBean(msg, RedpacketCallback5UResp.class);
+					WxUserSendRedItem item = WxUserSendRedItem.dao.findFirst("select * from wx_user_send_red_item where serialnumber = ?", resp.getSerialNumber());
+					if (item == null) {
+						basePayResp.setOk(false);
+						log.error("发红包回调接口中，发现订单不存在：{}", Json.toJson(resp));
+						basePayResp.setMsg("订单不存在");
+					} else {
+						WalletQueueApi.joinWalletQueue(resp.toAllMap(), uid);
+						basePayResp.setOk(true);
+					}
+					basePayResp.setResp(resp.toMap());
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		} catch (UnsupportedEncodingException e) {
+			log.error("解析流失败,{}", e.getMessage());
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * 充值补偿回调
+	 * @param object
+	 * @return
+	 * @author lixinji
+	 */
+	@Override
+	public BasePayResp rechargeAgainCallback(Object object) {
+		WxUserRechargeItem item = (WxUserRechargeItem) object;
+		BasePayResp basePayResp = new BasePayResp();
+		RechargeQueryBuilder builder = new RechargeQueryBuilder(Const.WALLET_MERCHANTID);
+		builder.setRequestId(item.getReqid());
+		RechargeExecuter executer = new RechargeExecuter();
+		try {
+			executer.bothRechargeQuery(builder, new ResultListenerAdpater() {
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					RechargeQuery5UResp resp = Json.toBean(msg, RechargeQuery5UResp.class);
+					basePayResp.setOk(true);
+					Map<String, Object> map = resp.toAllMap();
+					map.put(PayConst.ApiClassName.API_MAP_KEY, PayConst.ApiClassName.RECHARGE_CALLBACK);
+					map.put("again", "again");
+					WalletQueueApi.joinWalletQueue(map, item.getUid());
+					basePayResp.setResp(map);
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+
+				@Override
+				public void pending(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("待处理");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (RequestException e) {
+			log.error("请求异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * @param object
+	 * @return
+	 * @author lixinji
+	 */
+	@Override
+	public BasePayResp rechargeQueryNoCheck(Object object) {
+		WxUserRechargeItem item = (WxUserRechargeItem) object;
+		BasePayResp basePayResp = new BasePayResp();
+		RechargeQueryBuilder builder = new RechargeQueryBuilder(Const.WALLET_MERCHANTID);
+		builder.setRequestId(item.getReqid());
+		RechargeExecuter executer = new RechargeExecuter();
+		try {
+			executer.bothRechargeQuery(builder, new ResultListenerAdpater() {
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					RechargeQuery5UResp resp = Json.toBean(msg, RechargeQuery5UResp.class);
+					Map<String, Object> map = item.toAllMap();
+					map.put("bankicon", BankConfService.getString(resp.getBankCode()));
+					map.put("bankcode", resp.getBankCode());
+					map.put("bankname", resp.getBankName());
+					map.put("bankcardnumber", resp.getBankCardNumber());
+					map.put("bizcreattime", resp.getCreateDateTime());
+					map.put("ordererrormsg", resp.getOrderErrorMessage());
+					map.put("status", resp.getOrderStatus());
+					map.put("bizcompletetime", resp.getCompleteDateTime());
+					WalletQueueApi.joinWalletQueue(map, item.getUid());
+					basePayResp.setOk(true);
+					Map<String, Object> retmap = resp.toMap();
+					retmap.put("bankicon", BankConfService.getString(resp.getBankCode()));
+					basePayResp.setResp(retmap);
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+
+				@Override
+				public void pending(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("待处理");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (RequestException e) {
+			log.error("请求异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * 发红包补偿回调
+	 * @param object
+	 * @return
+	 * @author lixinji
+	 */
+	@Override
+	public BasePayResp redpacketAgainCallback(Object object) {
+		WxUserSendRedItem redItem = (WxUserSendRedItem) object;
+		String queryType = "SIMPLE";
+		BasePayResp basePayResp = new BasePayResp();
+		RedPacketQueryBuilder builder = new RedPacketQueryBuilder(Const.WALLET_MERCHANTID);
+		builder.setRequestId(redItem.getReqid()).setQueryType(queryType);
+		;
+		RedPacketExecuter executer = new RedPacketExecuter();
+		try {
+			executer.bothQuery(builder, new ResultListenerAdpater() {
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					RedpacketQuery5UResp resp = Json.toBean(msg, RedpacketQuery5UResp.class);
+					Map<String, Object> map = resp.toAllMap();
+					map.put(PayConst.ApiClassName.API_MAP_KEY, PayConst.ApiClassName.REDPACKET_CALLBACK);
+					map.put("again", "again");
+					WalletQueueApi.joinWalletQueue(map, redItem.getUid());
+					basePayResp.setResp(map);
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+
+				@Override
+				public void pending(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("待处理");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (RequestException e) {
+			log.error("请求异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * @param item
+	 * @return
+	 * @author lixinji
+	 * 2021年4月9日 下午2:39:50
+	 */
+	@Override
+	public BasePayResp withholdQueryNoCheck(Object object) {
+		WxUserWithholdItem item = (WxUserWithholdItem) object;
+		BasePayResp basePayResp = new BasePayResp();
+		WithholdingQueryBuilder builder = new WithholdingQueryBuilder(Const.WALLET_MERCHANTID);
+		builder.setRequestId(item.getReqid());
+		WithholdingExecuter executer = new WithholdingExecuter();
+		try {
+			executer.bothWithholdingQuery(builder, new ResultListenerAdpater() {
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					WithholdQuery5UResp resp = Json.toBean(msg, WithholdQuery5UResp.class);
+					basePayResp.setOk(true);
+					Map<String, Object> map = item.toAllMap();
+					map.put("bankicon", BankConfService.getString(resp.getBankCode()));
+					map.put("bankcode", resp.getBankCode());
+					map.put("bankname", resp.getBankName());
+					map.put("bankcardnumber", resp.getBankCardNumber());
+					map.put("bizcreattime", resp.getCreateDateTime());
+					map.put("ordererrormsg", resp.getOrderErrorMessage());
+					map.put("status", resp.getOrderStatus());
+					map.put("bizcompletetime", resp.getCompleteDateTime());
+					WalletQueueApi.joinWalletQueue(map, item.getUid());
+					Map<String, Object> retmap = resp.toMap();
+					retmap.put("bankicon", BankConfService.getString(resp.getBankCode()));
+					basePayResp.setResp(retmap);
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+
+				@Override
+				public void pending(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("待处理");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (RequestException e) {
+			log.error("请求异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		}
+		return basePayResp;
+	}
+
+	/**
+	 * 提现补偿回调
+	 * @param object
+	 * @return
+	 * @author lixinji
+	 * 2021年4月9日 下午2:40:48
+	 */
+	@Override
+	public BasePayResp withholdAgainCallback(Object object) {
+		WxUserWithholdItem item = (WxUserWithholdItem) object;
+		BasePayResp basePayResp = new BasePayResp();
+		WithholdingQueryBuilder builder = new WithholdingQueryBuilder(Const.WALLET_MERCHANTID);
+		builder.setRequestId(item.getReqid());
+		WithholdingExecuter executer = new WithholdingExecuter();
+		try {
+			executer.bothWithholdingQuery(builder, new ResultListenerAdpater() {
+				@Override
+				public void success(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					WithholdQuery5UResp resp = Json.toBean(msg, WithholdQuery5UResp.class);
+					basePayResp.setOk(true);
+					Map<String, Object> map = resp.toAllMap();
+					map.put(PayConst.ApiClassName.API_MAP_KEY, PayConst.ApiClassName.WITHHOLD_CALLBACK);
+					map.put("again", "again");
+					WalletQueueApi.joinWalletQueue(map, item.getUid());
+					basePayResp.setResp(map);
+				}
+
+				@Override
+				public void failure(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("响应失败");
+				}
+
+				@Override
+				public void pending(JSONObject jsonObject) {
+					String msg = jsonObject.toJSONString();
+					log.error(msg);
+					basePayResp.setOk(false);
+					basePayResp.setMsg("待处理");
+				}
+			});
+		} catch (ResponseException e) {
+			log.error("响应异常,{}", e.getMessage());
+		} catch (HmacVerifyException e) {
+			log.error("签名验证异常,{}", e.getMessage());
+		} catch (RequestException e) {
+			log.error("请求异常,{}", e.getMessage());
+		} catch (UnknownException e) {
+			log.error("其它异常,{}", e.getMessage());
+			String err = e.getMessage();
+			Excep5UResp resp = Json.toBean(err, Excep5UResp.class);
+			basePayResp.setResp(resp.toMap());
+			basePayResp.setOk(false);
+			basePayResp.setMsg(resp.getErrorMessage());
+			return basePayResp;
+		}
+		return basePayResp;
+	}
+}

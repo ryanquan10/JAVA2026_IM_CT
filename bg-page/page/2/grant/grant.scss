@@ -1,0 +1,42 @@
+.grant_body {
+  background: url(/2/grant/img/bg.png);
+  background-size: 100% 100%;
+  width: 100%;
+  height: calc(100% - var(--header_height) - var(--footer_height));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.grant_content {
+  width: 800px;
+  height: 486px;
+  background-color: #fff;
+  box-shadow: 0px 6px 18px rgba(59, 138, 255, 0.12);
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+
+}
+.grant_view_record {
+  position: absolute;
+  padding: 15px;
+  right: 0px;
+}
+
+.grant_content > form {
+  width: 400px;
+  /* padding: 60px 0px; */
+  margin: auto;
+}
+
+.grant_form > div {
+  margin-top: 25px;
+}
+

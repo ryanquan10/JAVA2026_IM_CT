@@ -1,0 +1,1892 @@
+Table: audio
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     | ID      
+ uid        | INT(10)       | YES  |     |                     | 上传者     
+ bizid      | BIGINT(19)    | YES  |     |                     | 上传业务id  
+ filename   | VARCHAR(255)  | YES  |     |                     | 文件名     
+ url        | VARCHAR(255)  | YES  |     |                     | 音频url   
+ from       | SMALLINT(5)   | YES  |     | 1                   | 来源。1、wx上传
+ seconds    | INT(10)       | YES  |     | 0                   | 时长（秒）   
+ size       | BIGINT(19)    | YES  |     | 0                   | 文件大小，单位字节
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：不可公开浏览；2：可公开浏览；3：禁止在任何场景显示
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 上传时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: chatroom_join_leave
+-----------+--------------+------+-----+---------+---------
+ Field     | Type         | Null | Key | Default | Remarks 
+-----------+--------------+------+-----+---------+---------
+ id        | BIGINT(19)   | NO   | PRI |         |         
+ uid       | INT(10)      | YES  |     |         | userid  
+ server    | VARCHAR(64)  | NO   |     |         |  服务器地址，对应 app-host.properties的my.ip那个配置项
+ session   | VARCHAR(32)  | NO   |     |         | sessionid
+ ipid      | INT(10)      | NO   |     |         | ip_info的id字段
+ device    | SMALLINT(5)  | NO   |     | 1       | 设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ groupid   | VARCHAR(640) | NO   |     |         | 群组id    
+ jointime  | DATETIME(19) | NO   |     |         | 进入聊天室时间 
+ leavetime | DATETIME(19) | YES  |     |         | 离开聊天室时间 
+ cost      | BIGINT(19)   | YES  |     | 0       | 耗时，单位毫秒 
+ status    | SMALLINT(5)  | NO   |     | 9       | 1：正常记录，2：程序最终修改的记录，3、程序定时修改记录，9：初始值
+-----------+--------------+------+-----+---------+---------
+
+Table: demo
+---------+--------------+------+-----+---------+---------
+ Field   | Type         | Null | Key | Default | Remarks 
+---------+--------------+------+-----+---------+---------
+ id      | INT(10)      | NO   | PRI |         |         
+ intx    | INT(10)      | YES  |     |         | 演示整数    
+ doublex | DOUBLE(22)   | YES  |     |         | 演示小数    
+ stringx | VARCHAR(255) | YES  |     |         | 演示字符串   
+ datex   | DATETIME(19) | YES  |     |         | 演示日期    
+---------+--------------+------+-----+---------+---------
+
+Table: email_send_log
+-------------+---------------+------+-----+---------+---------
+ Field       | Type          | Null | Key | Default | Remarks 
+-------------+---------------+------+-----+---------+---------
+ id          | INT(10)       | NO   | PRI |         | 发给谁     
+ emailto     | VARCHAR(64)   | YES  |     |         | 发往的邮箱   
+ type        | SMALLINT(5)   | YES  |     |         | 邮件类型，1：注册邮件
+ status      | SMALLINT(5)   | YES  |     |         | 发送状态，1：成功，2：失败
+ session     | VARCHAR(48)   | YES  |     |         |         
+ ip          | VARCHAR(21)   | YES  |     |         |         
+ ipid        | INT(10)       | YES  |     |         | ip_info表的id
+ uaid        | INT(10)       | YES  |     |         | user_agent表的id，浏览器信息id
+ createtime  | DATETIME(19)  | YES  |     |         |         
+ authcode    | VARCHAR(255)  | YES  |     |         | 验证码     
+ title       | VARCHAR(255)  | YES  |     |         | 邮件标题    
+ content     | VARCHAR(1024) | YES  |     |         | 邮件内容    
+ emailserver | VARCHAR(64)   | YES  |     |         | 邮箱服务器   
+ emailfrom   | VARCHAR(64)   | YES  |     |         | 从哪个邮箱发出 
+ emailpwd    | VARCHAR(255)  | YES  |     |         | 源邮箱密码(加密后的)
+-------------+---------------+------+-----+---------+---------
+
+Table: file
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     | ID      
+ uid        | INT(10)       | YES  |     |                     | 上传者     
+ session    | VARCHAR(48)   | YES  |     |                     |         
+ filename   | VARCHAR(255)  | YES  |     |                     | 文件名     
+ ext        | VARCHAR(16)   | YES  |     |                     | 后缀名     
+ url        | VARCHAR(255)  | YES  |     |                     | 文件url   
+ initurl    | VARCHAR(255)  | YES  |     |                     | 原始url，因为文件可能来自第三方
+ size       | BIGINT(19)    | YES  |     | 0                   | 文件大小，单位字节
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常；2：无效
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 上传时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: img
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | INT(10)       | NO   | PRI |                     | ID      
+ uid         | INT(10)       | YES  |     |                     | 上传者     
+ session     | VARCHAR(48)   | YES  |     |                     |         
+ title       | VARCHAR(255)  | YES  |     |                     | 标题      
+ filename    | VARCHAR(255)  | YES  |     |                     | 文件名     
+ url         | VARCHAR(255)  | YES  |     |                     | 图片url   
+ initurl     | VARCHAR(255)  | YES  |     |                     | 原始url，因为图片可能来自第三方
+ comefrom    | SMALLINT(5)   | YES  |     |                     | 图片来源。1、im上传，2：博客上传
+ width       | INT(10)       | YES  |     | 0                   | 图片的宽    
+ height      | INT(10)       | YES  |     | 0                   | 图片的高    
+ size        | BIGINT(19)    | YES  |     | 0                   | 文件大小，单位字节
+ status      | SMALLINT(5)   | YES  |     | 1                   | 状态：1：不可公开浏览；2：可公开浏览；3：禁止在任何场景显示
+ coverurl    | VARCHAR(255)  | YES  |     |                     | 缩略图url  
+ coverwidth  | INT(10)       | YES  |     |                     | 缩略图的宽   
+ coverheight | INT(10)       | YES  |     |                     | 缩略图的高   
+ coversize   | INT(10)       | YES  |     |                     | 缩略图尺寸，单位：字节
+ createtime  | TIMESTAMP(19) | YES  |     | current_timestamp() | 上传时间    
+ updatetime  | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+-------------+---------------+------+-----+---------------------+---------
+
+Table: ip_info
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ id       | INT(10)      | NO   | PRI |         |         
+ ip       | VARCHAR(125) | NO   |     |         |         
+ country  | VARCHAR(64)  | YES  |     |         | 国家      
+ area     | VARCHAR(64)  | YES  |     |         | 区域      
+ province | VARCHAR(64)  | YES  |     |         | 省       
+ city     | VARCHAR(64)  | YES  |     |         | 市       
+ operator | VARCHAR(64)  | YES  |     |         | 运营商     
+ time     | DATETIME(19) | NO   |     |         |         
+----------+--------------+------+-----+---------+---------
+
+Table: login_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ dayperiod  | VARCHAR(20)   | YES  |     |                     | 天周期     
+ timeperiod | VARCHAR(20)   | YES  |     |                     | 时间周期    
+ hourperiod | VARCHAR(20)   | YES  |     |                     | 时间周期    
+ uid        | INT(10)       | NO   |     |                     | userid  
+ ip         | VARCHAR(32)   | NO   |     |                     | 登录的ip   
+ ipid       | INT(10)       | YES  |     |                     | 对应ip_info表的id
+ imei       | VARCHAR(64)   | YES  |     |                     | 移动设备号   
+ appversion | VARCHAR(16)   | YES  |     |                     | app版本号  
+ time       | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+ type       | SMALLINT(5)   | YES  |     | 1                   | 登录方式：1：正常登录，2：自动登录
+ sessionid  | VARCHAR(48)   | NO   |     |                     | sessionid其实就是token
+ devicetype | SMALLINT(5)   | NO   |     |                     | 登录设置：1PC，2手机
+ deviceinfo | VARCHAR(200)  | YES  |     |                     | 如果是手机，则带上手机公司相关信息 ，譬如华为P9
+ uaid       | INT(10)       | YES  |     |                     | user_agent表的id
+------------+---------------+------+-----+---------------------+---------
+
+Table: login_task_items
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     | ID      
+ uid        | INT(10)       | YES  |     | -1                  | 操作id-系统处理-1
+ status     | SMALLINT(5)   | YES  |     | 1                   | 处理标识：1、初始化；2：处理中；3：删除
+ dealtime   | DATETIME(19)  | YES  |     |                     | 处理时间    
+ ip         | VARCHAR(50)   | YES  |     |                     | 处理机器    
+ createtime | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: oauth2_client
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | INT(10)       | NO   | PRI |                     |         
+ client_name   | VARCHAR(128)  | NO   |     |                     |         
+ client_id     | VARCHAR(128)  | NO   |     |                     | 很多平台叫app_id
+ client_secret | VARCHAR(128)  | NO   |     |                     |         
+ status        | SMALLINT(5)   | NO   |     | 1                   | 状态：1、有效，2、无效
+ remark        | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime    | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime    | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+---------------+---------------+------+-----+---------------------+---------
+
+Table: recharge_item
+----------------+---------------+------+-----+---------------------+---------
+ Field          | Type          | Null | Key | Default             | Remarks 
+----------------+---------------+------+-----+---------------------+---------
+ id             | INT(10)       | NO   | PRI |                     |         
+ userid         | INT(10)       | NO   |     |                     | 用户id    
+ tradeno        | VARCHAR(64)   | NO   |     |                     | 本系统的交易号 
+ tradetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 在本系统中的交易时间
+ status         | INT(10)       | NO   |     | 1                   | 订单状态1-未付款 2-已付款 3-取消订单 4-已完成 9-攻击充值 99-异常
+ amount         | DOUBLE(21,2)  | NO   |     |                     | 充值现金数，单位(人民币：元)
+ paytype        | INT(10)       | YES  |     |                     | 支付方式:
+1:支付宝
+2:微信
+
+11:手机版支付宝
+22:手机版微信
+ goods          | VARCHAR(255)  | YES  |     |                     | 商品名     
+ goodscount     | INT(10)       | YES  |     | 1                   | 商品数量    
+ clienttype     | INT(10)       | YES  |     |                     | 客户端类型1-pc 2-android 3-ios
+ clientinfo     | VARCHAR(255)  | YES  |     |                     | 客户端型号。如果是手机充值，则是手机型号，譬如华为P9，如果是PC，则是浏览器信息
+ useragentid    | INT(10)       | YES  |     |                     | 对应user_agent的id字段
+ remoteip       | VARCHAR(15)   | YES  |     |                     | 客户端充值时的ip地址
+ remoteipnotify | VARCHAR(20)   | YES  |     |                     | 回调时的远端ip
+ referer        | VARCHAR(255)  | YES  |     |                     | 入口页     
+ callback       | VARCHAR(255)  | YES  |     |                     | 回调页     
+ thirdtradeno   | VARCHAR(128)  | YES  |     |                     | 第三方支付平台的交易号
+ thirdstatus    | VARCHAR(128)  | YES  |     |                     | 第三方支付平台的支付状态
+ thirdtradetime | TIMESTAMP(19) | YES  |     |                     | 第三方交易通知时间
+ thirdaccount   | VARCHAR(64)   | YES  |     |                     | 买家在第三方支付平台的帐号，譬如支付宝就是支付宝的登录帐号
+ thirdamount    | DOUBLE(21,2)  | YES  |     |                     | 支付平台返回的金额(单位元，如果支付平台的单位不是元，需要换算成元）
+ thirdnotifyid  | VARCHAR(128)  | YES  |     |                     | 支付平台的通知id
+ remark         | VARCHAR(2048) | YES  |     |                     | 用来存其它信息 
+ receipt        | VARCHAR(8192) | YES  |     |                     | 如果是苹果支付，则有此值，表示receipt
+ updatetime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 该条记录更新时间
+ createtime     | DATETIME(19)  | YES  |     |                     | 创建时间    
+ bizid          | VARCHAR(64)   | YES  |     |                     | 业务id    
+ biztype        | SMALLINT(5)   | YES  |     |                     | 该笔充值用于什么业务类型
+----------------+---------------+------+-----+---------------------+---------
+
+Table: role
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | SMALLINT(5)   | NO   | PRI |                     |         
+ name        | VARCHAR(255)  | NO   |     |                     | 角色名称    
+ description | VARCHAR(255)  | YES  |     |                     | 描述      
+ createtime  | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime  | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+-------------+---------------+------+-----+---------------------+---------
+
+Table: sms_log
+--------------+---------------+------+-----+---------------------+---------
+ Field        | Type          | Null | Key | Default             | Remarks 
+--------------+---------------+------+-----+---------------------+---------
+ id           | INT(10)       | NO   | PRI |                     |         
+ phone        | VARCHAR(20)   | YES  |     |                     | 手机号     
+ uid          | INT(10)       | YES  |     |                     | 用户id    
+ smscode      | VARCHAR(20)   | YES  |     |                     | 短信验证码   
+ tempcode     | VARCHAR(255)  | YES  |     |                     | 模板code  
+ ip           | VARCHAR(50)   | YES  |     |                     | 发送ip    
+ errormsg     | VARCHAR(255)  | YES  |     |                     |         
+ phone24count | INT(10)       | YES  |     | 0                   | 电话24小时统计
+ ip24count    | INT(10)       | YES  |     | 0                   | ip24小时统计
+ devicecount  | INT(10)       | YES  |     | 0                   | 设备发送数   
+ sessionid    | VARCHAR(32)   | YES  |     |                     |         
+ referer      | VARCHAR(255)  | YES  |     |                     |         
+ cookiekey    | VARCHAR(32)   | YES  |     |                     | 设备cookie值
+ status       | SMALLINT(5)   | YES  |     | 1                   | 发送状态：1:成功；2：失败
+ type         | VARCHAR(20)   | YES  |     |                     | 类型      
+ createtime   | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime   | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+--------------+---------------+------+-----+---------------------+---------
+
+Table: stat_online
+---------+--------------+------+-----+---------------------+---------
+ Field   | Type         | Null | Key | Default             | Remarks 
+---------+--------------+------+-----+---------------------+---------
+ id      | INT(10)      | NO   | PRI |                     |         
+ server  | VARCHAR(32)  | NO   |     |                     | 哪台服务器上的数据
+ logined | INT(10)      | NO   |     | 0                   | 登录的用户数  
+ ip      | INT(10)      | NO   |     |                     | 独立ip数   
+ session | INT(10)      | NO   |     |                     | 独立session数
+ page    | INT(10)      | NO   |     |                     | 打开的页面数  
+ group   | INT(10)      | NO   |     | 0                   | 群组个数（包括聊天室在内的所有群组）
+ time    | DATETIME(19) | NO   |     | current_timestamp() | 这个时间必须由程序指定，其秒必须是5的整数
+---------+--------------+------+-----+---------------------+---------
+
+Table: tio_thread_logs
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ bizint     | INT(10)       | YES  |     |                     | 业务id    
+ bizstr     | VARCHAR(255)  | YES  |     |                     | 业务字符串   
+ status     | SMALLINT(5)   | YES  |     | 2                   | 状态：2：初始化；1：已执行
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：注册统计；2：登录统计
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 上传时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user
+------------------+---------------+------+-----+---------------------+---------
+ Field            | Type          | Null | Key | Default             | Remarks 
+------------------+---------------+------+-----+---------------------+---------
+ id               | INT(10)       | NO   | PRI |                     |         
+ tiono            | VARCHAR(64)   | YES  |     |                     | 汇林碳讯号
+ loginname        | VARCHAR(64)   | NO   |     |                     | 登录名称    
+ email            | VARCHAR(64)   | YES  |     |                     | 邮箱      
+ phone            | VARCHAR(64)   | YES  |     |                     |         
+ pwd              | VARCHAR(64)   | NO   |     |                     | 原始密码    
+ phonepwd         | VARCHAR(64)   | YES  |     |                     | 手机密码    
+ emailpwd         | VARCHAR(64)   | YES  |     |                     | 邮箱密码    
+ paypwd           | VARCHAR(64)   | YES  |     |                     |         
+ level            | INT(10)       | YES  |     | 1                   | 等级      
+ invitecode       | VARCHAR(50)   | YES  |     |                     | 邀请码     
+ nick             | VARCHAR(64)   | NO   |     |                     | 昵称      
+ avatar           | VARCHAR(512)  | YES  |     |                     | 头像url   
+ avatarbig        | VARCHAR(512)  | YES  |     |                     | 头像说明    
+ ipid             | INT(10)       | NO   |     |                     | 注册ip    
+ searchflag       | SMALLINT(5)   | YES  |     | 1                   | 允许被搜索的标识：1：是；2：否
+ msgremindflag    | SMALLINT(5)   | YES  |     | 1                   | 消息总提醒标识：1：是；2：否
+ fdvalidtype      | SMALLINT(5)   | YES  |     | 1                   | 是否好友验证：1：是；2：否
+ thirdstatus      | SMALLINT(5)   | YES  |     | 1                   | 三方登录状态：1：正式（非三方登录）；2：初创
+ thirdtype        | INT(10)       | YES  |     | 5                   | 第三方登录类型：1、PC版QQ，2、微信，3、微博，11、移动版QQ、22、移动版微信 33、移动版微博
+ registertype     | SMALLINT(5)   | YES  |     | 1                   | 类型：1：pc;2:安卓；3：ios
+ msgforbiddenflag | SMALLINT(5)   | YES  |     | 2                   | 禁言标识：1：是；2：否
+ phonebindflag    | SMALLINT(5)   | YES  |     | 2                   | 手机绑定状态：1：是；2：否
+ emailbindflag    | SMALLINT(5)   | YES  |     | 2                   | 邮箱绑定状态：1：是；2：否
+ thirdbindflag    | SMALLINT(5)   | YES  |     | 2                   | 三方绑定状态：1：是；2：否
+ openflag         | SMALLINT(5)   | YES  |     | 2                   | 开户状态：1：开户；2：未开户
+ paypwdflag       | SMALLINT(5)   | YES  |     | 2                   | 支付密码设置状态：1：是；2：否
+ openid           | INT(10)       | YES  |     |                     | 开户id    
+ subopenid        | INT(10)       | YES  |     |                     | 附属开户id  
+ realnameflag     | SMALLINT(5)   | YES  |     | 2                   | 实名认证标识：1：是；2：否
+ reghref          | VARCHAR(512)  | YES  |     |                     | 注册页面    
+ xx               | SMALLINT(5)   | YES  |     | 2                   | 机器人标识：1:是；2：否
+ remark           | VARCHAR(512)  | YES  |     |                     | 备注      
+ status           | SMALLINT(5)   | NO   |     | 1                   | 用户状态, 1：正常，2：未激活；3：违规，4：封停，5：注销
+ delsign          | INT(10)       | YES  |     | -1                  | 删除标识：-1 
+ createtime       | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime       | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------------+---------------+------+-----+---------------------+---------
+
+Table: user_action_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     |         
+ mayuid     | INT(10)       | YES  |     |                     | 可能是谁 ，当uid有值时，本字段一定有值
+ session    | VARCHAR(64)   | YES  |     |                     |         
+ uaid       | INT(10)       | YES  |     |                     |         
+ initpath   | VARCHAR(1024) | YES  |     |                     |         
+ path       | VARCHAR(1024) | YES  |     |                     |         
+ title      | VARCHAR(1024) | YES  |     |                     |         
+ time       | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ actiontype | INT(10)       | YES  |     |                     |         
+ actiondesc | VARCHAR(255)  | YES  |     |                     | 动作描述    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_address
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | INT(10)       | NO   | PRI |                     |         
+ uid           | INT(10)       | YES  |     |                     | 用户id    
+ name          | VARCHAR(40)   | YES  |     |                     | 收件人     
+ phone         | VARCHAR(40)   | YES  |     |                     | 收件人电话   
+ province      | VARCHAR(20)   | YES  |     |                     | 省       
+ city          | VARCHAR(40)   | YES  |     |                     | 市       
+ county        | VARCHAR(50)   | YES  |     |                     | 县（区）    
+ other         | VARCHAR(255)  | YES  |     |                     | 其他信息    
+ detailaddress | VARCHAR(255)  | YES  |     |                     | 详细地址    
+ createtime    | DATETIME(19)  | NO   |     | current_timestamp() | 该记录创建时间 
+ updatetime    | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+---------------+---------------+------+-----+---------------------+---------
+
+Table: user_agent
+-------------------+---------------+------+-----+---------+---------
+ Field             | Type          | Null | Key | Default | Remarks 
+-------------------+---------------+------+-----+---------+---------
+ id                | INT(10)       | NO   | PRI |         |         
+ userAgent         | VARCHAR(2048) | NO   |     |         | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.320
+ agentName         | VARCHAR(256)  | NO   |     |         | Internet Explorer, Chrome
+ agentVersionMajor | VARCHAR(32)   | NO   |     |         | 62, 11  
+ osName            | VARCHAR(256)  | NO   |     |         | Windows NT
+ osVersion         | VARCHAR(32)   | NO   |     |         | Windows 10.0
+ isMobile          | SMALLINT(5)   | YES  |     | 2       | 是否是移动设备：1：是；2：不是
+ deviceClass       | VARCHAR(128)  | YES  |     |         | 设备类型    
+-------------------+---------------+------+-----+---------+---------
+
+Table: user_base
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | INT(10)       | NO   | PRI |                     | ID      
+ uid         | INT(10)       | YES  |     |                     | 用户id    
+ email       | VARCHAR(32)   | YES  |     |                     | 绑定邮箱    
+ phone       | VARCHAR(32)   | YES  |     |                     | 绑定手机    
+ validphone  | SMALLINT(5)   | YES  |     | 2                   | 手机是否激活：1：已激活；2：未激活
+ validemail  | SMALLINT(5)   | YES  |     | 2                   | 邮箱是否已激活：1：已激活；2：未激活
+ sign        | VARCHAR(64)   | YES  |     |                     | 个性签名    
+ sex         | SMALLINT(5)   | YES  |     | 1                   | 性别：1：男；2：女
+ birthday    | BIGINT(19)    | YES  |     |                     | 生日      
+ area        | VARCHAR(64)   | YES  |     |                     | 地区：待定存储 
+ industry    | VARCHAR(64)   | YES  |     |                     | 行业      
+ position    | VARCHAR(64)   | YES  |     |                     | 职位      
+ hobby       | VARCHAR(64)   | YES  |     |                     | 爱好      
+ income      | VARCHAR(64)   | YES  |     |                     | 收入      
+ createtime  | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime  | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+ msgpushtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 最新消息推送时间戳
+-------------+---------------+------+-----+---------------------+---------
+
+Table: user_coin
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | INT(10)       | NO   | PRI |                     | ID      
+ uid           | INT(10)       | YES  |     |                     | 用户id    
+ coin          | DOUBLE(30,2)  | YES  |     | 0.00                | 牛币余额    
+ costcoin      | DOUBLE(30,2)  | YES  |     | 0.00                | 已消费牛币   
+ totalcoin     | DOUBLE(30,2)  | YES  |     | 0.00                | 总牛币     
+ freecoin      | DOUBLE(30,2)  | YES  |     | 0.00                | 牛丸      
+ costfreecoin  | DOUBLE(30,2)  | YES  |     | 0.00                | 已消费牛丸   
+ totalfreecoin | DOUBLE(30,2)  | YES  |     | 0.00                | 获得的总牛丸  
+ cny           | DOUBLE(20,2)  | YES  |     | 0.00                | 人民币     
+ withdrawcny   | DOUBLE(20,2)  | YES  |     | 0.00                | 提现人民币   
+ totalcny      | DOUBLE(20,2)  | YES  |     | 0.00                | 总人民币收入  
+ freezecny     | DOUBLE(10,2)  | YES  |     | 0.00                | 冻结人民币   
+ attackcoin    | DOUBLE(20,2)  | YES  |     | 0.00                | 通过非法手段充值得到的牛币
+ totaldevote   | DOUBLE(30,2)  | YES  |     | 0.00                | 总贡献值    
+ status        | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常；3：删除
+ delsign       | VARCHAR(20)   | YES  |     | 1                   | 注销标识    
+ createtime    | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime    | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+---------------+---------------+------+-----+---------------------+---------
+
+Table: user_coin_item
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 冗余用户uid 
+ bizid      | INT(10)       | YES  |     |                     | 业务id    
+ coinmode   | SMALLINT(5)   | YES  |     | 1                   | 币种模式：1：牛币；2：牛丸；3：钱包
+ coinflag   | SMALLINT(5)   | YES  |     | 2                   | 收支：1：收入；2：支出
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：充值；2：送礼消费；3：道具消费；4：道具买入；5：活动；6：竞猜；13：签到；14：注册；15:红包提现；16：红包退款；17：世界杯；18：课程
+ addexp     | DOUBLE(20)    | YES  |     | 0                   | 新增经验    
+ coin       | DOUBLE(20,2)  | YES  |     | 0.00                | 牛币数     
+ freecoin   | DOUBLE(20,2)  | YES  |     | 0.00                | 牛丸数     
+ cny        | DOUBLE(11,2)  | YES  |     | 0.00                | 人民币     
+ num        | INT(10)       | YES  |     | 0                   | 数量      
+ adddevote  | DOUBLE(20)    | YES  |     | 0                   | 新增贡献值   
+ robotpay   | SMALLINT(5)   | YES  |     | 1                   | 机器人支付：1：自付；2：代付
+ rebatecoin | DOUBLE(20,2)  | YES  |     | 0.00                | 优惠金额    
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | DATETIME(19)  | YES  |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_info_syn
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     | ID      
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ type       | SMALLINT(5)   | YES  |     |                     | 同步类型：1：昵称；2：头像；
+ bizstr     | VARCHAR(215)  | YES  |     |                     | 业务字符串   
+ bizint     | INT(10)       | YES  |     |                     | 业务id    
+ bizbigint  | BIGINT(19)    | YES  |     |                     | 业务longid
+ status     | SMALLINT(5)   | YES  |     | 1                   | 处理标识：1、初始化；2：处理中；3：删除
+ ip         | VARCHAR(50)   | YES  |     |                     | 处理ip    
+ createtime | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_last_login_time
+------------+--------------+------+-----+---------------------+---------
+ Field      | Type         | Null | Key | Default             | Remarks 
+------------+--------------+------+-----+---------------------+---------
+ id         | INT(10)      | NO   | PRI |                     |         
+ uid        | INT(10)      | YES  |     |                     | 用户id    
+ createtime | DATETIME(19) | NO   |     | current_timestamp() | 创建时间    
+------------+--------------+------+-----+---------------------+---------
+
+Table: user_msg
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ msgid      | INT(10)       | YES  |     |                     | 消息id    
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：已读；2：未读；3：删除
+ createtime | DATETIME(19)  | NO   |     | current_timestamp() | 该记录创建时间 
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_role
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     | ID      
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ rid        | SMALLINT(5)   | YES  |     |                     | 角色id    
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：启用；3：删除
+ createtime | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_third
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | NO   |     |                     |         
+ nick       | VARCHAR(64)   | YES  |     |                     | 用户昵称    
+ avatar     | VARCHAR(255)  | YES  |     |                     | 用户头像    
+ openid     | VARCHAR(64)   | NO   |     |                     |         
+ unionid    | VARCHAR(64)   | YES  |     |                     |         
+ type       | INT(10)       | NO   |     |                     | 第三方登录类型：
+1、PC版QQ，
+2、微信，
+3、微博，
+11、移动版QQ、
+22、移动版微信
+33、移动版微博
+
+ sex        | INT(10)       | YES  |     |                     | 1：男， 2：女，
+ time       | TIMESTAMP(19) | NO   |     | current_timestamp() | 修改时间    
+ createtime | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_third_osc
+---------------+---------------+------+-----+---------+---------
+ Field         | Type          | Null | Key | Default | Remarks 
+---------------+---------------+------+-----+---------+---------
+ id            | INT(10)       | NO   | PRI |         |         
+ user_third_id | INT(10)       | NO   |     |         | user_third表的id字段
+ oscid         | BIGINT(19)    | YES  |     |         |         
+ email         | VARCHAR(64)   | YES  |     |         | 国家      
+ location      | VARCHAR(512)  | YES  |     |         | 省       
+ url           | VARCHAR(1024) | YES  |     |         | 城市      
+---------------+---------------+------+-----+---------+---------
+
+Table: user_third_qq
+------------------+-------------+------+-----+---------+---------
+ Field            | Type        | Null | Key | Default | Remarks 
+------------------+-------------+------+-----+---------+---------
+ id               | INT(10)     | NO   | PRI |         |         
+ user_third_id    | INT(10)     | NO   |     |         | user_third表的id字段
+ is_yellow_vip    | SMALLINT(5) | YES  |     |         | 标识用户是否为黄钻用户（0：不是；1：是）。
+ yellow_vip_level | VARCHAR(8)  | YES  |     |         | 黄钻等级    
+------------------+-------------+------+-----+---------+---------
+
+Table: user_third_weibo
+---------------+---------------+------+-----+---------+---------
+ Field         | Type          | Null | Key | Default | Remarks 
+---------------+---------------+------+-----+---------+---------
+ id            | INT(10)       | NO   | PRI |         |         
+ user_third_id | INT(10)       | NO   |     |         | user_third表的id字段
+ verified      | SMALLINT(5)   | YES  |     |         | 是否认证过了，1：认证过，2：未认证过，其它值：未知
+ country       | VARCHAR(32)   | YES  |     |         | 国家      
+ province      | VARCHAR(32)   | YES  |     |         | 省       
+ city          | VARCHAR(32)   | YES  |     |         | 城市      
+ friends       | INT(10)       | YES  |     |         | 关注数（该用户关注了多少其它人）
+ followers     | INT(10)       | YES  |     |         | 粉丝数     
+ statuses      | INT(10)       | YES  |     |         | 微博数     
+ favourites    | INT(10)       | YES  |     |         |         
+ created_at    | TIMESTAMP(19) | YES  |     |         |         
+ weihao        | VARCHAR(64)   | YES  |     |         | 微号      
+ description   | VARCHAR(255)  | YES  |     |         | 用户个人描述  
+ domain        | VARCHAR(64)   | YES  |     |         | 用户个性化域名 
+---------------+---------------+------+-----+---------+---------
+
+Table: user_third_wx
+---------------+-------------+------+-----+---------+---------
+ Field         | Type        | Null | Key | Default | Remarks 
+---------------+-------------+------+-----+---------+---------
+ id            | INT(10)     | NO   | PRI |         |         
+ user_third_id | INT(10)     | NO   |     |         | user_third表的id字段
+ country       | VARCHAR(32) | YES  |     |         | 国家      
+ province      | VARCHAR(32) | YES  |     |         | 省       
+ city          | VARCHAR(32) | YES  |     |         | 城市      
+---------------+-------------+------+-----+---------+---------
+
+Table: user_token
+------------+-------------+------+-----+---------+---------
+ Field      | Type        | Null | Key | Default | Remarks 
+------------+-------------+------+-----+---------+---------
+ uid        | INT(10)     | NO   | PRI |         | userid  
+ devicetype | SMALLINT(5) | NO   | PRI |         | 1：pc， 2：安卓，3：IOS
+ token      | VARCHAR(48) | NO   |     |         |         
+------------+-------------+------+-----+---------+---------
+
+Table: userlog_modify_avatar
+--------------+---------------+------+-----+---------------------+---------
+ Field        | Type          | Null | Key | Default             | Remarks 
+--------------+---------------+------+-----+---------------------+---------
+ id           | INT(10)       | NO   | PRI |                     |         
+ uid          | INT(10)       | YES  |     |                     |         
+ oldavatar    | VARCHAR(255)  | YES  |     |                     |         
+ newavatar    | VARCHAR(255)  | YES  |     |                     |         
+ oldavatarbig | VARCHAR(255)  | YES  |     |                     |         
+ newavatarbig | VARCHAR(255)  | YES  |     |                     |         
+ createtime   | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+--------------+---------------+------+-----+---------------------+---------
+
+Table: userlog_modify_nick
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     |         
+ oldnick    | VARCHAR(255)  | YES  |     |                     |         
+ newnick    | VARCHAR(255)  | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: video
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     | ID      
+ session         | VARCHAR(48)   | YES  |     |                     |         
+ uid             | INT(10)       | YES  |     |                     | 上传者     
+ title           | VARCHAR(255)  | YES  |     |                     | 标题      
+ filename        | VARCHAR(255)  | YES  |     |                     | 文件名     
+ url             | VARCHAR(255)  | YES  |     |                     | 视频url   
+ initurl         | VARCHAR(255)  | YES  |     |                     | 原始url，因为视频可能来自第三方
+ comefrom        | SMALLINT(5)   | YES  |     |                     | 视频来源。1、im上传
+ width           | INT(10)       | YES  |     | 0                   | 视频的宽    
+ height          | INT(10)       | YES  |     | 0                   | 视频的高    
+ seconds         | INT(10)       | YES  |     | 0                   | 时长（秒）   
+ formatedseconds | VARCHAR(32)   | YES  |     |                     | 格式化的时长1小时20分钟 36秒
+ fps             | DOUBLE(11)    | YES  |     |                     | 每秒的帧数   
+ framecount      | INT(10)       | YES  |     |                     | 总帧数     
+ size            | BIGINT(19)    | YES  |     | 0                   | 文件大小，单位字节
+ status          | SMALLINT(5)   | YES  |     | 1                   | 状态：1：不可公开浏览；2：可公开浏览；3：禁止在任何场景显示
+ coverurl        | VARCHAR(255)  | YES  |     |                     | 封面url   
+ coverwidth      | INT(10)       | YES  |     |                     | 封面的宽    
+ coverheight     | INT(10)       | YES  |     |                     | 封面的高    
+ coversize       | INT(10)       | YES  |     |                     | 封面尺寸，单位：字节
+ createtime      | TIMESTAMP(19) | YES  |     | current_timestamp() | 上传时间    
+ updatetime      | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: video_oper_log
+---------+---------------+------+-----+---------------------+---------
+ Field   | Type          | Null | Key | Default             | Remarks 
+---------+---------------+------+-----+---------------------+---------
+ id      | INT(10)       | NO   | PRI |                     |         
+ vid     | INT(10)       | NO   |     |                     | video的id
+ uid     | INT(10)       | NO   |     |                     | 操作人员id  
+ session | VARCHAR(255)  | YES  |     |                     |         
+ type    | INT(10)       | YES  |     |                     | 1、点赞，2、评分，3：播放
+ time    | TIMESTAMP(19) | NO   |     | current_timestamp() | 操作时间    
+ uaid    | INT(10)       | YES  |     |                     | user_agent表的id
+ referer | VARCHAR(1024) | YES  |     |                     | 操作时所在的页面
+ device  | SMALLINT(5)   | YES  |     |                     | 操作时的设备类型
+---------+---------------+------+-----+---------------------+---------
+
+Table: wx_app
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | INT(10)       | NO   | PRI |                     |         
+ version     | VARCHAR(60)   | YES  |     |                     | 版本号     
+ name        | VARCHAR(600)  | YES  |     |                     | 版本名称内容  
+ updatemode  | SMALLINT(5)   | YES  |     | 1                   | 更新模式：1：正常更新；2：强制更新
+ type        | SMALLINT(5)   | YES  |     | 1                   | 类型：1：安卓；2：ios
+ packagesize | DOUBLE(10)    | YES  |     | 0                   | 包大小     
+ packagename | VARCHAR(100)  | YES  |     |                     | 包名称     
+ fileurl     | VARCHAR(255)  | YES  |     |                     | 文件路径    
+ status      | SMALLINT(5)   | YES  |     | 2                   | 状态:1:发布；2：下架/初始化
+ mguid       | INT(10)       | YES  |     |                     | 操作用户    
+ createtime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-------------+---------------+------+-----+---------------------+---------
+
+Table: wx_call_item
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | BIGINT(19)    | NO   | PRI |                     |         
+ type          | SMALLINT(5)   | NO   |     | 1                   | 1、 音频通话，2、视频通话
+ status        | SMALLINT(5)   | NO   |     | 1                   | 呼叫状态：1、发起呼叫， 2、信令接通，3、流媒体接通，4、通话结束（拒接、占线、挂断都属于通话结束）
+ hanguptype    | SMALLINT(5)   | YES  |     | 99                  | 挂断类型 
+1、正常挂断
+2、拒接挂断
+3、对方正在通话
+4、TCP断开时，系统自动挂断
+5、客户端出现异常，系统自动挂机（譬如获取摄像头失败等），这个请求是客户端发起的挂断请求
+6、ICE服务器异常，这个请求是客户端发起的挂断请求
+7、系统重启
+8、对方不在线
+9、等待响应超时
+10、发起方取消了通话
+99、还没有挂断
+ hangupuid     | INT(10)       | YES  |     |                     | 挂断一方的uid，如果是系统挂断，则是null
+ calltime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 呼叫开始时间（一方请求通话请求的时间）
+ resptime      | TIMESTAMP(19) | YES  |     |                     | 对方响应时间点 
+ connectedtime | TIMESTAMP(19) | YES  |     |                     | 接通时间（对方同意通话时间）
+ endtime       | TIMESTAMP(19) | YES  |     |                     | 通话结束时间  
+ respwait      | BIGINT(19)    | NO   |     | 0                   | resptime-calltime
+ streamwait    | BIGINT(19)    | NO   |     | 0                   | connectedtime-resptime
+ callduration  | BIGINT(19)    | NO   |     | 0                   | 通话时长（endtime-connectedtime)  
+ fromuid       | INT(10)       | NO   |     |                     | 通话发起人的userid
+ fromcid       | VARCHAR(32)   | NO   |     |                     | 通话发起人的channelcontextid
+ fromipid      | INT(10)       | NO   |     |                     | 发起人的ipid（ipinfo表的id）
+ fromdevice    | SMALLINT(5)   | NO   |     | 1                   | 发起通话人员的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ touid         | INT(10)       | NO   |     |                     | 通话对方的userid
+ tocid         | VARCHAR(32)   | YES  |     |                     | 通话对方的channelcontextid
+ toipid        | INT(10)       | YES  |     |                     | 通话对方的ipid（ipinfo表的id）
+ todevice      | SMALLINT(5)   | YES  |     |                     | 通话对方的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+---------------+---------------+------+-----+---------------------+---------
+
+Table: wx_call_log
+---------+---------------+------+-----+---------+---------
+ Field   | Type          | Null | Key | Default | Remarks 
+---------+---------------+------+-----+---------+---------
+ id      | BIGINT(19)    | NO   | PRI |         |         
+ callid  | BIGINT(19)    | NO   |     |         | wx_call_item的id
+ summary | VARCHAR(256)  | NO   |     |         | 日志描述    
+ data    | VARCHAR(8192) | YES  |     |         | 日志数据    
+ uid     | INT(10)       | NO   |     | -1      | 触发日志的uid，如果是系统触发，则是-1
+ time    | DATETIME(19)  | NO   |     |         | 记录时间    
+---------+---------------+------+-----+---------+---------
+
+Table: wx_chat_del_item
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ chatlinkid | BIGINT(19)    | YES  |     |                     |         
+ chatmode   | SMALLINT(5)   | YES  |     |                     | 聊天模式：1：私聊；2：群聊
+ bizid      | BIGINT(19)    | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ uid        | INT(10)       | YES  |     |                     | 用户uid   
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 记录更新时间  
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_chat_group_item
+----------------+---------------+------+-----+---------------------+---------
+ Field          | Type          | Null | Key | Default             | Remarks 
+----------------+---------------+------+-----+---------------------+---------
+ groupid        | BIGINT(19)    | NO   | PRI |                     | 群id     
+ uid            | INT(10)       | NO   | PRI |                     | 用户id    
+ gpulinkid      | BIGINT(19)    | NO   |     |                     | 群组用户关联表id
+ chatlinkid     | BIGINT(19)    | YES  |     |                     | 聊天id    
+ chatlinkmetaid | BIGINT(19)    | YES  |     |                     |         
+ resetflag      | SMALLINT(5)   | YES  |     | 2                   | 重置标识(废弃)：1：是；2：否
+ linkflag       | SMALLINT(5)   | YES  |     | 1                   | 是否是有效连接（是否是有效的聊天信息）：1：是；2：否
+ focusflag      | SMALLINT(5)   | YES  |     | 2                   | 焦点标识：1：是；2：否
+ grouprole      | SMALLINT(5)   | YES  |     | 2                   | 群角色：1：群主；2：成员
+ startmsgid     | BIGINT(19)    | YES  |     |                     | 从哪个消息开始有阅读权限
+ createtime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_chat_items
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | BIGINT(19)    | NO   | PRI |                     |         
+ uid         | INT(10)       | YES  |     |                     | 用户uid   
+ chatmode    | SMALLINT(5)   | YES  |     | 1                   | 聊天模式：1：私聊；2：群聊
+ bizid       | BIGINT(19)    | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ linkid      | BIGINT(19)    | YES  |     |                     | 关联关系id：群：群用户id；私聊：好友id
+ fidkey      | VARCHAR(30)   | YES  |     |                     | 好友组合uid的key-twouid
+ bizrole     | SMALLINT(5)   | YES  |     | 2                   | 角色：1：群主；2：成员
+ avatar      | VARCHAR(255)  | YES  |     |                     | 群头像/好友头像
+ linkflag    | SMALLINT(5)   | YES  |     | 1                   | 是否是有效连接（是否是有效的聊天信息）：1：是；2：否
+ status      | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常；2：封停
+ name        | VARCHAR(255)  | YES  |     |                     | 群名称/私聊名称
+ joinnum     | SMALLINT(5)   | YES  |     | 2                   | 会话人数    
+ topflag     | SMALLINT(5)   | YES  |     | 2                   | 是否置顶：1：是；2：否
+ startmsgid  | BIGINT(19)    | YES  |     |                     | 从哪个消息开始有阅读权限-废弃
+ msgfreeflag | SMALLINT(5)   | YES  |     | 2                   | 是否免打扰：1：是；2：否
+ createtime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+-------------+---------------+------+-----+---------------------+---------
+
+Table: wx_chat_items_meta
+---------------------+---------------+------+-----+---------------------+---------
+ Field               | Type          | Null | Key | Default             | Remarks 
+---------------------+---------------+------+-----+---------------------+---------
+ id                  | BIGINT(19)    | NO   | PRI |                     |         
+ uid                 | INT(10)       | YES  |     |                     | 用户uid   
+ chatmode            | SMALLINT(5)   | YES  |     | 1                   | 聊天模式：1：私聊；2：群聊
+ bizid               | BIGINT(19)    | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ linkflag            | SMALLINT(5)   | YES  |     | 1                   | 有效链接：1：是；2：否
+ viewflag            | SMALLINT(5)   | YES  |     | 1                   | 展示状态（是否显示列表，该状态下跟激活状态不同的是，有特殊情况激活而不显示）：1：是；2：否
+ chatlinkid          | BIGINT(19)    | YES  |     |                     | 会话id    
+ toreadflag          | SMALLINT(5)   | YES  |     | 1                   | 对方是否已读自己的消息（私聊）：1：是；2：否
+ readflag            | SMALLINT(5)   | YES  |     | 1                   | 是否已读：1：是；2：否
+ focusflag           | SMALLINT(5)   | YES  |     | 2                   | 焦点标识：1：是；2：否
+ notreadcount        | INT(10)       | YES  |     | 0                   | 未读数     
+ notreadstartmsgid   | BIGINT(19)    | YES  |     |                     | 未读开始的消息id
+ atreadflag          | SMALLINT(5)   | YES  |     | 1                   | @是否已读：1：是；2：否
+ atnotreadcount      | SMALLINT(5)   | YES  |     | 0                   | @未读的条数  
+ atnotreadstartmsgid | BIGINT(19)    | YES  |     |                     | @未读的起始消息id
+ msgcount            | INT(10)       | YES  |     | 0                   | 累计会话消息数 
+ lastmsgid           | BIGINT(19)    | YES  |     |                     | 聊天最后的消息id
+ lastmsguid          | INT(10)       | YES  |     |                     | 聊天最后的消息发送者
+ fromnick            | VARCHAR(255)  | YES  |     |                     | 最后消息的昵称 
+ msgresume           | VARCHAR(255)  | YES  |     |                     | 最后的消息缩略 
+ msgtype             | SMALLINT(5)   | YES  |     | 1                   | 消息类型：同消息
+ sysflag             | SMALLINT(5)   | YES  |     | 2                   | 最后一条是否是系统消息：1：是；2：否
+ sysmsgkey           | VARCHAR(50)   | YES  |     |                     | 消息模板key值
+ opernick            | VARCHAR(255)  | YES  |     |                     | 操作者昵称   
+ tonicks             | VARCHAR(800)  | YES  |     |                     | 发送者昵称列表 
+ sendtime            | DATETIME(19)  | YES  |     |                     | 发送时间    
+ chatuptime          | DATETIME(19)  | YES  |     |                     | 会话更新时间  
+ createtime          | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime          | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+---------------------+---------------+------+-----+---------------------+---------
+
+Table: wx_chat_user_item
+------------------+---------------+------+-----+---------------------+---------
+ Field            | Type          | Null | Key | Default             | Remarks 
+------------------+---------------+------+-----+---------------------+---------
+ uid              | INT(10)       | NO   | PRI |                     | 用户的uid  
+ chatmode         | SMALLINT(5)   | NO   | PRI |                     | 聊天模型：1：私聊；2：群聊
+ bizid            | BIGINT(19)    | NO   | PRI |                     | 业务id：群聊-groupid；私聊：对方uid
+ chatlinkid       | BIGINT(19)    | YES  |     |                     | 聊天id    
+ chatlinkmetaid   | BIGINT(19)    | YES  |     |                     |         
+ tochatlinkid     | BIGINT(19)    | YES  |     |                     | 私聊对方的聊天列表id
+ tochatlinkmetaid | BIGINT(19)    | YES  |     |                     |         
+ linkid           | BIGINT(19)    | YES  |     |                     | 私聊好友id/群用户id
+ fidkey           | VARCHAR(30)   | YES  |     |                     | 好友组合uid的key-twouid
+ linkflag         | SMALLINT(5)   | YES  |     | 1                   | 是否是有效连接（是否是有效的聊天信息）：1：是；2：否
+ startmsgid       | BIGINT(19)    | YES  |     |                     | 从哪个消息开始有阅读权限-群组无效
+ createtime       | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime       | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+------------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | BIGINT(19)    | NO   | PRI |                     |         
+ uid         | INT(10)       | NO   |     |                     | 主人的userid
+ frienduid   | INT(10)       | NO   |     |                     | 好友的userid
+ remarkname  | VARCHAR(32)   | YES  |     |                     | 备注名     
+ phone       | VARCHAR(30)   | YES  |     |                     | 电话      
+ remark      | VARCHAR(255)  | YES  |     |                     | 其他备注    
+ status      | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常 
+ startmsgid  | BIGINT(19)    | NO   |     | 0                   | 从哪个消息开始有阅读权限-废弃
+ msgfreeflag | SMALLINT(5)   | YES  |     | 2                   | 是否免打扰：1：是；2：否
+ chatindex   | VARCHAR(2)    | YES  |     |                     | 字母排序    
+ updatetime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+-------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend_apply_items
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ fromuid    | INT(10)       | NO   |     |                     | fromuserid，发起添加好友请求的userid
+ touid      | INT(10)       | NO   |     |                     | 添加谁为好友  
+ greet      | VARCHAR(255)  | YES  |     |                     | 申请内容    
+ status     | SMALLINT(5)   | YES  |     | 1                   | 处理：1：通过；2：申请中；3：过期/拒绝
+ autoflag   | SMALLINT(5)   | YES  |     | 1                   | 自动加人标识：1：是；2：否
+ replytime  | TIMESTAMP(19) | YES  |     |                     | 处理时间    
+ ipid       | INT(10)       | YES  |     |                     | 处理时的ip  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend_apply_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ fromuid    | INT(10)       | NO   |     |                     | fromuserid，发起添加好友请求的userid
+ touid      | INT(10)       | NO   |     |                     | 添加谁为好友  
+ greet      | VARCHAR(255)  | YES  |     |                     | 打招呼的内容  
+ status     | SMALLINT(5)   | YES  |     | 4                   | 1、已经同意，2、已经拒绝，3、已读未处理，4、未读，5、作废
+ readtime   | TIMESTAMP(19) | YES  |     |                     | 已读时间    
+ replytime  | TIMESTAMP(19) | YES  |     |                     | 处理时间（拒绝时间或同意时间）
+ ipid       | INT(10)       | YES  |     |                     | 打招呼时的ip信息
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend_del_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | NO   |     |                     | 主人的userid
+ frienduid  | INT(10)       | NO   |     |                     | 好友的userid
+ ipid       | INT(10)       | YES  |     |                     | 删除好友时的ip信息
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend_meta
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | BIGINT(19)    | NO   | PRI |                     |         
+ uid        | INT(10)       | NO   |     |                     | 好友id    
+ touid      | INT(10)       | NO   |     |                     | 好友id    
+ fidkey     | VARCHAR(64)   | YES  |     |                     | 还有关联key 
+ lastmsgid  | BIGINT(19)    | YES  |     |                     | 最后一条消息id
+ msgcount   | INT(10)       | YES  |     | 0                   | 消息条数    
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend_msg
+----------------+---------------+------+-----+---------------------+---------
+ Field          | Type          | Null | Key | Default             | Remarks 
+----------------+---------------+------+-----+---------------------+---------
+ id             | BIGINT(19)    | NO   | PRI |                     |         
+ frommode       | SMALLINT(5)   | YES  |     | 1                   | 模型：1：私聊；2：群聊
+ frommsgid      | BIGINT(19)    | YES  |     |                     | 转发消息来源  
+ uid            | INT(10)       | YES  |     |                     | 聊天发起人，user表的id
+ session        | VARCHAR(32)   | YES  |     |                     | 聊天发起人的sessionid
+ touid          | INT(10)       | YES  |     |                     | 私聊时，会有值，表示是和谁私聊。此值为null表示是群聊
+ tosession      | VARCHAR(255)  | YES  |     |                     | 私聊时，会有值，表示是和谁私聊。此值为null表示是群聊
+ reverseflag    | SMALLINT(5)   | YES  |     | 2                   | 反向发送标识(接收者触发发送)：1：是；2：否
+ sigleuid       | INT(10)       | YES  |     | -1                  | 归属单人的消息的用户
+ sigleflag      | SMALLINT(5)   | YES  |     | 2                   | 是否是单通道消息：1：是；2：否
+ ipid           | INT(10)       | YES  |     |                     | 聊天发起人所在的ip，ip_info的id字段
+ device         | SMALLINT(5)   | YES  |     | 1                   | 主聊人员的设备类型（DeviceType），1：PC，2：安卓，3：IOS;99:系统自动
+ appversion     | VARCHAR(60)   | YES  |     |                     | app版本号  
+ text           | VARCHAR(4096) | YES  |     |                     | 聊天内容（原始内容）
+ srctext        | VARCHAR(4096) | YES  |     |                     | 源消息     
+ opernick       | VARCHAR(50)   | YES  |     |                     | 操作者昵称   
+ sysmsgbody     | VARCHAR(800)  | YES  |     |                     | 系统消息体   
+ tonicks        | VARCHAR(800)  | YES  |     |                     | 发送者昵称列表 
+ resume         | VARCHAR(100)  | YES  |     |                     | 缩略文字    
+ time           | DATETIME(19)  | YES  |     | current_timestamp() | 聊天时间    
+ sendbysys      | SMALLINT(5)   | YES  |     | 2                   | 该条消息是否由系统发出，譬如添加好友通知、评论通知等
+
+1：是由系统发出的
+2：非系统发出
+ msgtype        | SMALLINT(5)   | YES  |     | 1                   | 消息类型：1：正常消息：2：操作消息
+ oper           | SMALLINT(5)   | YES  |     |                     | 操作码：1：删除聊天会话；2：拉黑；3：恢复拉黑
+ contenttype    | SMALLINT(5)   | YES  |     | 1                   | 内容类型，1、普通文本消息，2、超链接卡片消息，3、文件，4、音频，5、视频，6、图片，9、名片
+ status         | SMALLINT(5)   | YES  |     | 1                   | 这条消息的状态，1、正常、2、 自己撤回了，3、被管理员撤回
+ readflag       | SMALLINT(5)   | YES  |     | 2                   | 已读标识。1：已读，2：未读
+ readtime       | DATETIME(19)  | YES  |     |                     | 对方阅读消息的时间
+ readdevice     | SMALLINT(5)   | YES  |     |                     | 主聊人员的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ readipid       | INT(10)       | YES  |     |                     | 对方阅读消息时，所在的ip，ip_info的id字段
+ twouid         | VARCHAR(64)   | NO   |     |                     | 私聊归属uid字符串，'大_小'
+ opersrcmsgtype | SMALLINT(5)   | YES  |     |                     | 原始消息类型  
+ opersrcmsg     | VARCHAR(4096) | YES  |     |                     | 操作的原始消息 
+ operbizdata    | VARCHAR(255)  | YES  |     |                     | 操作的业务id 
+ createtime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_friend_oper_msg
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | BIGINT(19)    | NO   | PRI |                     |         
+ frommode    | SMALLINT(5)   | YES  |     | 1                   | 模型：1：私聊；2：群聊
+ frommsgid   | BIGINT(19)    | YES  |     |                     | 转发消息来源  
+ uid         | INT(10)       | NO   |     |                     | 聊天发起人，user表的id
+ session     | VARCHAR(32)   | YES  |     |                     | 聊天发起人的sessionid
+ touid       | INT(10)       | NO   |     |                     | 私聊时，会有值，表示是和谁私聊。此值为null表示是群聊
+ tosession   | VARCHAR(255)  | YES  |     |                     | 私聊时，会有值，表示是和谁私聊。此值为null表示是群聊
+ reverseflag | SMALLINT(5)   | YES  |     | 2                   | 反向发送标识(接收者触发发送)：1：是；2：否
+ sigleuid    | INT(10)       | YES  |     | -1                  | 归属单人的消息的用户
+ sigleflag   | SMALLINT(5)   | YES  |     | 2                   | 是否是单通道消息：1：是；2：否
+ ipid        | INT(10)       | NO   |     |                     | 聊天发起人所在的ip，ip_info的id字段
+ device      | SMALLINT(5)   | NO   |     | 1                   | 主聊人员的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ text        | VARCHAR(4096) | NO   |     |                     | 聊天内容（原始内容）
+ opernick    | VARCHAR(50)   | YES  |     |                     |         
+ sysmsgbody  | VARCHAR(800)  | YES  |     |                     |         
+ tonicks     | VARCHAR(800)  | YES  |     |                     |         
+ resume      | VARCHAR(100)  | YES  |     |                     | 缩略文字    
+ time        | DATETIME(19)  | NO   |     | current_timestamp() | 聊天时间    
+ sendbysys   | SMALLINT(5)   | NO   |     | 2                   | 该条消息是否由系统发出，譬如添加好友通知、评论通知等
+
+1：是由系统发出的
+2：非系统发出
+ msgtype     | SMALLINT(5)   | YES  |     | 1                   | 消息类型：1：正常消息：2：操作消息
+ oper        | SMALLINT(5)   | YES  |     |                     | 操作码：1：删除聊天会话；2：拉黑；3：恢复拉黑
+ contenttype | SMALLINT(5)   | NO   |     | 1                   | 内容类型，1、普通文本消息，2、超链接卡片消息，3、文件，4、音频，5、视频，6、图片，9、名片
+ status      | SMALLINT(5)   | NO   |     | 1                   | 这条消息的状态，1、正常、2、 自己撤回了，3、被管理员撤回
+ readflag    | SMALLINT(5)   | YES  |     | 2                   | 已读标识。1：已读，2：未读
+ readtime    | DATETIME(19)  | YES  |     |                     | 对方阅读消息的时间
+ readdevice  | SMALLINT(5)   | YES  |     |                     | 主聊人员的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ readipid    | INT(10)       | YES  |     |                     | 对方阅读消息时，所在的ip，ip_info的id字段
+ twouid      | VARCHAR(64)   | NO   |     |                     | 私聊归属uid字符串，'大_小'
+ operbizdata | VARCHAR(255)  | YES  |     |                     | 操作的业务id 
+ createtime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group
+----------------+---------------+------+-----+---------------------+---------
+ Field          | Type          | Null | Key | Default             | Remarks 
+----------------+---------------+------+-----+---------------------+---------
+ id             | BIGINT(19)    | NO   | PRI |                     |         
+ name           | VARCHAR(32)   | NO   |     |                     | 群名称     
+ uid            | INT(10)       | NO   |     |                     |  群主的userid
+ joinmode       | SMALLINT(5)   | NO   |     | 2                   | 进群方式：1、群主审核；2：非审核
+ friendflag     | SMALLINT(5)   | YES  |     | 1                   | 好友开关：1：开启；2：不开启
+ applyflag      | SMALLINT(5)   | YES  |     | 1                   | 邀请开关：1：开启；2：非开启
+ msgactflag     | SMALLINT(5)   | YES  |     | 1                   | 是否进行消息激活群：1：是；2：否
+ avatar         | VARCHAR(512)  | YES  |     |                     | 群头像     
+ notice         | VARCHAR(1024) | YES  |     |                     | 群公告     
+ noticetime     | DATETIME(19)  | YES  |     |                     | 公告时间    
+ status         | SMALLINT(5)   | YES  |     | 1                   | 当前群的状态：1、正常；2、被封；3、群主删除
+ autoflag       | SMALLINT(5)   | YES  |     | 1                   | 名称自动生成标志：1：是；2：否
+ avatarautoflag | SMALLINT(5)   | YES  |     | 1                   | 头像自动生成标识：1：是；2：否
+ intro          | VARCHAR(1024) | YES  |     |                     | 群简介     
+ remark         | VARCHAR(255)  | YES  |     |                     | 备注      
+ maximum        | INT(10)       | YES  |     | 999999              | 最多人数    
+ createtime     | TIMESTAMP(19) | NO   |     | current_timestamp() |  群创建时间  
+ updatetime     | TIMESTAMP(19) | NO   |     | current_timestamp() |  群资料更新时间
+----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_apply
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ groupid    | BIGINT(19)    | NO   |     |                     | 群id     
+ operuid    | INT(10)       | NO   |     |                     | 申请人uid  
+ applymsg   | VARCHAR(255)  | YES  |     |                     | 申请信息    
+ status     | SMALLINT(5)   | YES  |     | 2                   | 申请状态：1：已处理；2：申请中；3：已驳回
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群资料更新时间
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_apply_items
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ aid        | INT(10)       | NO   |     |                     | 申请记录    
+ groupid    | BIGINT(19)    | YES  |     |                     | 申请群id   
+ uid        | INT(10)       | NO   |     |                     | 申请uid   
+ status     | SMALLINT(5)   | YES  |     | 2                   | 申请状态：1：已处理；2：申请中；3：已驳回
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群资料更新时间
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_inblack
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ groupid    | BIGINT(19)    | NO   |     |                     | 群id     
+ reason     | VARCHAR(255)  | YES  |     |                     | 封停原因    
+ oper       | SMALLINT(5)   | YES  |     | 1                   | 操作：1：封停；2：解封
+ adminuid   | INT(10)       | NO   |     |                     | 后台管理员uid
+ adminnick  | VARCHAR(60)   | NO   |     |                     | 后台管理员昵称 
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群资料更新时间
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_meta
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | BIGINT(19)    | NO   | PRI |                     |         
+ groupid       | BIGINT(19)    | NO   |     |                     | 群id     
+ allactflag    | SMALLINT(5)   | YES  |     | 2                   | 所有都激活：1：是；2：否
+ allstartflag  | SMALLINT(5)   | YES  |     | 2                   | 所有都有消息：1：是；2：否
+ forbiddenflag | SMALLINT(5)   | YES  |     | 2                   | 全员禁用：1：是；2：否
+ joinnum       | SMALLINT(5)   | NO   |     | 1                   | 群人数     
+ leavecount    | SMALLINT(5)   | YES  |     | 0                   | 退群次数    
+ kickcount     | SMALLINT(5)   | YES  |     | 0                   | 踢人次数    
+ transfercount | SMALLINT(5)   | YES  |     | 0                   | 群主转让次数  
+ lastmsgid     | BIGINT(19)    | YES  |     |                     | 最后一条消息id-废弃
+ msgcount      | INT(10)       | YES  |     | 0                   | 消息条数    
+ createtime    | TIMESTAMP(19) | NO   |     | current_timestamp() |  群创建时间  
+ updatetime    | TIMESTAMP(19) | NO   |     | current_timestamp() |  群资料更新时间
+---------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_msg
+----------------+---------------+------+-----+---------------------+---------
+ Field          | Type          | Null | Key | Default             | Remarks 
+----------------+---------------+------+-----+---------------------+---------
+ id             | BIGINT(19)    | NO   | PRI |                     |         
+ frommode       | SMALLINT(5)   | YES  |     | 1                   | 模型：1：私聊；2：群聊
+ frommsgid      | BIGINT(19)    | YES  |     |                     | 转发消息来源  
+ uid            | INT(10)       | NO   |     |                     | 聊天发起人uid
+ autoflag       | SMALLINT(5)   | YES  |     | 1                   | 自动标识：1:是；2：否
+ nick           | VARCHAR(64)   | YES  |     |                     | 昵称      
+ avatar         | VARCHAR(512)  | YES  |     |                     | 头像url   
+ session        | VARCHAR(32)   | YES  |     |                     | 聊天发起人的sessionid
+ ipid           | INT(10)       | YES  |     |                     | 聊天发起人所在的ip，ip_info的id字段
+ ip             | VARCHAR(64)   | YES  |     |                     |         
+ device         | SMALLINT(5)   | YES  |     | 1                   | 主聊人员的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion     | VARCHAR(60)   | YES  |     |                     | app版本号  
+ groupid        | BIGINT(19)    | NO   |     |                     | 群组id    
+ resume         | VARCHAR(100)  | YES  |     |                     | 缩略文字    
+ text           | VARCHAR(4096) | NO   |     |                     | 聊天内容（原始内容）
+ srctext        | VARCHAR(4096) | YES  |     |                     | 源消息     
+ opernick       | VARCHAR(50)   | YES  |     |                     | 操作者昵称   
+ sysmsgkey      | VARCHAR(50)   | YES  |     |                     | 消息模板key值
+ tonicks        | VARCHAR(2048) | YES  |     |                     | 发送者昵称列表 
+ time           | DATETIME(19)  | NO   |     |                     | 聊天时间    
+ bizid          | BIGINT(19)    | YES  |     |                     | 附属业务id  
+ contenttype    | SMALLINT(5)   | NO   |     | 1                   | 内容类型，1、普通文本消息，2、超链接卡片消息，3、文件，4、音频，5、视频，6、图片，9、名片
+ status         | SMALLINT(5)   | YES  |     | 1                   | 这条消息的状态，1、正常、2、 自己撤回了，3、被管理员撤回
+ sendbysys      | SMALLINT(5)   | YES  |     | 2                   | 该条消息是否由系统发出，譬如某某进入了群聊，1、系统发送；2、非系统发送
+ sigleuid       | INT(10)       | YES  |     | -1                  | 归属单人的消息的用户
+ sigleflag      | SMALLINT(5)   | YES  |     | 2                   | 是否是单通道消息：1：是；2：否
+ whereflag      | SMALLINT(5)   | YES  |     | 2                   | 过滤用户标识：1:是；2：否
+ whereuid       | VARCHAR(100)  | YES  |     | ,                   | 过滤的用户uid,以头号分割
+ oper           | SMALLINT(5)   | YES  |     |                     | 操作码     
+ opersrcmsgtype | SMALLINT(5)   | YES  |     |                     | 原始消息类型  
+ opersrcmsg     | VARCHAR(4096) | YES  |     |                     | 操作的原始消息 
+ operbizdata    | VARCHAR(255)  | YES  |     |                     | 操作的业务id 
+ createtime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_msg_user_oper
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | BIGINT(19)    | NO   | PRI |                     |         
+ groupid    | BIGINT(19)    | YES  |     |                     | 群id     
+ msgid      | BIGINT(19)    | YES  |     |                     | 消息id    
+ uid        | INT(10)       | NO   |     |                     | 聊天发起人uid
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：删除 
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_user
+---------------------+---------------+------+-----+---------------------+---------
+ Field               | Type          | Null | Key | Default             | Remarks 
+---------------------+---------------+------+-----+---------------------+---------
+ id                  | BIGINT(19)    | NO   | PRI |                     |         
+ groupid             | BIGINT(19)    | NO   |     |                     | im_group的id
+ uid                 | INT(10)       | NO   |     |                     |         
+ groupavator         | VARCHAR(512)  | YES  |     |                     | 冗余头像    
+ srcnick             | VARCHAR(64)   | YES  |     |                     | 原始昵称    
+ groupnick           | VARCHAR(64)   | YES  |     |                     | 该用户在群内的昵称
+ autoflag            | SMALLINT(5)   | YES  |     | 1                   | 自动标识：1：是；2：否
+ startmsgid          | BIGINT(19)    | YES  |     |                     | 从哪个消息开始有阅读权限-废弃
+ lastmsgid           | BIGINT(19)    | YES  |     |                     | 注意：废弃字段,如果使用，请放入动态表中:该用户最后一次收到的消息id，对应im_group_msg的id
+ viewstatus          | SMALLINT(5)   | YES  |     | 1                   | 显示状态：1：正常；2：未消息激活；3：列表删除
+ isaddress           | SMALLINT(5)   | YES  |     | 1                   | 是否加入通讯录：1：是；2：否
+ msgfreeflag         | SMALLINT(5)   | YES  |     | 2                   | 是否免打扰：1：是；2：否
+ forbiddenflag       | SMALLINT(5)   | YES  |     | 2                   | 禁言标识：1：时长禁言；2：否；3：长久禁用
+ forbiddenduration   | INT(10)       | YES  |     | 0                   | 禁用时长：秒  
+ cancelforbiddentime | DATETIME(19)  | YES  |     |                     | 取消禁言的时间 
+ nickviewflag        | SMALLINT(5)   | YES  |     | 1                   | 是否显示昵称：1：是；2：否
+ grouprole           | SMALLINT(5)   | YES  |     | 2                   | 群角色：1：群主；2：成员
+ setroletime         | DATETIME(19)  | YES  |     |                     | 角色指定时间  
+ status              | SMALLINT(5)   | NO   |     | 1                   | 状态：1：正常；2：退群；3：被踢出群
+ createtime          | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime          | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+---------------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_user_del_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | BIGINT(19)    | NO   | PRI |                     |         
+ groupid    | BIGINT(19)    | NO   |     |                     | 群id     
+ uid        | INT(10)       | NO   |     |                     | 删除动作的主语userid
+ deleteduid | INT(10)       | NO   |     |                     | 被删除的userid
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_group_user_invite_log
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | BIGINT(19)    | NO   | PRI |                     |         
+ groupid    | BIGINT(19)    | NO   |     |                     | 邀请进哪个群  
+ uid        | INT(10)       | NO   |     |                     | 发起邀请的userid
+ status     | SMALLINT(5)   | NO   |     | 1                   | 1：可用状态，2：不可用状态（譬如进群后被T）
+ inviteduid | INT(10)       | NO   |     |                     | 被邀请的userid
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_jpush_user
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ regid      | VARCHAR(64)   | YES  |     |                     | 极光推送设备注册id
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_read_ack
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户uid   
+ touid      | INT(10)       | YES  |     |                     | 对方uid   
+ chatlinkid | BIGINT(19)    | YES  |     |                     | 会话id    
+ type       | SMALLINT(5)   | YES  |     |                     | 类型：1：ack；2：发送
+ devicetype | SMALLINT(5)   | YES  |     |                     | 设备类型    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |  群资料更新时间
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_syn_item
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ devicetype | SMALLINT(5)   | YES  |     |                     | 设备类型    
+ syntype    | SMALLINT(5)   | YES  |     | 1                   | 同步类型：1:会话
+ syntime    | DATETIME(19)  | YES  |     |                     | 同步时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录更新时间  
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_tag
+------------+--------------+------+-----+---------------------+---------
+ Field      | Type         | Null | Key | Default             | Remarks 
+------------+--------------+------+-----+---------------------+---------
+ id         | INT(10)      | NO   | PRI |                     |         
+ uid        | INT(10)      | NO   |     |                     |         
+ tagname    | VARCHAR(255) | NO   |     |                     |         
+ createtime | DATETIME(19) | NO   |     | current_timestamp() |         
+ ipid       | INT(10)      | YES  |     |                     |         
+------------+--------------+------+-----+---------------------+---------
+
+Table: wx_tag_friend
+------------+--------------+------+-----+---------------------+---------
+ Field      | Type         | Null | Key | Default             | Remarks 
+------------+--------------+------+-----+---------------------+---------
+ id         | INT(10)      | NO   | PRI |                     |         
+ owneruid   | INT(10)      | NO   |     |                     |         
+ frienduid  | INT(10)      | NO   |     |                     |         
+ tagid      | INT(10)      | NO   |     |                     |         
+ createtime | DATETIME(19) | NO   |     | current_timestamp() | 创建时间    
+ ipid       | INT(10)      | NO   |     |                     |         
+------------+--------------+------+-----+---------------------+---------
+
+Table: wx_task_items
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     | ID      
+ uid        | INT(10)       | YES  |     | -1                  | 操作id-系统处理-1
+ type       | SMALLINT(5)   | YES  |     |                     | 类型：1：消息处理
+ status     | SMALLINT(5)   | YES  |     | 1                   | 处理标识：1、初始化；2：处理中；3：删除
+ dealtime   | DATETIME(19)  | YES  |     |                     | 处理时间    
+ ip         | VARCHAR(50)   | YES  |     |                     | 处理机器    
+ createtime | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_bank_card
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ cardno     | VARCHAR(30)   | YES  |     |                     | 银行卡号    
+ bankname   | VARCHAR(64)   | YES  |     |                     | 银行名称    
+ username   | VARCHAR(64)   | YES  |     |                     | 持卡人     
+ phone      | VARCHAR(30)   | YES  |     |                     | 预留手机    
+ cardtype   | SMALLINT(5)   | YES  |     |                     | 卡类型：1：信用卡；2：储蓄卡
+ banklimit  | DOUBLE(20,2)  | YES  |     | 0.00                | 银行限额    
+ status     | SMALLINT(5)   | YES  |     | 2                   | 状态：1：已认证；2：未认证
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_black_items
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | NO   |     |                     | 主人的userid
+ touid      | INT(10)       | NO   |     |                     | 拉黑的uid  
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态:1:正常；2：删除
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 更新时间    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 创建时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_coin
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ cny             | BIGINT(19)    | YES  |     | 0                   | 钱包余额    
+ withdrawcny     | BIGINT(19)    | YES  |     | 0                   | 体现余额    
+ acceptredpacket | BIGINT(19)    | YES  |     | 0                   | 接受红包    
+ sendpacket      | BIGINT(19)    | YES  |     | 0                   | 发送红包    
+ costpwd         | VARCHAR(255)  | YES  |     |                     | 消费密码    
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_coin_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ amount          | INT(10)       | YES  |     | 0                   | 金额      
+ othercny        | DOUBLE(20,2)  | YES  |     | 0.00                | 其它费用    
+ mode            | SMALLINT(5)   | YES  |     |                     | 类型：1：充值；2：体现；3：抢红包；4：银行卡消费；5：银行卡退款
+ coinflag        | SMALLINT(5)   | YES  |     |                     | 收支：1：收入；2：支出
+ status          | SMALLINT(5)   | YES  |     | 2                   | 状态：1：完成；2：处理中
+ orderstatus     | VARCHAR(60)   | YES  |     |                     | 订单处理状态：同业务订单状态
+ bizid           | INT(10)       | YES  |     |                     | 业务id    
+ serialnumber    | VARCHAR(128)  | YES  |     |                     | 订单号     
+ bizstr          | VARCHAR(255)  | YES  |     |                     | 业务内容    
+ remark          | VARCHAR(255)  | YES  |     |                     | 备注      
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 订单创建时间  
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_favorites
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | NO   |     |                     | 用户      
+ type       | SMALLINT(5)   | NO   |     |                     | 类型：同消息类型
+ chatmode   | SMALLINT(5)   | NO   |     |                     | 消息来源会话类型
+ mid        | BIGINT(19)    | YES  |     |                     | 消息id    
+ bizstr     | VARCHAR(255)  | YES  |     |                     | 路径或者内容  
+ msgtext    | VARCHAR(4096) | YES  |     |                     |         
+ status     | SMALLINT(5)   | YES  |     | 1                   | 状态：1：正常 
+ createtime | TIMESTAMP(19) | YES  |     | current_timestamp() | 上传时间    
+ updatetime | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_grab_red_item
+------------------+---------------+------+-----+---------------------+---------
+ Field            | Type          | Null | Key | Default             | Remarks 
+------------------+---------------+------+-----+---------------------+---------
+ id               | INT(10)       | NO   | PRI |                     |         
+ uid              | INT(10)       | YES  |     |                     | 用户id    
+ chatbizid        | BIGINT(19)    | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ chatmode         | SMALLINT(5)   | YES  |     | 1                   | 聊天模式：1：私聊；2：群聊
+ senduid          | INT(10)       | YES  |     |                     | 发送方uid  
+ sendwalletid     | VARCHAR(64)   | YES  |     |                     | 发送方钱包id 
+ sendid           | INT(10)       | YES  |     |                     | 发红包的id  
+ sendserialnumber | VARCHAR(64)   | YES  |     |                     |         
+ walletid         | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ bizid            | VARCHAR(64)   | YES  |     |                     | 商户号     
+ reqid            | VARCHAR(64)   | YES  |     |                     | 请求id    
+ serialnumber     | VARCHAR(64)   | YES  |     |                     | 发红包流水号  
+ amount           | INT(10)       | YES  |     | 0                   | 红包总金额(分）
+ status           | VARCHAR(30)   | YES  |     | INIT                | 初始化状态：INIT；成功：SUCCESS；取消：CANCEL
+ remark           | VARCHAR(255)  | YES  |     |                     | 备注      
+ bizcompletetime  | VARCHAR(50)   | YES  |     |                     | 红包完成时间-抢完/超市
+ ordererrormsg    | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ localerrormsg    | VARCHAR(300)  | YES  |     |                     | 本地错误    
+ coinsyn          | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：已完成；2：未完成
+ ip               | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device           | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion       | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ queuetime        | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ createtime       | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime       | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_realname
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ name       | VARCHAR(64)   | YES  |     |                     | 姓名      
+ cardno     | VARCHAR(30)   | YES  |     |                     | 身份证号    
+ status     | SMALLINT(5)   | YES  |     | 2                   | 状态：1：已认证；2：未认证
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_recharge_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ bizid           | VARCHAR(64)   | YES  |     |                     | 商户号     
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ serialnumber    | VARCHAR(64)   | YES  |     |                     | 支付流水号   
+ currency        | VARCHAR(36)   | YES  |     | CNY                 | 币种      
+ amount          | INT(10)       | YES  |     | 0                   | 充值金额(分) 
+ token           | VARCHAR(255)  | YES  |     |                     | 预支付的token值
+ remark          | VARCHAR(300)  | YES  |     |                     | 备注：商户传输附加值
+ status          | VARCHAR(36)   | YES  |     | INIT                | 状态：初始化：INIT;成功：SUCCESS;取消：CANCEL;失败：FAIL
+ timeout         | SMALLINT(5)   | YES  |     | 5                   | 超时设置：1-1440分
+ notifyurl       | VARCHAR(200)  | YES  |     |                     | 回调url   
+ bankcardnumber  | VARCHAR(100)  | YES  |     |                     | 银行卡卡号-掩码
+ bankcode        | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ bankname        | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankicon        | VARCHAR(255)  | YES  |     |                     | 银行icon  
+ querysyn        | SMALLINT(5)   | YES  |     | 2                   | 查询同步:1：回调成功；2：否；3：查询同步
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 预下单创建时间 
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化处理；2：未处理；3：完成
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ queuetime       | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_red_packet
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ cny        | DOUBLE(20,2)  | YES  |     | 0.00                | 金额      
+ mode       | SMALLINT(5)   | YES  |     |                     | 类型：1：普通红包；2：手气红包；3：红包退回
+ status     | SMALLINT(5)   | YES  |     | 2                   | 状态：1：完成；2：初始化
+ type       | SMALLINT(5)   | YES  |     |                     | 类型：1：发送；2：接受
+ num        | SMALLINT(5)   | YES  |     |                     | 发送手气红包个数
+ bizid      | INT(10)       | YES  |     |                     | 接受红包的业务id
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_red_packet_item
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 接受的用户id-冗余
+ redid      | INT(10)       | YES  |     |                     | 发送的红包id 
+ cny        | DOUBLE(20,2)  | YES  |     | 0.00                | 金额      
+ mode       | SMALLINT(5)   | YES  |     |                     | 类型：1：正常红包；2：退回合并红包
+ status     | SMALLINT(5)   | YES  |     | 2                   | 状态：1：完成；2：初始化
+ index      | INT(10)       | YES  |     |                     | 红包的顺序   
+ remark     | VARCHAR(255)  | YES  |     |                     | 备注      
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_report
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 举报投诉人   
+ type       | SMALLINT(5)   | YES  |     |                     | 举报投诉类型：1：用户；2：群：3：消息；4:建议
+ mid        | BIGINT(19)    | YES  |     |                     | 消息id    
+ touid      | INT(10)       | YES  |     |                     | 被举报者    
+ groupid    | BIGINT(19)    | YES  |     |                     | 被投诉群    
+ reason     | VARCHAR(255)  | YES  |     |                     | 举报投诉原因  
+ srctext    | VARCHAR(1024) | YES  |     |                     | 举报的内容   
+ status     | SMALLINT(5)   | YES  |     | 2                   | 处理状态：1：处理中；2：初始化；3：已处理
+ imgs       | VARCHAR(1024) | YES  |     |                     | 图片      
+ devicetype | SMALLINT(5)   | YES  |     |                     | 设备      
+ appversion | VARCHAR(255)  | YES  |     |                     | 版本号     
+ adminuid   | INT(10)       | YES  |     |                     | 后台管理员uid
+ adminnick  | VARCHAR(60)   | YES  |     |                     | 后台管理员昵称 
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_send_red_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ chatbizid       | BIGINT(19)    | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ chatmode        | SMALLINT(5)   | YES  |     | 1                   | 聊天模式：1：私聊；2：群聊
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ bizid           | VARCHAR(64)   | YES  |     |                     | 商户号     
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ mgsid           | BIGINT(19)    | YES  |     |                     | 消息存储    
+ serialnumber    | VARCHAR(64)   | YES  |     |                     | 发红包流水号  
+ currency        | VARCHAR(36)   | YES  |     | CNY                 | 币种      
+ amount          | INT(10)       | YES  |     | 0                   | 红包总金额(分）
+ token           | VARCHAR(255)  | YES  |     |                     | 预发送的token值
+ mode            | SMALLINT(5)   | YES  |     | 2                   | 类型：1：普通红包；2：手气红包
+ status          | VARCHAR(30)   | YES  |     | INIT                | 红包状态:已发送：SEND 成功：SUCCESS 取消：CANCEL 订单超时：TIMEOUT (只有已经支付过的订单有此状态) 失败：FAIL
+ timeout         | SMALLINT(5)   | YES  |     | 1440                | 超时时间    
+ packetcount     | SMALLINT(5)   | YES  |     | 1                   | 发送红包个数  
+ receivedcount   | SMALLINT(5)   | YES  |     | 1                   | 接收红包个数  
+ receivedamount  | INT(10)       | YES  |     | 0                   | 接收红包金额  
+ receivewalletid | VARCHAR(64)   | YES  |     |                     | 接收红包ID  
+ paymenttype     | VARCHAR(36)   | YES  |     |                     | 支付方式：银行卡支付：BANK_CARD；余额支付：BALANCE
+ remark          | VARCHAR(255)  | YES  |     |                     | 备注      
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 预下单创建时间 
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 红包完成时间-抢完/超市
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ localerrormsg   | VARCHAR(300)  | YES  |     |                     | 本地错误    
+ debitdatetime   | VARCHAR(50)   | YES  |     |                     | 订单支付时间  
+ refundtype      | VARCHAR(36)   | YES  |     |                     | 退回方式：余额退回：BALANCE；银行卡退回：BANKCARD
+ refundamount    | INT(10)       | YES  |     | 0                   | 退回金额    
+ refundcount     | SMALLINT(5)   | YES  |     | 0                   | 退回个数    
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化处理；2：未处理；3：完成
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ queuetime       | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ bankcardnumber  | VARCHAR(100)  | YES  |     |                     | 银行卡卡号-掩码
+ bankcode        | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ bankname        | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankicon        | VARCHAR(255)  | YES  |     |                     | 银行icon  
+ querysyn        | SMALLINT(5)   | YES  |     | 2                   | 查询同步:1：回调成功；2：否；3：查询同步
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_wallet
+----------------+---------------+------+-----+---------------------+---------
+ Field          | Type          | Null | Key | Default             | Remarks 
+----------------+---------------+------+-----+---------------------+---------
+ id             | INT(10)       | NO   | PRI |                     |         
+ uid            | INT(10)       | YES  |     |                     | 用户id    
+ reqid          | VARCHAR(64)   | YES  |     |                     | 请求id    
+ bizid          | VARCHAR(64)   | YES  |     |                     | 商户业务id  
+ walletid       | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ operatorstatus | SMALLINT(5)   | YES  |     | 2                   | 运行商状态：1：认证；2：未认证；
+ realnamestatus | SMALLINT(5)   | YES  |     | 2                   | 实名认证：1：认证；2：未认证
+ status         | VARCHAR(255)  | YES  |     | 1                   | 状态：1：正常；2：禁用
+ coinsyn        | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化；2：未完成；3：完成
+ excepsyn       | SMALLINT(5)   | YES  |     | 1                   | 异常同步：1：已处理：2：未处理
+ ip             | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device         | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion     | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ createtime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime     | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_withhold_count
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ period     | VARCHAR(20)   | YES  |     |                     | 提现周期    
+ count      | SMALLINT(5)   | YES  |     | 5                   | 提现次数    
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_user_withhold_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ bizid           | VARCHAR(64)   | YES  |     |                     | 商户号     
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ serialnumber    | VARCHAR(64)   | YES  |     |                     | 提现流水号   
+ currency        | VARCHAR(36)   | YES  |     | CNY                 | 币种      
+ amount          | INT(10)       | YES  |     | 0                   | 提现金额(分） 
+ arrivalamount   | INT(10)       | YES  |     | 0                   | 实际到账(分) 
+ token           | VARCHAR(255)  | YES  |     |                     | 预提现的token值
+ remark          | VARCHAR(300)  | YES  |     |                     | 备注：商户传输附加值
+ status          | VARCHAR(36)   | YES  |     | INIT                | 状态：初始化：INIT;成功：SUCCESS;取消：CANCEL;失败：FAIL
+ timeout         | SMALLINT(5)   | YES  |     | 5                   | 超时设置：1-1440分
+ notifyurl       | VARCHAR(200)  | YES  |     |                     | 回调url   
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 预下单创建时间 
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化；2：未完成；3：完成
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ queuetime       | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ bankcardnumber  | VARCHAR(100)  | YES  |     |                     | 银行卡卡号-掩码
+ bankcode        | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ bankname        | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankicon        | VARCHAR(255)  | YES  |     |                     | 银行icon  
+ querysyn        | SMALLINT(5)   | YES  |     | 2                   | 查询同步:1：回调成功；2：否；3：查询同步
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | INT(10)       | NO   | PRI |                     |         
+ uid         | INT(10)       | YES  |     |                     | 用户id    
+ reqinfoid   | INT(10)       | YES  |     |                     | 信息id    
+ reqid       | VARCHAR(64)   | YES  |     |                     | 请求id    
+ merid       | VARCHAR(64)   | YES  |     |                     | 商户业务id  
+ walletid    | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ status      | SMALLINT(5)   | YES  |     | 2                   | 状态：1：正常；2：未同步；3-:失败原因
+ merstatus   | VARCHAR(64)   | YES  |     |                     |         
+ authstatus  | VARCHAR(64)   | YES  |     | 2                   | 实名状态：1：成功：2：未同步：3：失败原因
+ auditstatus | VARCHAR(64)   | YES  |     | 2                   | 审核状态:1:审核通过；2：未同步；3-:失败状态：
+ coinsyn     | SMALLINT(5)   | YES  |     | 2                   | 钱包变动同步状态：1：初始化；2：未完成；3：完成
+ querysyn    | SMALLINT(5)   | YES  |     | 2                   | 查询同步状态：1：已同步；2：未同步
+ excepsyn    | SMALLINT(5)   | YES  |     | 1                   | 异常同步：1：已处理：2：未处理
+ mainflag    | SMALLINT(5)   | YES  |     | 1                   | 主钱包标志：1：主钱包；2：附属钱包
+ ip          | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device      | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion  | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ reqbody     | TEXT(65535)   | YES  |     |                     | 请求body  
+ createtime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_back_red_packet_items
+--------------+---------------+------+-----+---------------------+---------
+ Field        | Type          | Null | Key | Default             | Remarks 
+--------------+---------------+------+-----+---------------------+---------
+ id           | INT(10)       | NO   | PRI |                     |         
+ uid          | INT(10)       | YES  |     |                     | 用户id    
+ rid          | INT(10)       | YES  |     |                     | 红包id    
+ reqid        | VARCHAR(64)   | YES  |     |                     | 请求id    
+ merid        | VARCHAR(64)   | YES  |     |                     | 商户id    
+ merorderid   | VARCHAR(64)   | YES  |     |                     | 商户订单号-转账
+ walletid     | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ subwalletid  | VARCHAR(64)   | YES  |     |                     | 附属钱包id  
+ cny          | BIGINT(19)    | YES  |     | 0                   | 退回金额    
+ mode         | SMALLINT(5)   | YES  |     | 1                   | 类型：1：普通红包；2：手气红包；
+ status       | SMALLINT(5)   | YES  |     | 2                   | 状态：1：完成；2：初始化；3：转账中；4：失败
+ num          | SMALLINT(5)   | YES  |     | 1                   | 退回红包数量  
+ backtime     | DATETIME(19)  | YES  |     |                     | 退回时间    
+ dealtime     | DATETIME(19)  | YES  |     |                     | 处理时间    
+ completetime | DATETIME(19)  | YES  |     |                     | 完成时间    
+ createtime   | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime   | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+--------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_bank_cards
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ reqid      | VARCHAR(64)   | YES  |     |                     | 绑卡请求code
+ merid      | VARCHAR(64)   | YES  |     |                     | 商户号     
+ walletid   | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ merorderid | VARCHAR(64)   | YES  |     |                     | 商户订单号   
+ agrno      | VARCHAR(64)   | YES  |     |                     | 签约号码    
+ bankcode   | VARCHAR(64)   | YES  |     |                     | 银行code  
+ cardno     | VARCHAR(64)   | YES  |     |                     | 银行卡号    
+ bankname   | VARCHAR(64)   | YES  |     |                     | 银行名称    
+ username   | VARCHAR(64)   | YES  |     |                     | 持卡人     
+ phone      | VARCHAR(30)   | YES  |     |                     | 预留手机    
+ cardtype   | SMALLINT(5)   | YES  |     |                     | 卡类型：1：信用卡；2：储蓄卡
+ banklimit  | DOUBLE(20,2)  | YES  |     | 0.00                | 银行限额    
+ status     | SMALLINT(5)   | YES  |     | 2                   | 状态：1：已认证；2：未认证；3：移除
+ delreqid   | VARCHAR(64)   | YES  |     |                     | 移除请求id  
+ deltime    | DATETIME(19)  | YES  |     |                     | 删除时间    
+ delid      | INT(10)       | YES  |     | -1                  | 删除id    
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_bank_info
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | INT(10)       | NO   | PRI |                     |         
+ bankname      | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankcode      | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ banklogo      | VARCHAR(255)  | YES  |     |                     | 银行icon  
+ bankwatermark | VARCHAR(255)  | YES  |     |                     |         
+ backcolor     | VARCHAR(255)  | YES  |     |                     |         
+ updatetime    | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+ createtime    | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+---------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_coin
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ wid             | INT(10)       | YES  |     |                     | 钱包主键id  
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ cny             | BIGINT(19)    | YES  |     | 0                   | 钱包余额    
+ unclearcny      | BIGINT(19)    | YES  |     | 0                   | 未结算余额   
+ withdrawcny     | BIGINT(19)    | YES  |     | 0                   | 体现余额    
+ acceptredpacket | BIGINT(19)    | YES  |     | 0                   | 接受红包    
+ sendpacket      | BIGINT(19)    | YES  |     | 0                   | 发送红包    
+ costpwd         | VARCHAR(255)  | YES  |     |                     | 消费密码    
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_coin_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ cny             | BIGINT(19)    | YES  |     | 0                   | 金额      
+ othercny        | BIGINT(19)    | YES  |     | 0                   | 其它费用    
+ mode            | SMALLINT(5)   | YES  |     |                     | 类型：1：充值；2：体现；3：红包；4：银行卡消费；5：银行卡退款
+ coinflag        | SMALLINT(5)   | YES  |     |                     | 收支：1：收入；2：支出；
+ status          | SMALLINT(5)   | YES  |     | 2                   | 状态：1：完成；2：初始化；3：处理中
+ orderstatus     | VARCHAR(60)   | YES  |     |                     | 订单处理状态：同业务订单状态
+ bizid           | INT(10)       | YES  |     |                     | 业务id    
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ merorderid      | VARCHAR(64)   | YES  |     |                     | 业务订单号   
+ serialnumber    | VARCHAR(128)  | YES  |     |                     | 订单号     
+ bizstr          | VARCHAR(255)  | YES  |     |                     | 业务内容    
+ remark          | VARCHAR(255)  | YES  |     |                     | 备注      
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 订单创建时间  
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_grab_red_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ rid             | INT(10)       | YES  |     |                     | 红包id    
+ chatbizid       | BIGINT(19)    | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ chatmode        | SMALLINT(5)   | YES  |     | 1                   | 聊天模式：1：私聊；2：群聊
+ senduid         | INT(10)       | YES  |     |                     | 发送方uid  
+ sendwalletid    | VARCHAR(64)   | YES  |     |                     | 发送方钱包id 
+ randomid        | INT(10)       | YES  |     |                     | 随机红包id  
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ merid           | VARCHAR(64)   | YES  |     |                     | 商户id    
+ merorderid      | VARCHAR(64)   | YES  |     |                     | 商户订单号-转账
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ cny             | BIGINT(19)    | YES  |     | 0                   | 红包总金额(分）
+ status          | SMALLINT(5)   | YES  |     | 2                   | 初始化状态：1；成功：2；初始化；3：分配取消
+ remark          | VARCHAR(255)  | YES  |     |                     | 备注      
+ grabtime        | DATETIME(19)  | YES  |     |                     | 抢红包时间   
+ bizcreattime    | DATETIME(19)  | YES  |     |                     |         
+ completetime    | VARCHAR(50)   | YES  |     |                     | 红包完成时间-抢完/超市
+ bizcompletetime | DATETIME(19)  | YES  |     |                     |         
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：已完成；2：未完成
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ queuetime       | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_info
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ mobile     | VARCHAR(11)   | YES  |     |                     |         
+ name       | VARCHAR(30)   | YES  |     |                     |         
+ cardno     | VARCHAR(18)   | YES  |     |                     |         
+ status     | SMALLINT(5)   | YES  |     | 2                   | 认证标识：1:已认证；2：未认证
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_recharge_item
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ merid           | VARCHAR(64)   | YES  |     |                     | 商户号     
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ merorderid      | VARCHAR(64)   | YES  |     |                     | 商户订单号   
+ agrno           | VARCHAR(64)   | YES  |     |                     | 协议卡号    
+ amount          | BIGINT(19)    | YES  |     | 0                   | 充值金额(分) 
+ merfee          | INT(10)       | YES  |     | 0                   | 商户手续费   
+ bizfee          | INT(10)       | YES  |     | 0                   | 业务服务费-自己收取的
+ remark          | VARCHAR(300)  | YES  |     |                     | 备注：商户传输附加值
+ status          | SMALLINT(5)   | YES  |     | 1                   |         
+ merstatus       | VARCHAR(36)   | YES  |     | -1                  | 商户状态:-1为未处理
+ timeout         | SMALLINT(5)   | YES  |     | 5                   | 超时设置：1-1440分
+ notifyurl       | VARCHAR(200)  | YES  |     |                     | 回调url   
+ bankcardnumber  | VARCHAR(100)  | YES  |     |                     | 银行卡卡号-掩码
+ bankcode        | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ bankname        | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankicon        | VARCHAR(255)  | YES  |     |                     | 银行icon  
+ querysyn        | SMALLINT(5)   | YES  |     | 2                   | 查询同步:1：回调成功；2：否；3：查询同步
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 预下单创建时间 
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ checkflag       | SMALLINT(5)   | YES  |     | 2                   | 对账状态：1：是；2：否
+ checkdate       | VARCHAR(20)   | YES  |     |                     | 对账时间    
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化处理；2：未处理；3：完成
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ recvacctamount  | BIGINT(19)    | YES  |     | 0                   | 充值返回得余额 
+ queuetime       | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_red_packet_random
+-------------+---------------+------+-----+---------------------+---------
+ Field       | Type          | Null | Key | Default             | Remarks 
+-------------+---------------+------+-----+---------------------+---------
+ id          | INT(10)       | NO   | PRI |                     |         
+ rid         | INT(10)       | YES  |     |                     | 红包id    
+ uid         | INT(10)       | YES  |     |                     | 抢红包的用户  
+ walletid    | VARCHAR(64)   | YES  |     |                     | 抢红包的钱包id
+ cny         | BIGINT(19)    | YES  |     | 0                   | 红包随机金额  
+ mode        | SMALLINT(5)   | YES  |     | 1                   | 类型：1：普通红包；2：手气红包
+ status      | SMALLINT(5)   | YES  |     | 2                   | 状态：1：完成到账；2：初始化；3：分配中；4：超时
+ redindex    | SMALLINT(5)   | YES  |     |                     | 红包的序列   
+ accounttime | DATETIME(19)  | YES  |     |                     | 到账时间    
+ grabtime    | DATETIME(19)  | YES  |     |                     | 抢红包分配时间 
+ invalidtime | DATETIME(19)  | YES  |     |                     | 失效时间    
+ createtime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime  | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_send_red_packet
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ chatmode        | SMALLINT(5)   | YES  |     |                     | 业务id；私聊：touid；群聊：groupid
+ chatbizid       | BIGINT(19)    | YES  |     |                     | 红包范围id  
+ msgid           | BIGINT(19)    | YES  |     |                     | 消息id    
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ agrno           | VARCHAR(64)   | YES  |     |                     | 协议支付卡号  
+ merid           | VARCHAR(64)   | YES  |     |                     | 商户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ subwalletid     | VARCHAR(64)   | YES  |     |                     | 附属钱包id  
+ merorderid      | VARCHAR(64)   | YES  |     |                     | 商户订单号   
+ cny             | BIGINT(19)    | YES  |     | 0                   | 金额      
+ mode            | SMALLINT(5)   | YES  |     | 1                   | 类型：1：普通红包；2：手气红包；
+ status          | SMALLINT(5)   | YES  |     | 2                   | 状态：1：发送完成；2：初始化生成；3：支付中；4：成功；5：超时；6：取消；7：失败
+ sendmode        | SMALLINT(5)   | YES  |     | 1                   | 发送消息触发模型：1：回调；2：查询；3：补偿
+ num             | SMALLINT(5)   | YES  |     | 1                   | 发送红包个数  
+ acceptnum       | SMALLINT(5)   | YES  |     | 0                   | 已接受数量   
+ acceptuid       | INT(10)       | YES  |     |                     | 接受的用户uid
+ covers          | VARCHAR(255)  | YES  |     |                     | 封面      
+ bless           | VARCHAR(255)  | YES  |     |                     | 祝福语     
+ remark          | VARCHAR(255)  | YES  |     |                     | 备注      
+ paytype         | SMALLINT(5)   | YES  |     |                     | 支付方式：1：协议支付；2：余额支付
+ starttime       | DATETIME(19)  | YES  |     |                     | 开始时间    
+ apitime         | DATETIME(19)  | YES  |     |                     | api发起时间 
+ backtime        | DATETIME(19)  | YES  |     |                     | 超时时间：每个阶段超时时间公用-按status来
+ endtime         | DATETIME(19)  | YES  |     |                     | 红包结束时间  
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ paytimeout      | SMALLINT(5)   | YES  |     | 5                   | 快捷支付超时设置：1-1440分
+ paynotifyurl    | VARCHAR(200)  | YES  |     |                     | 快捷支付回调url
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 预下单创建时间 
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ checkflag       | SMALLINT(5)   | YES  |     | 2                   | 对账状态：1：是；2：否
+ checkdate       | VARCHAR(20)   | YES  |     |                     | 对账时间    
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化处理；2：未处理；3：完成
+ querysyn        | SMALLINT(5)   | YES  |     | 2                   | 查询同步:1：回调成功；2：否；3：查询同步
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+-----------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_withhold_count
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ period     | VARCHAR(20)   | YES  |     |                     | 提现周期    
+ count      | SMALLINT(5)   | YES  |     | 0                   | 提现次数    
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+------------+---------------+------+-----+---------------------+---------
+
+Table: wx_wallet_withhold_items
+-----------------+---------------+------+-----+---------------------+---------
+ Field           | Type          | Null | Key | Default             | Remarks 
+-----------------+---------------+------+-----+---------------------+---------
+ id              | INT(10)       | NO   | PRI |                     |         
+ uid             | INT(10)       | YES  |     |                     | 用户id    
+ walletid        | VARCHAR(64)   | YES  |     |                     | 钱包id    
+ merid           | VARCHAR(64)   | YES  |     |                     | 商户号     
+ reqid           | VARCHAR(64)   | YES  |     |                     | 请求id    
+ merorderid      | VARCHAR(64)   | YES  |     |                     | 商户订单号   
+ agrno           | VARCHAR(64)   | YES  |     |                     | 提现协议卡号  
+ amount          | BIGINT(19)    | YES  |     | 0                   | 提现金额(分） 
+ arrivalamount   | BIGINT(19)    | YES  |     | 0                   | 实际到账(分) 
+ merfee          | INT(10)       | YES  |     | 0                   | 商户手续费   
+ bizfee          | INT(10)       | YES  |     | 0                   | 业务服务费-自己收取的
+ remark          | VARCHAR(300)  | YES  |     |                     | 备注      
+ status          | SMALLINT(5)   | YES  |     | -1                  | 状态：-1：预下单；1：成功；2：确认；3：失败
+ merstatus       | VARCHAR(64)   | YES  |     |                     | 订单状态    
+ notifyurl       | VARCHAR(200)  | YES  |     |                     | 回调url   
+ bizcreattime    | VARCHAR(50)   | YES  |     |                     | 预下单创建时间 
+ resptime        | DATETIME(19)  | YES  |     |                     | 响应时间：避免业务时间为天
+ bizcompletetime | VARCHAR(50)   | YES  |     |                     | 订单完成时间  
+ callbacktime    | DATETIME(19)  | YES  |     |                     | 回调时间：避免业务时间为天
+ ordererrormsg   | VARCHAR(300)  | YES  |     |                     | 订单错误信息  
+ coinsyn         | SMALLINT(5)   | YES  |     | 2                   | 同步状态：1：初始化；2：未完成；3：完成
+ ip              | VARCHAR(20)   | YES  |     |                     | 发起的ip   
+ device          | SMALLINT(5)   | YES  |     | 1                   | 发起的设备类型（DeviceType），1：PC，2：安卓，3：IOS
+ appversion      | VARCHAR(60)   | YES  |     |                     | 发起的app版本号
+ queuetime       | DATETIME(19)  | YES  |     |                     | 队列处理时间  
+ bankcardnumber  | VARCHAR(100)  | YES  |     |                     | 银行卡卡号-掩码
+ bankcode        | VARCHAR(100)  | YES  |     |                     | 银行代码    
+ bankname        | VARCHAR(100)  | YES  |     |                     | 银行名称    
+ bankicon        | VARCHAR(255)  | YES  |     |                     | 银行icon  
+ querysyn        | SMALLINT(5)   | YES  |     | 2                   | 查询同步:1：回调成功；2：否；3：查询同步
+ payacctamount   | BIGINT(19)    | YES  |     | 0                   | 付款方账户余额 
+ updatetime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 该记录更新时间 
+ createtime      | TIMESTAMP(19) | NO   |     | current_timestamp() | 记录创建时间  
+-----------------+---------------+------+-----+---------------------+---------
+

@@ -1,0 +1,207 @@
+*{
+    margin: 0;padding: 0;
+}
+.l-btn{
+    display: inline-block;
+    outline: none;
+    resize: none;
+    border: none;
+    padding:5px 10px;
+    background: #8C85E6;
+    color: #fff;
+    border:solid 1px #8C85E6;
+    border-radius: 0px;
+    font-size: 14px;
+}
+.l-btn:hover{
+    background: #8078e3;
+    animation: anniu 1s infinite;
+}
+.l-btn:active{
+    box-shadow: 0 2px 3px rgba(0,0,0,.2) inset;
+}
+.hidden{
+    display: none;
+}
+.tailoring-container, .tailoring-container div, .tailoring-container p{
+    margin: 0;padding: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.tailoring-container{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 99999990;
+    top: 0;
+    left: 0;
+}
+/*遮罩层*/
+.tailoring-container .black-cloth{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #444;
+    opacity: .2;
+    z-index: 99999991;
+}
+.tailoring-container .tailoring-content{
+    position: absolute;
+    width: 736px;
+    height: 550px;
+    background: #fff;
+    z-index: 99999992;
+    left: 0;
+    top: 0;
+
+    /* 水平垂直居中 浏览器版本号低的不支持transform */
+    /*left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    -weblit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);*/
+
+    border-radius: 0px;
+    box-shadow: 0 0 10px #000;
+    padding: 5px;
+}
+
+.tailoring-content-one{
+    height: 0px;
+    width: 100%;
+    /* border-bottom: 1px solid #DDD ; */
+}
+ .choose-btn{
+    /* float: left; */
+    /* position: absolute;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 0px; */
+}
+.tailoring-content .close-tailoring{
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    background: #888;
+    color: #fff;
+    font-size: 22px;
+    text-align: center;
+    line-height: 30px;
+    /* float: right; */
+    cursor: pointer;
+
+    position: absolute;
+    right: -13px;
+    top: -13px;
+}
+.tailoring-content .close-tailoring:hover{
+    background: #777;
+}
+
+.tailoring-content .tailoring-content-two {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    padding: 0px 0;
+}
+.tailoring-content .tailoring-box-parcel{
+    width: 520px;
+    height: 495px;
+    position: absolute;
+    left: 0;
+    border: solid 1px #ddd;
+}
+.tailoring-content .preview-box-parcel{
+    display: inline-block;
+    width: 200px;
+    height: 450px;
+    position: absolute;
+    right: 0;
+    /* padding: 4px 14px; */
+}
+.preview-box-parcel p{
+    color: #555;
+}
+.previewImg {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+
+.preview-box-parcel .square{
+    /* margin-top: 5px; */
+    /* border: solid 1px #ddd; */
+}
+.preview-box-parcel .circular {
+    margin-top: 5px;
+    /* border: solid 1px #ddd; */
+    border-radius: 100%;
+}
+
+.preview-box-parcel .middle_square {
+    margin-top: 5px;
+    width: 98px;
+    height: 98px;
+    display: inline-block;
+}
+
+.preview-box-parcel .middle_circular {
+    margin-top: 5px;
+    width: 98px;
+    height: 98px;
+    border-radius: 100%;
+    display: inline-block;
+}
+
+.preview-box-parcel .small_square {
+    margin-top: 5px;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+}
+
+.preview-box-parcel .small_circular {
+    margin-top: 5px;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+
+    border-radius: 100%;
+}
+
+.tailoring-content .tailoring-content-three{
+    width: 100%;
+    /* height: 36px; */
+    border-top: 1px solid #DDD ;
+    padding-top: 7px;
+}
+.sureCut{
+    float: right;
+    margin: 0px 4px;
+}
+
+/* @media all and (max-width: 768px) {
+    .tailoring-container .tailoring-content{
+        width: 100%;
+        min-width: 320px;
+        height: 460px;
+    }
+    .tailoring-content .tailoring-content-two{
+        height: 380px;
+    }
+    .tailoring-content .tailoring-box-parcel{
+        height: 350px;
+    }
+    .tailoring-container .tailoring-box-parcel{
+        width: 100%;
+    }
+    .tailoring-container .preview-box-parcel{
+        display: none;
+    }
+
+} */

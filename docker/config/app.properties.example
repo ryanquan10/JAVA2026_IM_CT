@@ -1,0 +1,33 @@
+# ============================================================
+# app.properties - 应用配置（外部数据库）
+# 复制此文件到 config/app.properties 并填入实际值
+# ============================================================
+
+# ========== 数据库配置（外部数据库） ==========
+# 数据库驱动
+jdbc.driver=com.mysql.cj.jdbc.Driver
+# 数据库连接 URL（通过环境变量覆盖）
+jdbc.url=jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:tio_im}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+# 数据库用户
+jdbc.username=${DB_USER:root}
+# 数据库密码
+jdbc.password=${DB_PASSWORD:password}
+
+# ========== 连接池配置 ==========
+hikaricp.minimum-idle=5
+hikaricp.maximum-pool-size=20
+hikaricp.idle-timeout=300000
+hikaricp.max-lifetime=1800000
+hikaricp.connection-timeout=30000
+
+# ========== 服务端口 ==========
+server.port=8080
+
+# ========== 日志配置 ==========
+logging.level.root=INFO
+logging.level.org.tio=INFO
+logging.file.name=/app/logs/app.log
+logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n
+
+# ========== 其他配置 ==========
+app.env=production

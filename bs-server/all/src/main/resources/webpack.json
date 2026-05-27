@@ -1,0 +1,15 @@
+{
+	"debug": false,
+	"console": {
+		"log": false,
+		"info": false,
+		"warn": false,
+		"error": false
+	},
+	"dev":false,
+	"compress": {
+		"js": true,
+		"css": false,
+		"html": true
+	}
+}

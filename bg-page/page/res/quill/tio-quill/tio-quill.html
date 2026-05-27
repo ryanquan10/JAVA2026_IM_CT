@@ -1,0 +1,148 @@
+
+<#include "/include/tio-quill.html">
+<div>
+  <div id="standalone-container">
+
+
+    <!-- 工具栏 -->
+    <div id="toolbar-container">
+        <span class="ql-formats marginL-none" >
+            <select class="ql-header"></select>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-size"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color marginL1"></select>
+            <select class="ql-background marginL1"></select>
+        </span>
+        
+        <span class="ql-formats">
+            <button class="ql-script" value="sub"></button>
+            <button class="ql-script" value="super"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-blockquote"></button>
+            <button class="ql-code-block"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-align marginL1"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-link"></button>
+        </span>
+        <p class="imgbtn-box custom-toolbar" data-tooltip="上传图片">
+          <img src="/2/imgs/quill/icon-pic.png" class="ql-custom-imgbtn" alt="" srcset="" >
+        </p>
+        <p class="videobtn-box custom-toolbar" data-tooltip="上传视频">
+          <img class="cursor ql-custom-videobtn marginL1" src="/2/imgs/quill/icon-video.svg" alt="" srcset="" >
+        </p>
+        <p class="bindEmojiImg-box custom-toolbar" data-tooltip="表情">
+          <img class="cursor bindEmojiImg" id="bindEmoji" src="/2/imgs/quill/icon-expression.png" alt="" srcset="" >
+        </p>
+        <span class="ql-formats">
+          <button class="ql-clean"></button>
+        </span>
+        <span class="ql-formats cursor preview">预览</span>
+        <!-- 表情 -->
+          <div class="comment-icons">
+            <div class="emojibox"></div>
+          </div>
+        <!-- 表情 end -->
+        <!-- 重写图片上传 -->
+          <div class="quill-uploadImgBox" >
+            <div class="uploadImgBox-title">
+                添加图片
+                <p class="cencel-upload cencel-Img cursor"></p>
+            </div>
+            <div class="uploadImgBox-body">
+                <div class="uploadImgBox-header">
+                    <p data-idx="0" class="uploadImgBox-header-select default1-select"><span>网络图片</span></p>
+                    <p data-idx="1"><span>本地上传</span></p>
+                </div>
+                <div class="pictures_0 uploadImgBox-btnbox">
+                    <div class="pictures0_box">
+                        <textarea name="picturesUrl" id="" class="picturesUrl" cols="30" rows="10" placeholder="请输入图片地址"></textarea>
+                    </div>
+                    <div class="upload-footer">
+                      <button class="cursor picturesCancel">取消</button>
+                      <button class="cursor picturesUrlBtn">确定</button>
+                    </div>
+                </div>
+                <div class="pictures_1 display_none uploadImgBox-btnbox">
+                    <p class="upload-file cursor">
+                      <input type="file" accept="image/*"
+                      name="uploader-input" 
+                      class="uploader-file cursor"
+                      id="upload">
+                    </p>
+                    <span class="uploader-filename">选择文件</span>
+                </div>
+            </div>
+          </div>
+        <!-- 重写图片上传 end -->
+        <!-- 重写视频上传 -->
+          <div class="quill-uploadVideo" >
+            <div class="uploadVideo-title">
+                添加视频
+                <p class="cencel-upload cencel-Img cursor"></p>
+            </div>
+            <div class="uploadVideo-body">
+                <div class="uploadVideo-header">
+                    <p data-idx="0" class="uploadVideo-header-select default-select"><span>网络视频</span></p>
+                    <p data-idx="1"><span>本地上传</span></p>
+                </div>
+                <div class="video_0 uploadVideo-btnbox">
+                    <div class="video0_box">
+                        <textarea name="videoUrl" id="" class="videoUrl" cols="30" rows="10" placeholder="请输入视频地址"></textarea>
+                    </div>
+                    <div class="upload-footer">
+                      <button class="cursor picturesCancel">取消</button>
+                      <button class="cursor videoUrlBtn">确定</button>
+                    </div>
+                </div>
+                <div class="video_1 display_none uploadVideo-btnbox">
+                    <p class="upload-file cursor">
+                      <input type="file" accept="mp4/*"
+                      name="uploader-input" 
+                      class="uploader-file cursor"
+                      id="upload-video">
+                    </p>
+                    <span class="uploader-filename">选择文件</span>
+                </div>
+            </div>
+          </div>
+        <!-- 重写视频上传 end -->
+    </div>
+    <!-- 工具栏 end -->
+    <div id="editor-container" class="comment-textarea">
+
+    </div>
+    <!-- 预览 -->
+    <div class="preview-modelbody">
+        <div class="preview-content">
+            <div id="preview-editor" class="comment-textarea">
+            </div>
+        </div>
+    </div>
+    <!-- 预览 end -->
+</div>
+</div>
+<!-- 图片工具 -->
+<div class="imgtool">
+  <div class="imgtool-content">
+      <input type="text" class="imgWidthinput" name="imgWidth" placeholder="宽：">
+      <img src="/2/imgs/quill/icon-equal-ratio.png" alt="" srcset="">
+      <input type="text" class="imgHeightinput" name="imgHeight" placeholder="高：">
+  </div>
+</div>

@@ -1,0 +1,466 @@
+/* icon */
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@import'https://at.alicdn.com/t/c/font_4344992_d9598a4hid.css';
+
+[class*="li-icon-"],
+[class^="li-icon-"] {
+	font-family: "li-iconfont" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke-width: 0.2px;
+	-moz-osx-font-smoothing: grayscale;
+}
+/* 个人常用样式 -- li */
+
+.page {
+	background-color: #f5f5f5;
+	color: #333333;
+}
+
+
+/* 布局
+   完全采用flex布局，由三个部分组成, direction-justify-content-align-items
+   "-"代表顺序排列， "_"代表跳过justify-content，具体具体参考flex布局
+*/
+.auto {
+	flex: 1;
+}
+
+._row {
+	display: flex;
+	flex-direction: row !important;
+}
+
+.row-c-c {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+.row-c {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: center !important;
+}
+
+.row_c {
+	display: flex;
+	flex-direction: row !important;
+	align-items: center !important;
+}
+
+.row_e {
+	display: flex;
+	flex-direction: row !important;
+	align-items: flex-end !important;
+}
+
+.row-b-c {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+}
+
+
+.row-b {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: space-between !important;
+}
+
+.row-e-c {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: flex-end !important;
+	align-items: center !important;
+}
+
+.row-e {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: flex-end !important;
+}
+
+.clm-c-c {
+	display: flex;
+	flex-direction: column !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+.clm-b-c {
+	display: flex;
+	flex-direction: column !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+}
+
+.clm_c {
+	display: flex;
+	flex-direction: column !important;
+	align-items: center !important;
+}
+
+.clm-b {
+	display: flex;
+	flex-direction: column !important;
+	justify-content: space-between !important;
+}
+
+.clm-c {
+	display: flex;
+	flex-direction: column !important;
+	justify-content: center !important;
+}
+
+.wrap {
+	flex-wrap: wrap !important;
+}
+
+/* 颜色
+   color均以 "c-"开头，background-color均以“bg-”开头，如果有不常出现的颜色可以采用"c_"方式命名，
+*/
+
+.gradients {
+	background-image: linear-gradient(to right, #FB5E35, #F2304C);
+}
+
+.bg-none {}
+
+.bg-page {
+	background-color: #F5F5F5;
+}
+
+.bg-white {
+	background-color: #FFFFFF;
+}
+
+.bg-img {
+	background-color: #f9f9f9;
+}
+
+.bg-major {
+	background-color: #30d2b2 !important;
+}
+.bg-major-light{
+	background-color: rgba(6, 215, 152, 0.05);
+}
+
+
+.c-n {
+	color: #333;
+}
+
+.c-white {
+	color: #fff;
+}
+
+.c-gray {
+	color: #999;
+}
+.c-gray-light {
+	color: #d1d2d3;
+}
+
+.c-black {
+	color: #666;
+}
+
+.c-money {
+	color: #f03041;
+}
+
+.c-rule {
+	color: #f75603;
+}
+.c-red{
+	color: #ff5100;
+}
+
+.c-major {
+	color: #30d2b2;
+}
+
+
+/* 外边距 */
+.mg-tm{
+	margin-top: 4px;
+}
+.mg-t1 {
+	margin-top: 10px;
+}
+
+.mg-t2 {
+	margin-top: 20px;
+}
+
+.mg-t3 {
+	margin-top: 40px;
+}
+
+.mg-rm{
+	margin-right: 4px;
+}
+.mg-r1 {
+	margin-right: 10px;
+}
+
+.mg-r2 {
+	margin-right: 20px;
+}
+
+.mg-r3 {
+	margin-right: 40px;
+}
+.mg-lm{
+	margin-left: 4px;
+}
+.mg-l1 {
+	margin-left: 10px;
+}
+
+.mg-l2 {
+	margin-left: 20px;
+}
+
+.mg-l3 {
+	margin-left: 40px;
+}
+
+
+/* 内边距 */
+.pd-n {
+	padding: 0 25px;
+}
+
+.pd-all1 {
+	padding: 10px;
+}
+
+.pd-all2 {
+	padding: 20px;
+}
+
+.pd-tm1 {
+	padding: 10px 0;
+}
+
+.pd-lr1 {
+	padding: 0 10px;
+}
+
+.pd-tm2 {
+	padding: 20px 0;
+}
+
+.pd-lr2 {
+	padding: 0 20px;
+}
+
+.pd-tm3 {
+	padding: 40px 0;
+}
+
+.pd-lr3 {
+	padding: 0 40px;
+}
+
+/* 文字大小，同一采用”size-“开头 */
+
+.size-min {
+	font-size: 10px;
+}
+
+.size-ms {
+	font-size: 11px;
+}
+
+.size-s {
+	font-size: 12px;
+}
+
+.size-c {
+	font-size: 13px;
+}
+
+.size-n {
+	font-size: 14px;
+}
+
+.size-b {
+	font-size: 16px;
+}
+
+.size-t {
+	font-size: 18px;
+}
+
+.size-max {
+	font-size: 20px;
+}
+
+.bs {
+	font-weight: 700;
+}
+
+/* 文本不换行 */
+
+.one-t {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.many-t {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+
+}
+
+/* 文本对其方式 */
+.text-c {
+	text-align: center;
+}
+
+.text-e {
+	text-align: right;
+}
+
+
+/* 阴影，其实我用的真不多 */
+.shadow {
+	box-shadow: 0 0 20px #197FFB;
+}
+
+
+/* 透明 */
+.op5 {
+	opacity: 0.5;
+}
+
+.op2 {
+	opacity: 0.2;
+}
+
+.op8 {
+	opacity: 0.8;
+}
+
+.op {
+	opacity: 1;
+}
+
+
+/* 分割线
+*/
+
+.line-c {
+	width: 690px;
+	margin: 0 30px;
+	height: 1px;
+	background-color: #f1f1f1;
+}
+
+.line-r {
+	width: 720px;
+	margin-left: 30px;
+	height: 1px;
+	background-color: #f1f1f1;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+
+
+/* 一些其他公共样式 */
+/* input提示语样式 */
+.hint {
+	color: #b1b1b1;
+}
+
+
+/* 遮罩层 */
+.mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+}
+
+
+
+/* other-diy 其他自定义全局样式*/
+/* 标签 */
+
+.tag {
+	height: 28px;
+	font-size: 20px;
+	line-height: 28px;
+	border-radius: 4px;
+	padding: 0 10px;
+	color: white;
+	background-color: #fd0303;
+}
+
+.footer_btn {
+	position: fixed;
+	bottom: 0px;
+	left: 0;
+	width: 710px;
+	margin: 200px 20px;
+	color: #FFFFFF;
+	background-color: #FF7744;
+	/* #ifndef APP-NVUE */
+	box-sizing: border-box;
+	/* #endif */
+
+}
+
+
+.footer_tip {
+	position: fixed;
+	bottom: 0px;
+	left: 0;
+	width: 750px;
+	padding: 50px;
+
+	box-sizing: border-box;
+}
+
+.footer_describe {
+	padding: 20px 30px 30px;
+	margin: 50px 30px;
+	border-radius: 30px;
+	background-color: #FFFFFF;
+}
+.btn-base{
+	color: #333;
+	cursor: pointer;
+}
+.btn-base:hover{
+	color: #30d2b2;
+}
+
+.btn-hover:hover{
+	color: #fff;
+	background-color: #30d2b2;
+}
+
+.btn-close{
+	color: #333;
+	cursor: pointer;
+}
+.btn-close:hover{
+	color: #30d2b2;
+}

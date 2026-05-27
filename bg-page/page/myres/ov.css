@@ -1,0 +1,537 @@
+* {
+  /* font-family: "Microsoft Yahei", "PingFang SC", Avenir, "Segoe UI", "Hiragino Sans GB", STHeiti, "Microsoft Sans Serif", "WenQuanYi Micro Hei", sans-serif; */
+
+  /* font-family: -apple-system, BlinkMacSystemFont, 
+  "Segoe UI", 
+  Helvetica, 
+  Arial, 
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Liberation Sans", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, SimSun, "WenQuanYi Zen Hei Sharp", sans-serif; */
+
+
+
+  font-family:
+    /* 'PingFang SC','Helvetica Neue','Microsoft YaHei UI','Microsoft YaHei','Noto Sans CJK SC',Sathu,EucrosiaUPC,Arial,Helvetica,sans-serif; */
+     "Lantinghei SC", "Microsoft YaHei", "Helvetica Neue", "Open Sans", Arial, "Hiragino Sans GB";
+  /* font-family: Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif; */
+
+  
+  /* font-family: Avenir, Tahoma, Arial, "PingFang SC", "Lantinghei SC", "Microsoft Yahei", "Hiragino Sans GB", "Microsoft Sans Serif", "WenQuanYi Micro Hei", Helvetica, sans-serif; */
+}
+
+.pointer {
+  cursor:pointer
+}
+
+/* .layui-form-item{
+  margin-bottom: 0px;
+}
+
+.layui-form-item .layui-inline {
+  margin-bottom: 5px;
+  margin-right: 5px;
+} */
+
+.layui-table-cell {
+  padding: 0 5px;
+}
+
+/* a {
+  color: #009688;
+  text-decoration: none;
+} */
+
+/* a:hover {
+  color: #0895fa;
+} */
+
+.layui-bg-blue {
+  /* background-color: #0679e3!important; */
+  background-image: url(/res/img/head_bg.png);
+  background-size: cover;
+}
+
+.site-desc {
+  margin-top: 85px;
+}
+
+.site-download {
+  margin-top: 31px;
+  margin-bottom: 30px;
+}
+
+.site-banner {
+  position: relative;
+  height: 690px;
+  text-align: center;
+  overflow: hidden;
+  background-color: #009688;
+}
+
+.site-idea {
+  /* margin: -245px 0px 25px 0px; */
+  margin: 40px 0px 25px 0px;
+  font-size: 0;
+  text-align: center;
+  font-weight: 300;
+}
+
+.site-idea li {
+  width: 288px;
+  height: 176px;
+  padding: 30px;
+  line-height: 24px;
+  margin-left: 30px;
+  border: 1px solid #d2d2d2;
+  text-align: left;
+  padding-top: 10px;
+  border-radius: 10px;
+  /* box-shadow: 1px 1px 50px rgba(0,0,0,.3); */
+  opacity: 0.9;
+}
+
+.site-download a {
+  position: relative;
+  padding: 0 45px 0 90px;
+  height: 60px;
+  line-height: 60px;
+  border: 1px solid rgb(248, 248, 248);
+  border-color: rgb(248, 248, 248);
+  font-size: 24px;
+  color: rgb(248, 248, 248);
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  border-radius: 30px;
+}
+
+.site-download a:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  /* border-radius: 30px; */
+  border-radius: 0px;
+}
+
+.site-desc cite {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  color: #c2c2c2;
+  font-style: normal;
+}
+
+.footer {
+    padding: 0px 0px 10px 0;
+    line-height: 25px;
+    text-align: center;
+    color: #666;
+    /* font-weight: 300; */
+}
+
+/**
+ * 广告位
+ */
+
+.ad_item {
+  /* margin-top: 15px;
+     padding: 15px;
+     border: #c2c2c2 solid 1px; */
+  /* display: block;
+     position: relative;
+     height: 60px;
+     line-height: 60px;
+     margin-top: 10px;
+     padding: 0 5px;
+     text-align: center;
+     font-size: 16px;
+     font-weight: 300;
+     background-color: #1A7BFA;
+     color: #fff; */
+}
+
+.fly-panel {
+  margin-bottom: 15px;
+  /* border-radius: 2px; */
+  background-color: #fff;
+  border: #c2c2c2 solid 1px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.fly-panel-title {
+  position: relative;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 15px;
+  border-bottom: 1px solid #c2c2c2;
+  border-radius: 2px 2px 0 0;
+  font-size: 16px;
+  /* font-weight: bold; */
+  background-color: #f7f7f7;
+}
+
+.fly-panel-main {
+  padding: 5px 7px;
+}
+
+.fly-zanzhu {
+  display: block;
+  position: relative;
+  /* height: 60px; */
+  line-height: 32px;
+  /* margin-top: 10px; */
+  padding: 0 10px;
+  /* text-align: center; */
+  /* font-size: 16px; */
+  font-weight: 300;
+  background-color: #fff;
+  /* color: #108ee9; */
+  font-weight: 500;
+}
+
+.fly-zanzhu:first-child {
+  margin-top: 0;
+}
+
+.fly-zanzhu:hover {
+  opacity: 0.9;
+  color: #209efa;
+  /* font-weight: bold; */
+}
+
+/**
+右侧广告
+*/
+
+.right_ad {
+  padding: 6px 5px;
+}
+
+.right_youliang a {
+  margin: 5px;
+  display: inline-block;
+}
+
+.ad_marquee {
+  height: 100%;
+  padding: 4px 0px 1px 0px;
+  margin: 0px;
+  background: #fff;
+  /* width: 350px; */
+}
+
+
+.tiosite-h3 {
+  color: #2f4056;
+  font-size: 14pt;
+}
+
+
+
+
+
+.layui-bg-black {
+  /* background-color: #393D49!important; */
+  background-color: #464c5b !important;
+}
+
+.layui-nav {
+  /* background-color: #393D49; */
+  background-color: #464c5b !important;
+  padding: 0 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ 
+ @Name: 付费产品文档页
+ @Author: 贤心
+ @Site: fly.layui.com
+ 
+ */
+
+html {
+  background: none;
+}
+
+.fly-header {
+  position: relative;
+  top: 0;
+}
+
+html body {
+  margin-top: 0;
+}
+
+
+.fly-body-docs .fly-header .fly-nav,
+.fly-body-docs .fly-footer {
+  display: none;
+}
+
+
+/* 新增和编辑 */
+.fly-docs-write,
+.fly-docs-preview {
+  position: fixed;
+  left: 0;
+  top: 60px;
+  bottom: 0;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+.fly-docs-editor {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border: none;
+  overflow: auto;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.fly-docs-form {
+  position: fixed;
+  top: 12px;
+  left: 10px;
+  width: 50%;
+  padding: 0;
+  z-index: 10001;
+  box-sizing: border-box;
+}
+
+.fly-docs-form .layui-input {}
+
+.fly-docus-btn {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  z-index: 10000;
+}
+
+
+.fly-docs-preview {
+  left: auto;
+  right: 0;
+  border-left: 1px solid #e2e2e2;
+  padding: 20px;
+  overflow: auto;
+}
+
+
+
+
+/* markdown 文档 */
+.fly-md-text {
+  line-height: 24px;
+}
+
+.fly-md-text h2 {
+  margin: 35px 0 20px;
+}
+
+.fly-md-text h3 {
+  margin: 20px 0;
+}
+
+.fly-md-text h4,
+.fly-md-text h5,
+.fly-md-text h6 {
+  font-weight: 700;
+}
+
+.fly-md-text blockquote {
+  margin: 10px 0;
+  padding: 15px;
+  line-height: 22px;
+  border-left: 5px solid #009688;
+  border-radius: 0 2px 2px 0;
+  background-color: #f2f2f2;
+}
+
+.fly-md-text pre {
+  font-size: 14px;
+  color: #666;
+}
+
+.fly-md-text ul {
+  padding: 0;
+}
+
+.fly-md-text ul,
+.fly-md-text ol {
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+.fly-md-text ol li {
+  list-style-type: decimal;
+}
+
+.fly-md-text ul ul li,
+.fly-md-text ol ul li {
+  list-style-type: circle;
+}
+
+.fly-md-text strong,
+.fly-md-text em {
+  padding: 0 3px;
+}
+
+.fly-md-text code,
+.fly-md-text pre {
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+
+.fly-md-text code {
+  padding: 3px 5px;
+  background-color: #f2f2f2;
+  border-radius: 2px;
+}
+
+.fly-md-text pre code {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+
+
+.fly-md-text .fly-md-notice {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+
+/* 文档详情 */
+.fly-docs-container {
+  padding: 20px;
+}
+
+.fly-docs-info {
+  padding: 10px 0;
+}
+
+.fly-docs-info>span {
+  display: inline-block;
+  margin-right: 10px;
+  line-height: 26px;
+  padding: 0 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+  color: #666;
+}
+
+.fly-docs-admin {
+  padding: 10px 0;
+}
+
+.fly-docs-title {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  color: #000;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.fly-docs-container .fly-md-text {
+  padding: 20px 0;
+}
+
+.fly-md-dir {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 220px;
+  padding: 20px;
+  border-right: 1px solid #f2f2f2;
+  overflow: auto;
+  background-color: #f2f2f2;
+  box-sizing: border-box;
+  transition: all .3s;
+  -webkit-transition: all .3s;
+}
+
+.fly-md-dir:before {
+  content: '目录';
+  position: relative;
+  width: 100%;
+  display: block;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e6e6e6;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+#FLY-spread-dir {
+  position: fixed;
+  left: 15px;
+  bottom: 15px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: #2F9688;
+  border-radius: 5px;
+  color: #fff;
+}
+
+#FLY-spread-dir .layui-icon {
+  font-size: 20px;
+}
+
+/* 移动端展开模式 */
+.fly-docs-spread .fly-md-dir {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+
+/* 产品文档 */
+@media screen and (max-width: 1620px) {
+  .fly-body-docs .layui-container {
+    padding-left: 220px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .fly-body-docs .layui-container {
+    padding-left: 0;
+  }
+
+  .fly-md-dir {
+    transform: translate3d(-220px, 0, 0);
+    z-index: 999999999999;
+  }
+
+  #FLY-spread-dir {
+    display: block !important;
+  }
+}

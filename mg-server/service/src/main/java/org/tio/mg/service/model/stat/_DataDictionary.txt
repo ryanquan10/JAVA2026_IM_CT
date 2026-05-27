@@ -1,0 +1,271 @@
+Table: area_stat
+---------------+---------------+------+-----+---------------------+---------
+ Field         | Type          | Null | Key | Default             | Remarks 
+---------------+---------------+------+-----+---------------------+---------
+ id            | INT(10)       | NO   | PRI |                     |         
+ city          | VARCHAR(64)   | YES  |     |                     | 市       
+ province      | VARCHAR(64)   | YES  |     |                     | 省       
+ type          | SMALLINT(5)   | YES  |     | 1                   | 类型：1：注册 
+ bizcount      | INT(10)       | YES  |     | 0                   | 统计数据    
+ citychatindex | VARCHAR(50)   | YES  |     |                     |         
+ charindex     | VARCHAR(50)   | YES  |     |                     | 字母排序    
+ createtime    | DATETIME(19)  | NO   |     | current_timestamp() | 创建时间    
+ updatetime    | TIMESTAMP(19) | YES  |     | current_timestamp() | 修改时间    
+---------------+---------------+------+-----+---------------------+---------
+
+Table: group_stat
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：新增；3：删除
+ dayperiod  | VARCHAR(50)   | YES  |     |                     | 统计字符串：日期/ip地址
+ addcount   | INT(10)       | YES  |     | 0                   | 群组新增数   
+ remark     | VARCHAR(255)  | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: imei_stat
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ id         | INT(10)      | NO   | PRI |         |         
+ imei       | VARCHAR(64)  | NO   |     |         | imei    
+ appversion | VARCHAR(16)  | YES  |     |         | 第一次访问时的版本号
+ cid        | VARCHAR(32)  | YES  |     |         | 第一次访问时的渠道号
+ resolution | VARCHAR(16)  | YES  |     |         | 手机分辨率，譬如1080,1344
+ size       | VARCHAR(16)  | YES  |     |         | 手机尺寸    
+ deviceinfo | VARCHAR(32)  | YES  |     |         | 手机信息    
+ type       | SMALLINT(5)  | YES  |     |         | 类型。2：安卓，3：IOS
+ time       | DATETIME(19) | YES  |     |         | 第一次访问时间 
+ ip         | VARCHAR(15)  | YES  |     |         | 第一次访问ip 
+ ipid       | INT(10)      | YES  |     |         | ipinfo表的id
+ url        | VARCHAR(32)  | YES  |     |         | 第一次访问url
+ idfa       | VARCHAR(64)  | YES  |     |         | idfa    
+------------+--------------+------+-----+---------+---------
+
+Table: tio_channel_stat
+----------------------+---------------+------+-----+---------------------+---------
+ Field                | Type          | Null | Key | Default             | Remarks 
+----------------------+---------------+------+-----+---------------------+---------
+ id                   | BIGINT(19)    | NO   | PRI |                     |         
+ uid                  | INT(10)       | YES  |     |                     | 用户id，可能是null
+ appType              | SMALLINT(5)   | NO   |     |                     | 应用类型：1：socket pc，2、socket android，3、socket ios
+ start                | TIMESTAMP(19) | NO   |     | current_timestamp() | 统计的开始时间点
+ end                  | TIMESTAMP(19) | NO   |     | current_timestamp() | 统计的结束时间点
+ duration             | BIGINT(19)    | NO   |     |                     | 时长，单位毫秒 
+ formatedDuration     | VARCHAR(64)   | NO   |     |                     | 形如：59分45秒717毫秒
+ server               | VARCHAR(32)   | NO   |     |                     | 服务器，可以是域名也可以是ip，配置文件中的my.ip
+ serverPort           | INT(10)       | NO   |     |                     | 服务器端口   
+ ipid                 | INT(10)       | NO   |     |                     | 客户端ip， 对应到ip表的id字段
+ port                 | INT(10)       | NO   |     |                     | 客户端端口   
+ sentBytes            | BIGINT(19)    | NO   |     |                     | 本次通道已发送的字节数
+ sentPackets          | BIGINT(19)    | NO   |     |                     | 本次通道已发送的packet数
+ handledBytes         | BIGINT(19)    | NO   |     |                     | 本次通道已处理的字节数
+ handledPackets       | BIGINT(19)    | NO   |     |                     | 本次通道已处理的packet数
+ receivedBytes        | BIGINT(19)    | NO   |     |                     | 本次通道已接收的字节数
+ receivedTcps         | BIGINT(19)    | NO   |     |                     | 本次通道已接收了多少次TCP数据包
+ receivedPackets      | BIGINT(19)    | NO   |     |                     | 本次通道已接收的packet数
+ bytesPerTcpReceive   | DOUBLE(22)    | NO   |     |                     | 平均每次TCP接收到的字节数，这个可以用来监控慢攻击，配置PacketsPerTcpReceive定位慢攻击
+ packetsPerTcpReceive | DOUBLE(22)    | NO   |     | 0                   | 平均每次TCP接收到的业务包数，这个可以用来监控慢攻击，此值越小越有攻击嫌疑
+----------------------+---------------+------+-----+---------------------+---------
+
+Table: tio_ip_path_access_stat
+-----------------------+--------------+------+-----+---------+---------
+ Field                 | Type         | Null | Key | Default | Remarks 
+-----------------------+--------------+------+-----+---------+---------
+ id                    | BIGINT(19)   | NO   | PRI |         |         
+ requestCount          | INT(10)      | NO   |     |         | path不为null：这个ip访问这个路径的次数；path为 null：这个ip访问的次数
+ requestCountPerSecond | DOUBLE(19,2) | NO   |     |         | 平均每秒多少次请求
+ timeCost              | BIGINT(19)   | YES  |     |         | 消耗服务器的时间，单位：毫秒
+ timeCostPerRequest    | DOUBLE(10,2) | YES  |     |         | 平均每次请求消耗服务器的时间，单位：毫秒
+ noSessionCount        | INT(10)      | NO   |     |         | 同count字段，只是这个只统计不带session的访问次数
+ ip                    | VARCHAR(50)  | NO   |     |         | ip，此处还要有一个ip字段是因为ipid不一样的，可能ip一样
+ ipid                  | INT(10)      | NO   |     |         | 客户端ip， 对应到ip表的id字段
+ path                  | VARCHAR(320) | YES  |     |         | 路径，形如/user/login，如果为null则表示此条记录为ip的统计数据
+ restype               | VARCHAR(100) | YES  |     |         | 资源类型，html, api, js, css, jpg等
+ formatedDuration      | VARCHAR(64)  | NO   |     |         | 形如：59分45秒717毫秒
+ appType               | SMALLINT(5)  | NO   |     |         | 应用类型：9、网站页面，8、网站API，1：socket pc，2、socket android，3、socket ios
+ server                | VARCHAR(32)  | NO   |     |         | 服务器，可以是域名也可以是ip，配置文件中的my.ip
+ durationType          | BIGINT(19)   | NO   |     |         | 时长类型，单位：秒，譬如60，3600等
+ duration              | BIGINT(19)   | NO   |     |         | 当前统计了多久，单位：毫秒
+ firstAccessTime       | DATETIME(19) | NO   |     |         |         
+-----------------------+--------------+------+-----+---------+---------
+
+Table: tio_ip_pullblack_log
+-------------+---------------+------+-----+---------+---------
+ Field       | Type          | Null | Key | Default | Remarks 
+-------------+---------------+------+-----+---------+---------
+ id          | INT(10)       | NO   | PRI |         |         
+ ip          | VARCHAR(24)   | NO   |     |         | 被拉黑的ip  
+ ipid        | INT(10)       | NO   |     |         |         
+ uid         | INT(10)       | YES  |     |         |         
+ sessionid   | VARCHAR(48)   | YES  |     |         |         
+ initpath    | VARCHAR(2048) | YES  |     |         |         
+ path        | VARCHAR(2048) | YES  |     |         |         
+ requestline | VARCHAR(2048) | YES  |     |         |         
+ cookie      | VARCHAR(4096) | YES  |     |         | cookie串 
+ server      | VARCHAR(32)   | NO   |     |         |  服务器ip，my.ip配的值
+ serverport  | INT(10)       | NO   |     |         | 服务器port 
+ time        | DATETIME(19)  | NO   |     |         |         
+ type        | SMALLINT(5)   | NO   |     |         | 拉黑类型。1：http请求过快，2：恶意攻击，3：人工拉黑
+ remark      | VARCHAR(255)  | YES  |     |         | 备注      
+-------------+---------------+------+-----+---------+---------
+
+Table: tio_ip_stat
+----------------------+---------------+------+-----+---------------------+---------
+ Field                | Type          | Null | Key | Default             | Remarks 
+----------------------+---------------+------+-----+---------------------+---------
+ id                   | BIGINT(19)    | NO   | PRI |                     |         
+ appType              | SMALLINT(5)   | NO   |     |                     | 应用类型：1：ws，2、socket，11、web_view，12、web_api
+ durationType         | BIGINT(19)    | NO   |     |                     | 时长类型，单位：秒，譬如60，3600等
+ server               | VARCHAR(32)   | NO   |     |                     | 服务器，可以是域名也可以是ip，配置文件中的my.ip
+ start                | TIMESTAMP(19) | NO   |     | current_timestamp() | 统计的开始时间点
+ duration             | BIGINT(19)    | NO   |     |                     | 当前统计了多久，单位：毫秒
+ formatedDuration     | VARCHAR(64)   | NO   |     |                     | 形如：59分45秒717毫秒
+ ipid                 | INT(10)       | NO   |     |                     | 客户端ip， 对应到ip表的id字段
+ decodeErrorCount     | INT(10)       | NO   |     |                     | 解码异常的次数 
+ requestCount         | INT(10)       | NO   |     |                     | 收到该IP连接请求的次数
+ activatedCount       | INT(10)       | NO   |     |                     | 当前处于连接状态的个数
+ sentBytes            | BIGINT(19)    | NO   |     |                     | 本IP已发送的字节数
+ sentPackets          | BIGINT(19)    | NO   |     |                     | 本IP已发送的packet数
+ handledBytes         | BIGINT(19)    | NO   |     |                     | 本IP已处理的字节数
+ handledPackets       | BIGINT(19)    | NO   |     |                     | 本IP已处理的packet数
+ receivedBytes        | BIGINT(19)    | NO   |     |                     | 本IP已接收的字节数
+ receivedTcps         | BIGINT(19)    | NO   |     |                     | 本IP已接收了多少次TCP数据包
+ receivedPackets      | BIGINT(19)    | NO   |     |                     | 本IP已接收的packet数
+ packetsPerTcpReceive | DOUBLE(22)    | NO   |     | 0                   |         
+ bytesPerTcpReceive   | DOUBLE(22)    | NO   |     |                     | 平均每次TCP接收到的字节数，这个可以用来监控慢攻击，配置PacketsPerTcpReceive定位慢攻击
+----------------------+---------------+------+-----+---------------------+---------
+
+Table: tio_slow_request
+-----------+---------------+------+-----+---------------------+---------
+ Field     | Type          | Null | Key | Default             | Remarks 
+-----------+---------------+------+-----+---------------------+---------
+ id        | INT(10)       | NO   | PRI |                     |         
+ type      | SMALLINT(5)   | YES  |     | 1                   | 请求类型，1：api， 2：view
+ path      | VARCHAR(1024) | NO   |     |                     | 请求路径，含querystring
+ body      | VARCHAR(2048) | YES  |     |                     | 请求体     
+ cost      | BIGINT(19)    | NO   |     |                     | 耗时，单位：毫秒
+ starttime | TIMESTAMP(19) | NO   |     | current_timestamp() | 请求开始时间  
+ endtime   | TIMESTAMP(19) | NO   |     | current_timestamp() | 响应结束时间  
+ uid       | INT(10)       | YES  |     |                     | 当前用户    
+ session   | VARCHAR(64)   | YES  |     |                     | 当前的session
+-----------+---------------+------+-----+---------------------+---------
+
+Table: tio_token_path_access_stat
+-----------------------+--------------+------+-----+---------+---------
+ Field                 | Type         | Null | Key | Default | Remarks 
+-----------------------+--------------+------+-----+---------+---------
+ id                    | BIGINT(19)   | NO   | PRI |         |         
+ token                 | VARCHAR(128) | NO   |     |         | ip，此处还要有一个ip字段是因为ipid不一样的，可能ip一样
+ uid                   | INT(10)      | YES  |     |         | user表的id，可能是null
+ requestCount          | INT(10)      | NO   |     |         | path不为null：这个ip访问这个路径的次数；path为 null：这个ip访问的次数
+ requestCountPerSecond | DOUBLE(19,2) | NO   |     |         | 平均每秒多少次请求
+ timeCost              | BIGINT(19)   | YES  |     |         | 消耗服务器的时间，单位：毫秒
+ timeCostPerRequest    | DOUBLE(10,2) | YES  |     |         | 平均每次请求消耗服务器的时间，单位：毫秒
+ ip                    | VARCHAR(24)  | NO   |     |         |         
+ ipid                  | INT(10)      | NO   |     |         | 客户端ip， 对应到ip表的id字段
+ path                  | VARCHAR(320) | YES  |     |         | 路径，形如/user/login，如果为null则表示此条记录为ip的统计数据
+ restype               | VARCHAR(16)  | YES  |     |         | 资源类型，html, api, js, css, jpg等
+ formatedDuration      | VARCHAR(64)  | NO   |     |         | 形如：59分45秒717毫秒
+ appType               | SMALLINT(5)  | NO   |     |         | 应用类型：9、网站页面，8、网站API，1：socket pc，2、socket android，3、socket ios
+ server                | VARCHAR(32)  | NO   |     |         | 服务器，可以是域名也可以是ip，配置文件中的my.ip
+ durationType          | BIGINT(19)   | NO   |     |         | 时长类型，单位：秒，譬如60，3600等
+ duration              | BIGINT(19)   | NO   |     |         | 当前统计了多久，单位：毫秒
+ firstAccessTime       | DATETIME(19) | NO   |     |         |         
+-----------------------+--------------+------+-----+---------+---------
+
+Table: user_ip_login_stat
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ ip         | VARCHAR(50)   | YES  |     |                     | ip      
+ ipid       | INT(10)       | YES  |     |                     | ipid    
+ dayperiod  | VARCHAR(20)   | YES  |     |                     | 天周期     
+ usercount  | INT(10)       | YES  |     | 1                   | 人数统计：默认1，用户统计
+ totalcount | INT(10)       | YES  |     | 0                   | 总登录次数   
+ hour0      | INT(10)       | YES  |     | 0                   | 小时0     
+ hour1      | INT(10)       | YES  |     | 0                   | 小时1     
+ hour2      | INT(10)       | YES  |     | 0                   | 小时2     
+ hour3      | INT(10)       | YES  |     | 0                   | 小时3     
+ hour4      | INT(10)       | YES  |     | 0                   | 小时4     
+ hour5      | INT(10)       | YES  |     | 0                   | 小时5     
+ hour6      | INT(10)       | YES  |     | 0                   | 小时6     
+ hour7      | INT(10)       | YES  |     | 0                   | 小时7     
+ hour8      | INT(10)       | YES  |     | 0                   | 小时8     
+ hour9      | INT(10)       | YES  |     | 0                   | 小时9     
+ hour10     | INT(10)       | YES  |     | 0                   | 小时10    
+ hour11     | INT(10)       | YES  |     | 0                   | 小时11    
+ hour12     | INT(10)       | YES  |     | 0                   | 小时12    
+ hour13     | INT(10)       | YES  |     | 0                   | 小时13    
+ hour14     | INT(10)       | YES  |     | 0                   | 小时14    
+ hour15     | INT(10)       | YES  |     | 0                   | 小时15    
+ hour16     | INT(10)       | YES  |     | 0                   | 小时16    
+ hour17     | INT(10)       | YES  |     | 0                   | 小时17    
+ hour18     | INT(10)       | YES  |     | 0                   | 小时18    
+ hour19     | INT(10)       | YES  |     | 0                   | 小时19    
+ hour20     | INT(10)       | YES  |     | 0                   | 小时20    
+ hour21     | INT(10)       | YES  |     | 0                   | 小时21    
+ hour22     | INT(10)       | YES  |     | 0                   | 小时22    
+ hour23     | INT(10)       | YES  |     | 0                   | 小时23    
+ remark     | VARCHAR(255)  | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_register_stat
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ type       | SMALLINT(5)   | YES  |     | 1                   | 类型：1：日期；2：ip；3：ip小的周期
+ statbizstr | VARCHAR(100)  | YES  |     |                     | 统计字符串：日期/ip地址
+ statbizid  | INT(10)       | YES  |     | -1                  | 统计id：ipid
+ regcount   | INT(10)       | YES  |     | 0                   | 注册人数    
+ remark     | VARCHAR(255)  | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+
+Table: user_time_login_stat
+------------+---------------+------+-----+---------------------+---------
+ Field      | Type          | Null | Key | Default             | Remarks 
+------------+---------------+------+-----+---------------------+---------
+ id         | INT(10)       | NO   | PRI |                     |         
+ uid        | INT(10)       | YES  |     |                     | 用户id    
+ dayperiod  | VARCHAR(20)   | YES  |     |                     | 天周期     
+ usercount  | INT(10)       | YES  |     | 1                   | 人数统计：默认1，用户统计
+ totalcount | INT(10)       | YES  |     | 0                   | 总登录次数   
+ hour0      | INT(10)       | YES  |     | 0                   | 小时0     
+ hour1      | INT(10)       | YES  |     | 0                   | 小时1     
+ hour2      | INT(10)       | YES  |     | 0                   | 小时2     
+ hour3      | INT(10)       | YES  |     | 0                   | 小时3     
+ hour4      | INT(10)       | YES  |     | 0                   | 小时4     
+ hour5      | INT(10)       | YES  |     | 0                   | 小时5     
+ hour6      | INT(10)       | YES  |     | 0                   | 小时6     
+ hour7      | INT(10)       | YES  |     | 0                   | 小时7     
+ hour8      | INT(10)       | YES  |     | 0                   | 小时8     
+ hour9      | INT(10)       | YES  |     | 0                   | 小时9     
+ hour10     | INT(10)       | YES  |     | 0                   | 小时10    
+ hour11     | INT(10)       | YES  |     | 0                   | 小时11    
+ hour12     | INT(10)       | YES  |     | 0                   | 小时12    
+ hour13     | INT(10)       | YES  |     | 0                   | 小时13    
+ hour14     | INT(10)       | YES  |     | 0                   | 小时14    
+ hour15     | INT(10)       | YES  |     | 0                   | 小时15    
+ hour16     | INT(10)       | YES  |     | 0                   | 小时16    
+ hour17     | INT(10)       | YES  |     | 0                   | 小时17    
+ hour18     | INT(10)       | YES  |     | 0                   | 小时18    
+ hour19     | INT(10)       | YES  |     | 0                   | 小时19    
+ hour20     | INT(10)       | YES  |     | 0                   | 小时20    
+ hour21     | INT(10)       | YES  |     | 0                   | 小时21    
+ hour22     | INT(10)       | YES  |     | 0                   | 小时22    
+ hour23     | INT(10)       | YES  |     | 0                   | 小时23    
+ remark     | VARCHAR(255)  | YES  |     |                     |         
+ createtime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+ updatetime | TIMESTAMP(19) | NO   |     | current_timestamp() |         
+------------+---------------+------+-----+---------------------+---------
+

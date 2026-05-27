@@ -1,0 +1,12 @@
+diff --git a/node_modules/drag-modal-vue/src/components/modal.vue b/node_modules/drag-modal-vue/src/components/modal.vue
+index 3786618..5abad4f 100644
+--- a/node_modules/drag-modal-vue/src/components/modal.vue
++++ b/node_modules/drag-modal-vue/src/components/modal.vue
+@@ -113,6 +113,7 @@ export default {
+     event: 'close',
+   },
+   created() {
++    console.log(666);
+     if (this.visible) {
+       this.modalId = `ufModal_${parseInt(Math.random() * 1e10)}`;
+     }

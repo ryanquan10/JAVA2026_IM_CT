@@ -1,0 +1,42 @@
+
+<div class="comment-box" id="section">
+  <div style="display: flex;" class="emoji-header-box">
+    <img id="curravatar" class="curravatar" />
+    <div class="comment-left">
+      <div class="comment-icons">
+        <img class="cursor bindEmojiImg" id="bindEmoji" src="/2/imgs/case/icon-emoji.png" alt="" srcset="">
+        <div class="emojibox">
+        </div>
+      </div>
+      <div id="comment-textarea"  class="comment-textarea" contenteditable="true" placeholder="写下你的评论"></div>
+    </div>
+    <!-- 未登录 -->
+    <div class="notLogin">
+        <div class="notLogin-content">
+            <a class="goLoginBtn" onclick="toLoginPage()">登录</a>
+            <span>和大家一起讨论吧!</span>
+        </div>
+    </div>
+    <!-- 未登录样式 -->
+  </div>
+  <p class="comment-btns">
+    <span class="resetBtn cursor">重置</span>
+    <span class="publishBtn cursor">发表评论</span>
+  </p>
+</div>
+<div class="comment-list"  >
+    <p class="comment-list-title"></p>
+    <hr>
+    <div class="comment-info">
+    </div>
+</div>
+<!-- 删除评论确认弹窗 -->
+<div class="conformDelete">
+  <p>确定要删除该条评论吗？</p>
+  <div class="conformButton">
+    <button class="cursor cancel">取消</button>
+    <button class="cursor cureDelete">确定</button>
+  </div>
+</div>
+<!-- 遮罩 -->
+<div class="conform-mask"></div>

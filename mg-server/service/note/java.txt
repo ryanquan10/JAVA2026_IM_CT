@@ -1,0 +1,7 @@
+1、找出占用cpu最多的线程
+	1、top -Hp 32543 -d 1 -n 1    （查出占CPU最高的线程，32543为java的pid）
+	2、printf "%x\n" 32826               （打印出来的是803a）
+	2、jstack -l 32543 | grep 803a -A 20
+
+2、解压war
+	jar xvf root.war

@@ -68,12 +68,11 @@ jobs:
     needs: build
     runs-on:
       - self-hosted
-      - debian
+      - wsl-debian
 
     steps:
-      - name: Install Docker if needed
-        run: bash docker/install-docker.sh
-        continue-on-error: true
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
@@ -81,23 +80,29 @@ jobs:
           name: build-${{ github.sha }}
           path: build-artifacts/
 
+      - name: Prepare Build Artifacts
+        run: |
+          mkdir -p docker/backend-jar
+          find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
+          if [ -d "build-artifacts/dist" ]; then
+            mkdir -p docker/frontend-dist
+            cp -r build-artifacts/dist/* docker/frontend-dist/
+          fi
+
       - name: Deploy (Docker)
         run: bash docker/deploy.sh
-        env:
-          DB_HOST: ${{ secrets.EXTERNAL_DB_HOST }}
-          DB_PORT: ${{ secrets.EXTERNAL_DB_PORT }}
-          DB_NAME: ${{ secrets.EXTERNAL_DB_NAME }}
-          DB_USER: ${{ secrets.EXTERNAL_DB_USER }}
-          DB_PASSWORD: ${{ secrets.EXTERNAL_DB_PASSWORD }}
 
   deploy-ubuntu:
     name: Deploy to Ubuntu-1 WSL
     needs: build
     runs-on:
       - self-hosted
-      - ubuntu
+      - wsl-ubuntu
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install Docker if needed
         run: bash docker/install-docker.sh
         continue-on-error: true
@@ -110,9 +115,3 @@ jobs:
 
       - name: Deploy (Docker)
         run: bash docker/deploy.sh
-        env:
-          DB_HOST: ${{ secrets.EXTERNAL_DB_HOST }}
-          DB_PORT: ${{ secrets.EXTERNAL_DB_PORT }}
-          DB_NAME: ${{ secrets.EXTERNAL_DB_NAME }}
-          DB_USER: ${{ secrets.EXTERNAL_DB_USER }}
-          DB_PASSWORD: ${{ secrets.EXTERNAL_DB_PASSWORD }}

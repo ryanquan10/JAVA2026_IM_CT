@@ -45,7 +45,7 @@ jobs:
       - name: Build Backend  (Maven)
         run: |
           cd bs-server/parent
-          mvn clean install -P linux -DskipTests -Dmaven.javadoc.skip=true -B -e
+          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e
 
       - name: Build Frontend (Vue.js)
         run: |

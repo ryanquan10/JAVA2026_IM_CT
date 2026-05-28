@@ -1,10 +1,32 @@
 # ============================================================
-# docker-compose.yml - CT_IM_JAVA 部署配置
-# 适用于: WSL Debian / WSL Ubuntu-1
-# 数据库: 外部数据库（通过环境变量配置）
+# docker-compose.yml - CT_IM_JAVA 全栈部署（含 MySQL）
+# 适用: WSL Debian / WSL Ubuntu-1
 # ============================================================
 
 services:
+  mysql:
+    image: mysql:8.0.40
+    container_name: ct-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-tio_root_2026}
+      MYSQL_DATABASE: ${DB_NAME:-tio_im}
+      MYSQL_USER: ${DB_USER:-tio_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-tio_pass_2026}
+      TZ: Asia/Shanghai
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-tio_root_2026}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - app-network
+
   app:
     build:
       context: ..
@@ -14,36 +36,36 @@ services:
     ports:
       - "8080:8080"
     environment:
-      # ========== 数据库配置（外部数据库） ==========
-      - DB_HOST=${DB_HOST:-}
-      - DB_PORT=${DB_PORT:-3306}
-      - DB_NAME=${DB_NAME:-}
-      - DB_USER=${DB_USER:-}
-      - DB_PASSWORD=${DB_PASSWORD:-}
+      # ========== 数据库配置（Docker 网络内直接连 mysql 服务名） ==========
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-tio_im}
+      - DB_USER=${DB_USER:-tio_user}
+      - DB_PASSWORD=${DB_PASSWORD:-tio_pass_2026}
 
       # ========== 应用配置 ==========
-      - APP_ENV=${APP_ENV:-production}
-      - JAVA_OPTS=${JAVA_OPTS:-}
+      - APP_ENV=production
+      - JAVA_OPTS=-Xms512m -Xmx2046m
       - SERVER_PORT=8080
-
     volumes:
-      # 配置目录（外部管理，保留敏感信息）
       - ./config:/app/config:ro
-      # 日志目录
       - ../logs:/app/logs
-      # SSL 证书
       - ../ssl:/app/ssl:ro
-
+    depends_on:
+      mysql:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
-
+      start_period: 120s
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql-data:

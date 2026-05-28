@@ -25,9 +25,9 @@ WORKDIR /app
 # 前端构建产物
 COPY --from=frontend-builder /build/mg-page/dist/ ./page/
 
-# 后端 jar 和依赖 —— deploy.sh 会在 docker-compose build 前
-# 把 artifact 复制到 docker/backend-jar/ 和 docker/frontend-dist/
-COPY --from=frontend-builder /build/backend-jar/ ./lib/
+# 后端 jar —— deploy.sh 会在 docker-compose build 前
+# 把 artifact 复制到 docker/backend-jar/tio-site-all.jar
+COPY docker/backend-jar/tio-site-all.jar ./lib/tio-site-all.jar
 
 # 启动脚本
 RUN echo '#!/bin/bash' > /app/run.sh && \

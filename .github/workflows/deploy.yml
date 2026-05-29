@@ -68,11 +68,16 @@ jobs:
         run: |
           cd tio/src/parent
           mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
-          cd ../../../bs-server/service-pay
-          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
-          cd ../service-sdk
-          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
-          cd ../parent
+          cd ../../../bs-server
+          for module in jfinal service-common service-pay service-sdk service ext-base ext-service ext-im-server ext-http-api ext-http-view http-server-api http-server-view; do
+            if [ -d "$module" ]; then
+              echo "Building module: $module"
+              cd $module
+              mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+              cd ..
+            fi
+          done
+          cd parent
           mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
 
       - name: Build Frontend (Vue.js)

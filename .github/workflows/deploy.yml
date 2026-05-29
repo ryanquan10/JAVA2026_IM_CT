@@ -61,8 +61,10 @@ jobs:
 
       - name: Build Backend  (Maven)
         run: |
-          cd bs-server/parent
-          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e
+          cd tio/src/parent
+          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+          cd ../../../bs-server/parent
+          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
 
       - name: Build Frontend (Vue.js)
         run: |

@@ -1446,11 +1446,10 @@
 
 
 	<repositories>
-		<!-- 非SSL的仓库，这个速度更快 -->
 		<repository>
-			<id>plain-repo</id>
-			<name>maven-public</name>
-			<url>http://repo.maven.apache.org/maven2</url>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 	</repositories>
 </project>

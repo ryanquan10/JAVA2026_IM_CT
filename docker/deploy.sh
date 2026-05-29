@@ -175,10 +175,18 @@ build_image() {
     if [ ! -f "${BUILD_DIR}/backend-jar/tio-site-all.jar" ]; then
         echo "  ⚠️  无 CI 产物，执行本地构建（较慢，约 10-15 分钟）..."
 
-        # 构建后端
-        echo "  [Maven 构建后端]..."
+        # 先 install 所有模块到本地仓库（解决内部模块依赖问题）
+        echo "  [Maven install 全部模块]..."
+        PARENT_POM="${PROJECT_DIR}/bs-server/all/pom.xml"
+        if [ -f "$PARENT_POM" ]; then
+            cd "${PROJECT_DIR}/bs-server/all"
+            mvn install -P linux -DskipTests -Dmaven.javadoc.skip=true -B -am 2>&1 | tail -5
+        fi
+
+        # 打包最终 jar
+        echo "  [Maven 打包]..."
         cd "${PROJECT_DIR}/bs-server/all"
-        mvn clean package -P linux -DskipTests -Dmaven.javadoc.skip=true -B 2>&1 | tail -5
+        mvn package -P linux -DskipTests -Dmaven.javadoc.skip=true -B 2>&1 | tail -5
         JAR_FILE=$(find target -name "tio-site-all-*.jar" 2>/dev/null | head -1)
         if [ -n "$JAR_FILE" ]; then
             mkdir -p "${BUILD_DIR}/backend-jar"

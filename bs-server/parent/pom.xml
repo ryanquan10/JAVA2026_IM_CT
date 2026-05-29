@@ -31,7 +31,7 @@
 		<module>../service</module>
 		<module>../jfinal</module>
 		<module>../service-common</module>
-		<module>../service-pay</module>
+		<!-- <module>../service-pay</module> -->
 		<module>../service-sdk</module>
 		<module>../http-server-api</module>
 		<module>../http-server-view</module>

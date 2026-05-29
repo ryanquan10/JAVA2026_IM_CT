@@ -59,6 +59,11 @@ jobs:
           </settings>
           EOF
 
+      - name: Install Local Dependencies
+        run: |
+          mvn install:install-file -Dfile=lib/aplus-captcha-10.8.8.jar -DgroupId=org.aplus -DartifactId=aplus-captcha -Dversion=10.8.8 -Dpackaging=jar
+          mvn install:install-file -Dfile=lib/5upay-sdk-core-1.0.0.jar -DgroupId=org.t-io -DartifactId=5upay-sdk-core -Dversion=1.0.0 -Dpackaging=jar
+
       - name: Build Backend  (Maven)
         run: |
           cd tio/src/parent

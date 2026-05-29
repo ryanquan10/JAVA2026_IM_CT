@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git push)",
+      "Bash(mvn clean install:*)",
+      "Bash(mvn dependency:get:*)",
+      "Bash(curl:*)",
+      "Bash(gh run list:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(jar -tf:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}

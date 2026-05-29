@@ -10,7 +10,9 @@
       "Bash(git commit:*)",
       "Bash(find:*)",
       "Bash(jar -tf:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(jar tf:*)",
+      "Bash(unzip:*)"
     ]
   }
 }

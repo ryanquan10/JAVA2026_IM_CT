@@ -70,6 +70,9 @@ jobs:
           mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
           cd ../../../bs-server/parent
           mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+          # 3. 安装 service-sdk（关键！其他模块依赖它）
+          cd ../service-sdk
+          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B $MAVEN_OPTS
 
       - name: Build Frontend (Vue.js)
         run: |

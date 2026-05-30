@@ -126,7 +126,7 @@ jobs:
     needs: build
     runs-on:
       - self-hosted
-      - ubuntu
+      - wsl-ubuntu
 
     steps:
       - name: Pull latest code

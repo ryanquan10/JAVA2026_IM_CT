@@ -55,7 +55,6 @@ install_docker() {
     echo ""
     echo "  [安装 Docker]"
 
-    # 检测发行版
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         OS=$ID
@@ -65,32 +64,33 @@ install_docker() {
 
     echo "  检测到发行版: ${OS}"
 
+    # 设置代理
+    export https_proxy=http://198.18.0.1:7890
+    export http_proxy=http://198.18.0.1:7890
+    export HTTPS_PROXY=http://198.18.0.1:7890
+    export HTTP_PROXY=http://198.18.0.1:7890
+
     # 安装依赖
-    sudo apt-get update -qq 2>/dev/null || apt-get update -qq
-    sudo apt-get install -y -qq ca-certificates curl gnupg 2>/dev/null || apt-get install -y -qq ca-certificates curl gnupg
+    sudo apt-get update -qq
+    sudo apt-get install -y -qq ca-certificates curl gnupg
 
-    # 添加 Docker 官方 GPG 密钥
-    sudo install -m 0755 -d /etc/apt/keyrings 2>/dev/null || install -m 0755 -d /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/${OS}/gpg | \
-        sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg 2>/dev/null || gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-    sudo chmod a+r /etc/apt/keyrings/docker.gpg 2>/dev/null || chmod a+r /etc/apt/keyrings/docker.gpg
+    # 添加 Docker GPG 密钥（非交互式）
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl --insecure -x http://198.18.0.1:7890 -fsSL https://download.docker.com/linux/${OS}/gpg | \
+        sudo gpg --batch --yes --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-    # 添加 Docker 仓库
-    CODENAME=$(. /etc/os-release 2>/dev/null && echo "$VERSION_CODENAME" || echo "bullseye")
+    # 添加仓库
+    CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME")
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/${OS} ${CODENAME} stable" | \
-        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 2>/dev/null
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-    sudo apt-get update -qq 2>/dev/null || apt-get update -qq
-    sudo apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin 2>/dev/null || \
-        apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin
+    sudo apt-get update -qq
+    sudo apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-    # 启动并启用
-    sudo systemctl enable docker 2>/dev/null || true
-    sudo systemctl start docker 2>/dev/null || true
-
-    # 添加当前用户到 docker 组
-    CURRENT_USER=$(whoami)
-    sudo usermod -aG docker "$CURRENT_USER" 2>/dev/null || true
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    sudo usermod -aG docker "$(whoami)" || true
 
     echo "  ✅ Docker 安装完成: $(docker --version)"
 }

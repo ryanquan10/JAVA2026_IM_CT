@@ -106,28 +106,6 @@ jobs:
           bash docker/configure-docker-mirrors.sh
         continue-on-error: true
 
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-${{ github.sha }}
-          path: /home/debianuser/CT_IM_JAVA/build-artifacts/
-
-      - name: Prepare Build Artifacts
-        run: |
-          cd /home/debianuser/CT_IM_JAVA
-          echo "=== Checking build-artifacts ==="
-          ls -la build-artifacts/ || echo "Not found"
-          find build-artifacts -name "*.jar" || echo "No JARs"
-          echo "=== Preparing ==="
-          mkdir -p docker/backend-jar
-          find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
-          if [ -d "build-artifacts/mg-page/dist" ]; then
-            mkdir -p docker/frontend-dist
-            cp -r build-artifacts/mg-page/dist/* docker/frontend-dist/
-          fi
-          echo "=== Verifying ==="
-          ls -la docker/backend-jar/ docker/frontend-dist/ || true
-
       - name: Deploy (Docker)
         run: |
           cd /home/debianuser/CT_IM_JAVA
@@ -157,22 +135,6 @@ jobs:
           cd /root/CT_IM_JAVA
           bash docker/configure-docker-mirrors.sh
         continue-on-error: true
-
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-${{ github.sha }}
-          path: /root/CT_IM_JAVA/build-artifacts/
-
-      - name: Prepare Build Artifacts
-        run: |
-          cd /root/CT_IM_JAVA
-          mkdir -p docker/backend-jar
-          find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
-          if [ -d "build-artifacts/mg-page/dist" ]; then
-            mkdir -p docker/frontend-dist
-            cp -r build-artifacts/mg-page/dist/* docker/frontend-dist/
-          fi
 
       - name: Deploy (Docker)
         run: |

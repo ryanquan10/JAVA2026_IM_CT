@@ -13,7 +13,7 @@ COPY mg-page/ ./
 RUN npm run build
 
 # ===== 阶段2: 最终镜像 =====
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-jre-alpine
 
 LABEL maintainer="SBQB-Group"
 LABEL description="CT_IM_JAVA - Java IM Server + Vue Frontend"

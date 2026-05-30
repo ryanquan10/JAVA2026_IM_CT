@@ -1,32 +1,21 @@
 # ============================================================
 # Dockerfile - CT_IM_JAVA
-# 策略: 前端在 Docker 内构建, jar 由 CI 外部传入
+# 策略: 前端由 CI 提前构建 (npm run build)，Docker 只负责打包运行
 # ============================================================
 
-# ===== 阶段1: 构建 Vue.js 前端 =====
-FROM node:18-alpine AS frontend-builder
-
-WORKDIR /build/mg-page
-COPY mg-page/package*.json ./
-RUN npm ci --silent
-COPY mg-page/ ./
-RUN npm run build
-
-# ===== 阶段2: 最终镜像 =====
-FROM openjdk:17-jre-alpine
+FROM openjdk:17-jre-slim
 
 LABEL maintainer="SBQB-Group"
 LABEL description="CT_IM_JAVA - Java IM Server + Vue Frontend"
 
-RUN apk add --no-cache curl dumb-init
+RUN apt-get update -qq && apt-get install -y -qq curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# 前端构建产物
-COPY --from=frontend-builder /build/mg-page/dist/ ./page/
+# 前端构建产物（deploy.sh 复制到 docker/frontend-dist/）
+COPY docker/frontend-dist/ ./page/
 
-# 后端 jar —— deploy.sh 会在 docker-compose build 前
-# 把 artifact 复制到 docker/backend-jar/tio-site-all.jar
+# 后端 jar（deploy.sh 复制到 docker/backend-jar/）
 COPY docker/backend-jar/tio-site-all.jar ./lib/tio-site-all.jar
 
 # 启动脚本
@@ -39,5 +28,4 @@ RUN echo '#!/bin/bash' > /app/run.sh && \
 
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["/app/run.sh"]

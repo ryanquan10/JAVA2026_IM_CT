@@ -18,8 +18,9 @@ mg-page/package-lock.json
 bs-server/all/target
 bs-server/*/target
 
-# Docker
-docker/
+# Docker (don't exclude docker/ itself - backend-jar and frontend-dist are build inputs)
+docker/*.log
+docker/tmp/
 
 # 日志
 logs/

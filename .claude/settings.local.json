@@ -12,7 +12,8 @@
       "Bash(jar -tf:*)",
       "Bash(git push:*)",
       "Bash(jar tf:*)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

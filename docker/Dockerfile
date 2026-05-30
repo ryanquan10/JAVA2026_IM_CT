@@ -3,12 +3,12 @@
 # 策略: 前端由 CI 提前构建 (npm run build)，Docker 只负责打包运行
 # ============================================================
 
-FROM eclipse-temurin:17-jre-slim
+FROM docker.m.daocloud.io/library/debian:bookworm-slim
 
 LABEL maintainer="SBQB-Group"
 LABEL description="CT_IM_JAVA - Java IM Server + Vue Frontend"
 
-RUN apt-get update -qq && apt-get install -y -qq curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get install -y -qq openjdk-17-jre-headless curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

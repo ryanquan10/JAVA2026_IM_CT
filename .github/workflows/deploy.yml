@@ -100,6 +100,12 @@ jobs:
           cd /home/debianuser/CT_IM_JAVA
           git pull origin main
 
+      - name: Configure Docker Mirrors
+        run: |
+          cd /home/debianuser/CT_IM_JAVA
+          bash docker/configure-docker-mirrors.sh
+        continue-on-error: true
+
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
@@ -138,6 +144,12 @@ jobs:
         run: |
           cd /root/CT_IM_JAVA
           bash docker/install-docker.sh
+        continue-on-error: true
+
+      - name: Configure Docker Mirrors
+        run: |
+          cd /root/CT_IM_JAVA
+          bash docker/configure-docker-mirrors.sh
         continue-on-error: true
 
       - name: Download Build Artifacts

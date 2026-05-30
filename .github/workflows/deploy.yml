@@ -92,11 +92,13 @@ jobs:
     needs: build
     runs-on:
       - self-hosted
-      - debian #和页面标签一样
+      - debian
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Pull latest code
+        run: |
+          cd /home/debianuser/CT_IM_JAVA
+          git pull origin main
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
@@ -108,9 +110,9 @@ jobs:
         run: |
           mkdir -p docker/backend-jar
           find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
-          if [ -d "build-artifacts/dist" ]; then
+          if [ -d "build-artifacts/mg-page/dist" ]; then
             mkdir -p docker/frontend-dist
-            cp -r build-artifacts/dist/* docker/frontend-dist/
+            cp -r build-artifacts/mg-page/dist/* docker/frontend-dist/
           fi
 
       - name: Deploy (Docker)
@@ -121,11 +123,13 @@ jobs:
     needs: build
     runs-on:
       - self-hosted
-      - wsl-ubuntu
+      - ubuntu
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Pull latest code
+        run: |
+          cd /root/CT_IM_JAVA
+          git pull origin main
 
       - name: Install Docker if needed
         run: bash docker/install-docker.sh
@@ -141,9 +145,9 @@ jobs:
         run: |
           mkdir -p docker/backend-jar
           find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
-          if [ -d "build-artifacts/dist" ]; then
+          if [ -d "build-artifacts/mg-page/dist" ]; then
             mkdir -p docker/frontend-dist
-            cp -r build-artifacts/dist/* docker/frontend-dist/
+            cp -r build-artifacts/mg-page/dist/* docker/frontend-dist/
           fi
 
       - name: Deploy (Docker)

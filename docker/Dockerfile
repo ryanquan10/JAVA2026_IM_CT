@@ -3,8 +3,7 @@
 # 策略: 前端由 CI 提前构建 (npm run build)，Docker 只负责打包运行
 # ============================================================
 
-ARG DOCKER_REGISTRY=registry.cn-hangzhou.aliyuncs.com/
-FROM ${DOCKER_REGISTRY}library/openjdk:17-jre-slim
+FROM openjdk:17-jre-slim
 
 LABEL maintainer="SBQB-Group"
 LABEL description="CT_IM_JAVA - Java IM Server + Vue Frontend"

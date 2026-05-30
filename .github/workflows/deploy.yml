@@ -137,5 +137,14 @@ jobs:
           name: build-${{ github.sha }}
           path: build-artifacts/
 
+      - name: Prepare Build Artifacts
+        run: |
+          mkdir -p docker/backend-jar
+          find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
+          if [ -d "build-artifacts/dist" ]; then
+            mkdir -p docker/frontend-dist
+            cp -r build-artifacts/dist/* docker/frontend-dist/
+          fi
+
       - name: Deploy (Docker)
         run: bash docker/deploy.sh

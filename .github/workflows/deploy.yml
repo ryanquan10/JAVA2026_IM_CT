@@ -1,132 +1,59 @@
-name: CI/CD - Build & Deploy via Self-Hosted Runner
+deploy-debian:
+  name: Deploy to Debian WSL
+  needs: build
+  runs-on:
+    - self-hosted
+    - debian
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:
-    inputs:
-      target:
-        description: '部署目标'
-        required: true
-        default: 'all'
-        type: choice
-        options:
-          - all
-          - debian
-          - ubuntu
+  steps:
+    - name: Pull latest code
+      run: |
+        cd /home/debianuser/CT_IM_JAVA
+        git pull origin main
 
-jobs:
-  build:
-    name: Build (Java + Vue)
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-${{ github.sha }}
+        path: /home/debianuser/CT_IM_JAVA/build-artifacts/
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+    - name: Configure Docker Mirrors
+      run: bash /home/debianuser/CT_IM_JAVA/docker/configure-docker-mirrors.sh
+      continue-on-error: true
 
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: mg-page/package-lock.json
+    - name: Deploy (Docker)
+      run: |
+        cd /home/debianuser/CT_IM_JAVA
+        bash docker/deploy.sh
 
-      - name: Configure Maven Settings
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
-            <mirrors>
-              <mirror>
-                <id>aliyun-central</id>
-                <mirrorOf>central</mirrorOf>
-                <name>Aliyun Maven Central</name>
-                <url>https://maven.aliyun.com/nexus/content/groups/public</url>
-              </mirror>
-            </mirrors>
-          </settings>
-          EOF
+deploy-ubuntu:
+  name: Deploy to Ubuntu-1 WSL
+  needs: build
+  runs-on:
+    - self-hosted
+    - wsl-ubuntu
 
-      - name: Install Local Dependencies
-        run: |
-          mvn install:install-file -Dfile=lib/aplus-captcha-10.8.8.jar -DgroupId=org.aplus -DartifactId=aplus-captcha -Dversion=10.8.8 -Dpackaging=jar
-          mvn install:install-file -Dfile=lib/5upay-sdk-core-1.0.0.jar -DgroupId=org.t-io -DartifactId=5upay-sdk-core -Dversion=1.0.0 -Dpackaging=jar
+  steps:
+    - name: Pull latest code
+      run: |
+        cd /root/CT_IM_JAVA
+        git pull origin main
 
-      - name: Build Backend  (Maven)
-        run: |
-          cd tio/src/parent
-          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
-          cd ../../../bs-server/parent
-          mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-${{ github.sha }}
+        path: /root/CT_IM_JAVA/build-artifacts/
 
-      - name: Build Frontend (Vue.js)
-        run: |
-          cd mg-page
-          npm ci --legacy-peer-deps
-          npm run build
+    - name: Install Docker if needed
+      run: bash /root/CT_IM_JAVA/docker/install-docker.sh
+      continue-on-error: true
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ github.sha }}
-          path: |
-            mg-page/dist/
-            bs-server/all/target/
-          retention-days: 7
-          compression-level: 1
+    - name: Configure Docker Mirrors
+      run: bash /root/CT_IM_JAVA/docker/configure-docker-mirrors.sh
+      continue-on-error: true
 
-  deploy-debian:
-    name: Deploy to Debian WSL
-    needs: build
-    runs-on:
-      - self-hosted
-      - debian
-
-    steps:
-      - name: Configure Docker Mirrors
-        run: |
-          cd /home/debianuser/CT_IM_JAVA
-          bash docker/configure-docker-mirrors.sh
-        continue-on-error: true
-
-      - name: Deploy (Docker)
-        run: |
-          cd /home/debianuser/CT_IM_JAVA
-          bash docker/deploy.sh
-
-  deploy-ubuntu:
-    name: Deploy to Ubuntu-1 WSL
-    needs: build
-    runs-on:
-      - self-hosted
-      - wsl-ubuntu
-
-    steps:
-      - name: Install Docker if needed
-        run: |
-          cd /root/CT_IM_JAVA
-          bash docker/install-docker.sh
-        continue-on-error: true
-
-      - name: Configure Docker Mirrors
-        run: |
-          cd /root/CT_IM_JAVA
-          bash docker/configure-docker-mirrors.sh
-        continue-on-error: true
-
-      - name: Deploy (Docker)
-        run: |
-          cd /root/CT_IM_JAVA
-          bash docker/deploy.sh
+    - name: Deploy (Docker)
+      run: |
+        cd /root/CT_IM_JAVA
+        bash docker/deploy.sh

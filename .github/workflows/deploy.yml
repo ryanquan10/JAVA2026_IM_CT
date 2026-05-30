@@ -111,6 +111,8 @@ jobs:
         run: |
           cd /home/debianuser/CT_IM_JAVA
           bash docker/deploy.sh
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
   deploy-ubuntu:
     name: Deploy to Ubuntu-1 WSL
@@ -142,3 +144,5 @@ jobs:
         run: |
           cd /root/CT_IM_JAVA
           bash docker/deploy.sh
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64

@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# GitHub
+.github
+
+# Node modules
+mg-page/node_modules
+mg-page/package-lock.json
+**/node_modules
+
+# Maven 构建产物
+bs-server/all/target
+bs-server/*/target
+
+# 日志
+logs/
+*.log
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时文件
+tmp/
+temp/
+*.tmp

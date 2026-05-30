@@ -104,10 +104,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-${{ github.sha }}
-          path: build-artifacts/
+          path: /home/debianuser/CT_IM_JAVA/build-artifacts/
 
       - name: Prepare Build Artifacts
         run: |
+          cd /home/debianuser/CT_IM_JAVA
           mkdir -p docker/backend-jar
           find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
           if [ -d "build-artifacts/mg-page/dist" ]; then
@@ -116,7 +117,9 @@ jobs:
           fi
 
       - name: Deploy (Docker)
-        run: bash docker/deploy.sh
+        run: |
+          cd /home/debianuser/CT_IM_JAVA
+          bash docker/deploy.sh
 
   deploy-ubuntu:
     name: Deploy to Ubuntu-1 WSL
@@ -132,17 +135,20 @@ jobs:
           git pull origin main
 
       - name: Install Docker if needed
-        run: bash docker/install-docker.sh
+        run: |
+          cd /root/CT_IM_JAVA
+          bash docker/install-docker.sh
         continue-on-error: true
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-${{ github.sha }}
-          path: build-artifacts/
+          path: /root/CT_IM_JAVA/build-artifacts/
 
       - name: Prepare Build Artifacts
         run: |
+          cd /root/CT_IM_JAVA
           mkdir -p docker/backend-jar
           find build-artifacts -name "tio-site-all-*.jar" -exec cp {} docker/backend-jar/tio-site-all.jar \;
           if [ -d "build-artifacts/mg-page/dist" ]; then
@@ -151,4 +157,6 @@ jobs:
           fi
 
       - name: Deploy (Docker)
-        run: bash docker/deploy.sh
+        run: |
+          cd /root/CT_IM_JAVA
+          bash docker/deploy.sh

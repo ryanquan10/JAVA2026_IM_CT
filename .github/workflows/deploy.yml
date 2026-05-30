@@ -95,6 +95,12 @@ jobs:
       - debian
 
     steps:
+      - name: Sync latest code
+        run: |
+          cd /home/debianuser/CT_IM_JAVA
+          git pull origin main || true
+        continue-on-error: true
+
       - name: Configure Docker Mirrors
         run: |
           cd /home/debianuser/CT_IM_JAVA
@@ -114,6 +120,12 @@ jobs:
       - wsl-ubuntu
 
     steps:
+      - name: Sync latest code
+        run: |
+          cd /root/CT_IM_JAVA
+          git pull origin main || true
+        continue-on-error: true
+
       - name: Install Docker if needed
         run: |
           cd /root/CT_IM_JAVA

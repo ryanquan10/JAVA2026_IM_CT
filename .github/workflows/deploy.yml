@@ -92,7 +92,7 @@ jobs:
     needs: build
     runs-on:
       - self-hosted
-      - wsl-debian
+      - debian #和页面标签一样
 
     steps:
       - name: Checkout code

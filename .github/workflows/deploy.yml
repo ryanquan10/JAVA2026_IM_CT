@@ -70,6 +70,8 @@ jobs:
           mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
           cd ../../../bs-server/parent
           mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+          cd ../all
+          mvn clean package -P linux -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
 
       - name: Build Frontend (Vue.js)
         run: |
@@ -83,9 +85,10 @@ jobs:
           name: build-${{ github.sha }}
           path: |
             mg-page/dist/
-            bs-server/all/target/
+            bs-server/all/target/tio-site-all.jar
           retention-days: 7
           compression-level: 1
+          if-no-files-found: error
 
   deploy-debian:
     name: Deploy to Debian WSL
@@ -107,12 +110,19 @@ jobs:
           bash docker/configure-docker-mirrors.sh
         continue-on-error: true
 
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: ${{ runner.temp }}/ct-im-java-artifacts-${{ github.run_id }}
+
       - name: Deploy (Docker)
         run: |
           cd /home/debianuser/CT_IM_JAVA
           bash docker/deploy.sh
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+          DEPLOY_ARTIFACT_DIR: ${{ runner.temp }}/ct-im-java-artifacts-${{ github.run_id }}
 
   deploy-ubuntu:
     name: Deploy to Ubuntu-1 WSL
@@ -140,9 +150,16 @@ jobs:
           bash docker/configure-docker-mirrors.sh
         continue-on-error: true
 
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: ${{ runner.temp }}/ct-im-java-artifacts-${{ github.run_id }}
+
       - name: Deploy (Docker)
         run: |
           cd /root/CT_IM_JAVA
           bash docker/deploy.sh
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+          DEPLOY_ARTIFACT_DIR: ${{ runner.temp }}/ct-im-java-artifacts-${{ github.run_id }}

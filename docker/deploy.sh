@@ -6,7 +6,7 @@
 # 可作为 GitHub Actions 的 deploy 步骤直接调用
 # ============================================================
 
-set -e
+set -eo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.."; pwd)"
 DEPLOY_USER="${DEPLOY_USER:-debianuser}"
@@ -103,6 +103,109 @@ install_docker_compose() {
     echo "  ✅ Docker Compose 安装完成"
 }
 
+find_backend_jar() {
+    find "$1" -type f \( -name "tio-site-all.jar" -o -name "tio-site-all-*.jar" \) \
+        ! -path "*/archive-tmp/*" ! -path "*/tio-site-all/lib/*" \
+        ! -name "*sources.jar" ! -name "*javadoc.jar" -print -quit 2>/dev/null || true
+}
+
+find_frontend_dist() {
+    local root="$1"
+    local preferred=""
+    local candidate
+
+    preferred="$(find "$root" -type d -path "*/mg-page/dist" -print -quit 2>/dev/null || true)"
+    if [ -n "$preferred" ] && [ -f "${preferred}/index.html" ]; then
+        printf '%s\n' "$preferred"
+        return 0
+    fi
+
+    while IFS= read -r candidate; do
+        if [ -f "${candidate}/index.html" ]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done < <(find "$root" -type d -name dist 2>/dev/null)
+}
+
+copy_build_artifacts() {
+    local artifact_dir="$1"
+    local build_dir="$2"
+    local jar_file=""
+    local dist_dir=""
+
+    if [ -z "$artifact_dir" ] || [ ! -d "$artifact_dir" ]; then
+        return 1
+    fi
+
+    echo "  查找构建产物: ${artifact_dir}"
+    jar_file="$(find_backend_jar "$artifact_dir")"
+    dist_dir="$(find_frontend_dist "$artifact_dir")"
+
+    if [ -z "$jar_file" ] || [ -z "$dist_dir" ]; then
+        echo "  ⚠️  该目录缺少 JAR 或前端 dist"
+        return 1
+    fi
+
+    mkdir -p "${build_dir}/backend-jar" "${build_dir}/frontend-dist"
+    cp "$jar_file" "${build_dir}/backend-jar/tio-site-all.jar"
+    cp -r "${dist_dir}/." "${build_dir}/frontend-dist/"
+
+    echo "  ✅ 使用 CI 预构建 JAR: ${jar_file}"
+    echo "  ✅ 使用 CI 预构建前端: ${dist_dir}"
+    return 0
+}
+
+ensure_local_build_tools() {
+    local missing=0
+    local node_bin=""
+    local npm_bin=""
+
+    if [ -z "${JAVA_HOME:-}" ] || [ ! -x "${JAVA_HOME}/bin/java" ]; then
+        echo "  ❌ JAVA_HOME 未正确设置: ${JAVA_HOME:-<empty>}"
+        missing=1
+    fi
+
+    if ! command -v mvn >/dev/null 2>&1; then
+        echo "  ❌ Maven 未安装或不在 PATH"
+        missing=1
+    fi
+
+    node_bin="$(command -v node 2>/dev/null || true)"
+    npm_bin="$(command -v npm 2>/dev/null || true)"
+    if [ -z "$node_bin" ]; then
+        echo "  ❌ Node.js 未安装或不在 PATH"
+        missing=1
+    elif printf '%s' "$node_bin" | grep -Eqi '(^/mnt/|\.exe$|\.cmd$|\.bat$)'; then
+        echo "  ❌ node 指向 Windows 可执行文件: ${node_bin}"
+        missing=1
+    fi
+
+    if [ -z "$npm_bin" ]; then
+        echo "  ❌ npm 未安装或不在 PATH"
+        missing=1
+    elif printf '%s' "$npm_bin" | grep -Eqi '(^/mnt/|\.exe$|\.cmd$|\.bat$)'; then
+        echo "  ❌ npm 指向 Windows 可执行文件: ${npm_bin}"
+        missing=1
+    fi
+
+    if [ "$missing" -ne 0 ]; then
+        echo "  ❌ 未找到可用 CI 产物，且本地构建环境不完整。"
+        echo "     GitHub Actions 部署应先下载 build artifact，并设置 DEPLOY_ARTIFACT_DIR。"
+        exit 1
+    fi
+}
+
+install_local_maven_deps() {
+    if [ -f "${PROJECT_DIR}/lib/aplus-captcha-10.8.8.jar" ]; then
+        mvn install:install-file -Dfile="${PROJECT_DIR}/lib/aplus-captcha-10.8.8.jar" -DgroupId=org.aplus -DartifactId=aplus-captcha -Dversion=10.8.8 -Dpackaging=jar
+    fi
+
+    if [ -f "${PROJECT_DIR}/lib/5upay-sdk-core-1.0.0.jar" ]; then
+        mvn install:install-file -Dfile="${PROJECT_DIR}/lib/5upay-sdk-core-1.0.0.jar" -DgroupId=org.t-io -DartifactId=5upay-sdk-core -Dversion=1.0.0 -Dpackaging=jar
+    fi
+}
+
 # ========== 2. 克隆/更新代码 ==========
 update_code() {
     echo ""
@@ -148,65 +251,87 @@ build_image() {
 
     # 准备构建产物目录
     BUILD_DIR="${PROJECT_DIR}/docker"
+    rm -rf "${BUILD_DIR}/backend-jar" "${BUILD_DIR}/frontend-dist"
     mkdir -p "${BUILD_DIR}/backend-jar"
     mkdir -p "${BUILD_DIR}/frontend-dist"
 
-    # 查找 artifact 产物（GitHub Actions 会在 deploy job 的 _work 目录中）
-    # 可能的位置：
-    #   - 当前目录下的 build-artifacts/（手动下载后）
-    #   - GitHub Actions 的工作目录
-    WORK_DIR="${RUNNER_WORK_DIR:-}"
-    if [ -n "$WORK_DIR" ] && [ -d "$WORK_DIR" ]; then
-        echo "  检测到 Runner 工作目录: $WORK_DIR"
-        ARTIFACT_DIR=$(find "$WORK_DIR" -name "build-*" -type d 2>/dev/null | head -1)
-        if [ -n "$ARTIFACT_DIR" ]; then
-            echo "  找到构建产物: $ARTIFACT_DIR"
-            JAR_FILE=$(find "$ARTIFACT_DIR" -name "tio-site-all-*.jar" 2>/dev/null | head -1)
-            if [ -n "$JAR_FILE" ]; then
-                cp "$JAR_FILE" "${BUILD_DIR}/backend-jar/tio-site-all.jar"
-                echo "  ✅ 使用 CI 预构建 JAR"
-            fi
-            DIST_DIR=$(find "$ARTIFACT_DIR" -name "dist" -type d 2>/dev/null | head -1)
-            if [ -n "$DIST_DIR" ]; then
-                cp -r "$DIST_DIR"/* "${BUILD_DIR}/frontend-dist/" 2>/dev/null || true
-                echo "  ✅ 使用 CI 预构建前端"
-            fi
-        fi
+    # 查找 GitHub Actions 下载的 artifact 产物。workflow 会显式设置 DEPLOY_ARTIFACT_DIR；
+    # 其他目录用于兼容手动下载或旧 runner 环境。
+    ARTIFACTS_READY=0
+    ARTIFACT_CANDIDATES=()
+    if [ -n "${DEPLOY_ARTIFACT_DIR:-}" ]; then
+        ARTIFACT_CANDIDATES+=("${DEPLOY_ARTIFACT_DIR}")
+    fi
+    if [ -d "${PROJECT_DIR}/build-artifacts" ]; then
+        ARTIFACT_CANDIDATES+=("${PROJECT_DIR}/build-artifacts")
+    fi
+    if [ -n "${RUNNER_TEMP:-}" ] && [ -d "${RUNNER_TEMP}/ct-im-java-artifacts" ]; then
+        ARTIFACT_CANDIDATES+=("${RUNNER_TEMP}/ct-im-java-artifacts")
+    fi
+    if [ -n "${GITHUB_WORKSPACE:-}" ] && [ -d "${GITHUB_WORKSPACE}" ]; then
+        ARTIFACT_CANDIDATES+=("${GITHUB_WORKSPACE}")
+    fi
+    if [ -n "${RUNNER_WORKSPACE:-}" ] && [ -d "${RUNNER_WORKSPACE}" ]; then
+        ARTIFACT_CANDIDATES+=("${RUNNER_WORKSPACE}")
     fi
 
-    # 如果没用 CI 产物，就完整构建
-    if [ ! -f "${BUILD_DIR}/backend-jar/tio-site-all.jar" ]; then
-        echo "  ⚠️  无 CI 产物，执行本地构建（较慢，约 10-15 分钟）..."
-
-        # 先 install 所有模块到本地仓库（解决内部模块依赖问题）
-        echo "  [Maven install 全部模块]..."
-        PARENT_POM="${PROJECT_DIR}/bs-server/all/pom.xml"
-        if [ -f "$PARENT_POM" ]; then
-            cd "${PROJECT_DIR}/bs-server/all"
-            mvn install -P linux -DskipTests -Dmaven.javadoc.skip=true -B -am 2>&1 | tail -5
+    for ARTIFACT_DIR in "${ARTIFACT_CANDIDATES[@]}"; do
+        if copy_build_artifacts "$ARTIFACT_DIR" "$BUILD_DIR"; then
+            ARTIFACTS_READY=1
+            break
         fi
+    done
+
+    # 如果没用 CI 产物，就完整构建
+    if [ "$ARTIFACTS_READY" -eq 0 ]; then
+        echo "  ⚠️  无 CI 产物，执行本地构建（较慢，约 10-15 分钟）..."
+        ensure_local_build_tools
+
+        echo "  [安装本地 Maven 依赖]..."
+        install_local_maven_deps
+
+        echo "  [Maven install tio 模块]..."
+        cd "${PROJECT_DIR}/tio/src/parent"
+        mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+
+        echo "  [Maven install 业务模块]..."
+        cd "${PROJECT_DIR}/bs-server/parent"
+        mvn clean install -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
 
         # 打包最终 jar
         echo "  [Maven 打包]..."
         cd "${PROJECT_DIR}/bs-server/all"
-        mvn package -P linux -DskipTests -Dmaven.javadoc.skip=true -B 2>&1 | tail -5
-        JAR_FILE=$(find target -name "tio-site-all-*.jar" 2>/dev/null | head -1)
+        mvn clean package -P linux -DskipTests -Dmaven.javadoc.skip=true -B -e -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.resolver.transport=wagon
+        JAR_FILE="$(find_backend_jar "${PROJECT_DIR}/bs-server/all/target")"
         if [ -n "$JAR_FILE" ]; then
-            mkdir -p "${BUILD_DIR}/backend-jar"
             cp "$JAR_FILE" "${BUILD_DIR}/backend-jar/tio-site-all.jar"
+        else
+            echo "  ❌ Maven 打包完成但未找到 tio-site-all.jar"
+            exit 1
         fi
 
         # 构建前端
         echo "  [npm 构建前端]..."
         cd "${PROJECT_DIR}/mg-page"
-        npm ci --silent 2>&1 | tail -3
-        npm run build 2>&1 | tail -5
-        if [ -d "dist" ]; then
-            mkdir -p "${BUILD_DIR}/frontend-dist"
-            cp -r dist/* "${BUILD_DIR}/frontend-dist/"
+        npm ci --legacy-peer-deps
+        npm run build
+        if [ -f "dist/index.html" ]; then
+            cp -r dist/. "${BUILD_DIR}/frontend-dist/"
+        else
+            echo "  ❌ npm 构建完成但未找到 mg-page/dist/index.html"
+            exit 1
         fi
 
         cd "${PROJECT_DIR}"
+    fi
+
+    if [ ! -s "${BUILD_DIR}/backend-jar/tio-site-all.jar" ]; then
+        echo "  ❌ Docker 构建输入缺少后端 JAR: ${BUILD_DIR}/backend-jar/tio-site-all.jar"
+        exit 1
+    fi
+    if [ ! -f "${BUILD_DIR}/frontend-dist/index.html" ]; then
+        echo "  ❌ Docker 构建输入缺少前端 dist: ${BUILD_DIR}/frontend-dist/index.html"
+        exit 1
     fi
 
     # Docker 构建

@@ -108,10 +108,13 @@ update_code() {
     echo ""
     echo "[2/6] 检查代码..."
 
-    # 如果当前目录已经是项目根目录（有 .github/workflows），就用当前目录
+    # 如果当前目录已经是项目根目录（有 .github/workflows），先 pull 最新代码
     if [ -f "${PROJECT_DIR}/.github/workflows/deploy.yml" ]; then
-        echo "  ✅ 代码已在: ${PROJECT_DIR}"
+        echo "  🔄 更新代码..."
         cd "${PROJECT_DIR}"
+        git fetch origin 2>/dev/null || true
+        git pull origin main 2>/dev/null || git pull origin master 2>/dev/null || true
+        echo "  ✅ 代码已就绪: $(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
     elif [ -d "${PROJECT_DIR}/.git" ]; then
         echo "  🔄 更新现有代码..."
         cd "${PROJECT_DIR}"

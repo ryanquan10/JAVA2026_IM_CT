@@ -10,7 +10,8 @@ set -eo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.."; pwd)"
 DEPLOY_USER="${DEPLOY_USER:-debianuser}"
-HEALTH_URL="http://localhost:8080/healthz"
+APP_HOST_PORT="${APP_HOST_PORT:-8080}"
+HEALTH_URL="${HEALTH_URL:-http://localhost:${APP_HOST_PORT}/healthz}"
 
 echo "============================================"
 echo "  CT_IM_JAVA 部署脚本"
@@ -377,7 +378,7 @@ health_check() {
             echo ""
             echo "============================================"
             echo "  部署成功！"
-            echo "  访问地址: http://$(hostname -I | awk '{print $1}'):8080"
+            echo "  访问地址: http://$(hostname -I | awk '{print $1}'):${APP_HOST_PORT}"
             echo "  健康检查: ${HEALTH_URL}"
             echo "============================================"
             return 0

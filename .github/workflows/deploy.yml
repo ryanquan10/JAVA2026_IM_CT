@@ -93,6 +93,7 @@ jobs:
   deploy-debian:
     name: Deploy to Debian WSL
     needs: build
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'debian'))
     runs-on:
       - self-hosted
       - debian
@@ -123,10 +124,12 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
           DEPLOY_ARTIFACT_DIR: ${{ runner.temp }}/ct-im-java-artifacts-${{ github.run_id }}
+          APP_HOST_PORT: 8081
 
   deploy-ubuntu:
     name: Deploy to Ubuntu-1 WSL
     needs: build
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'ubuntu'))
     runs-on:
       - self-hosted
       - wsl-ubuntu
@@ -163,3 +166,4 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
           DEPLOY_ARTIFACT_DIR: ${{ runner.temp }}/ct-im-java-artifacts-${{ github.run_id }}
+          APP_HOST_PORT: 8080
